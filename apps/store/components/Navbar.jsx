@@ -87,6 +87,15 @@ export default function Navbar() {
 
                 <DropdownMenuItem asChild>
                   <Link
+                    href="/categories/Powerbanks"
+                    className="flex items-center gap-3 px-2 py-2 rounded-lg hover:bg-gray-100 transition"
+                  >
+                    <span>Power Banks</span>
+                  </Link>
+                </DropdownMenuItem>
+
+                <DropdownMenuItem asChild>
+                  <Link
                     href="/categories/keyboards"
                     className="flex items-center gap-3 px-2 py-2 rounded-lg hover:bg-gray-100 transition"
                   >
@@ -160,12 +169,14 @@ export default function Navbar() {
             <User size={20} />
           </Button>
 
-          <Button variant="ghost" size="icon" className="relative">
-            <ShoppingCart size={20} />
-            <span className="absolute -top-1 -right-1 text-xs bg-primary text-white px-1.5 rounded-full">
-              3
-            </span>
-          </Button>
+          <Link href="/cart">
+            <Button variant="ghost" size="icon" className="relative">
+              <ShoppingCart size={20} />
+              <span className="absolute -top-1 -right-1 text-xs bg-primary text-white px-1.5 rounded-full">
+                3
+              </span>
+            </Button>
+          </Link>
         </div>
       </div>
     </header>

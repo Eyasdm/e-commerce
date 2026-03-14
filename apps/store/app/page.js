@@ -71,15 +71,19 @@ export default async function HomePage() {
         <div className="max-w-7xl mx-auto px-6">
           <div className="bg-white rounded-2xl shadow-lg p-6 flex flex-wrap justify-between gap-4">
             {[
-              { icon: Headphones, label: "Headphones" },
-              { icon: Zap, label: "Chargers" },
-              { icon: Keyboard, label: "Keyboards" },
-              { icon: Mouse, label: "Mouse" },
-              { icon: BatteryCharging, label: "Power Banks" },
+              { icon: Headphones, label: "Headphones", slug: "headphones" },
+              { icon: Zap, label: "Chargers", slug: "chargers" },
+              { icon: Keyboard, label: "Keyboards", slug: "keyboards" },
+              { icon: Mouse, label: "Mouse", slug: "mouse" },
+              {
+                icon: BatteryCharging,
+                label: "Power Banks",
+                slug: "Powerbanks",
+              },
             ].map((item, i) => (
               <Link
                 key={i}
-                href="/shop"
+                href={`/categories/${item.slug}`}
                 className="flex items-center gap-2 px-6 py-3 min-w-40 bg-gray-50 rounded-xl hover:bg-blue-50 transition"
               >
                 <item.icon size={18} className="text-blue-600" />
