@@ -1,0 +1,11 @@
+{
+  "name": "technest",
+  "private": true,
+  "workspaces": [
+    "apps/*"
+  ],
+  "scripts": {
+    "dev:store": "npm run dev --workspace=apps/store",
+    "build:store": "npm run build --workspace=apps/store"
+  }
+}
