@@ -1,4 +1,5 @@
 import * as cartService from "../services/cart.service.js";
+import AppError from "../utils/appError.js";
 import catchAsync from "../utils/catchAsync.js";
 
 // add item
@@ -13,6 +14,7 @@ export const addItem = catchAsync(async (req, res) => {
     res.json({ success: true, data: cart });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
+    return next(new AppError(error.message, 500));
   }
 });
 

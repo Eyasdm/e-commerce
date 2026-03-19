@@ -6,15 +6,18 @@ import {
   deleteProduct,
   updateProduct,
 } from "../controllers/product.controller.js";
-import { protect } from "../middlewares/auth.middleware.js";
+import { protect, restrictTo } from "../middlewares/auth.middleware.js";
 
 const router = express.Router();
 
-router.route("/").get(getProducts).post(protect, createProduct);
+router
+  .route("/")
+  .get(getProducts)
+  .post(protect, restrictTo("admin"), createProduct);
 router
   .route("/:id")
   .get(getProduct)
-  .patch(protect, updateProduct)
-  .delete(protect, deleteProduct);
+  .patch(protect, restrictTo("admin"), updateProduct)
+  .delete(protect, restrictTo("admin"), deleteProduct);
 
 export default router;

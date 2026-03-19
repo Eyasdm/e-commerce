@@ -1,14 +1,25 @@
 import jwt from "jsonwebtoken";
 import User from "../models/user.model.js";
+import crypto from "crypto";
 
-// generate token
-export const generateToken = (userId) => {
+// ================= HASH TOKEN =================
+export const hashToken = (token) => {
+  return crypto.createHash("sha256").update(token).digest("hex");
+};
+
+// ================= ACCESS TOKEN =================
+export const generateAccessToken = (userId) => {
   return jwt.sign({ id: userId }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRES_IN,
   });
 };
 
-// signup
+// ================= REFRESH TOKEN  =================
+export const generateRefreshToken = () => {
+  return crypto.randomBytes(64).toString("hex");
+};
+
+// ================= SIGNUP =================
 export const signupUser = async (data) => {
   const { name, email, password, passwordConfirm } = data;
 
@@ -24,13 +35,22 @@ export const signupUser = async (data) => {
     passwordConfirm,
   });
 
+  //  generate tokens
+  const accessToken = generateAccessToken(user._id);
+  const refreshToken = generateRefreshToken();
+
+  //  store hashed refresh token
+  user.refreshToken = hashToken(refreshToken);
+  await user.save({ validateBeforeSave: false });
+
   return {
     user,
-    token: generateToken(user._id),
+    accessToken,
+    refreshToken,
   };
 };
 
-// login
+// ================= LOGIN =================
 export const loginUser = async (data) => {
   const { email, password } = data;
 
@@ -46,8 +66,26 @@ export const loginUser = async (data) => {
     throw new Error("Invalid credentials");
   }
 
+  //  generate tokens
+  const accessToken = generateAccessToken(user._id);
+  const refreshToken = generateRefreshToken();
+
+  //  replace old refresh token
+  user.refreshToken = hashToken(refreshToken);
+  await user.save({ validateBeforeSave: false });
+
   return {
     user,
-    token: generateToken(user._id),
+    accessToken,
+    refreshToken,
   };
+};
+
+// ================= LOGOUT =================
+export const logoutUser = async (userId) => {
+  return await User.findByIdAndUpdate(
+    userId,
+    { $unset: { refreshToken: 1 } },
+    { new: true },
+  );
 };
