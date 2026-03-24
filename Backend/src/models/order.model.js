@@ -7,6 +7,8 @@ const orderItemSchema = new mongoose.Schema(
       ref: "Product",
       required: true,
     },
+
+    //  snapshot
     name: String,
     price: Number,
     quantity: Number,
@@ -17,23 +19,50 @@ const orderItemSchema = new mongoose.Schema(
 
 const orderSchema = new mongoose.Schema(
   {
+    //  user
     user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
     },
 
+    //  items
     items: [orderItemSchema],
 
+    //  pricing
     totalPrice: {
       type: Number,
       required: true,
     },
 
+    //  payment
+    isPaid: {
+      type: Boolean,
+      default: false,
+    },
+
+    paidAt: Date,
+
+    paymentMethod: {
+      type: String,
+      default: "stripe",
+    },
+
+    stripeSessionId: String,
+
+    //  order status
     status: {
       type: String,
-      enum: ["pending", "paid", "shipped", "delivered"],
+      enum: ["pending", "paid", "shipped", "delivered", "cancelled"],
       default: "pending",
+    },
+
+    //  (optional later)
+    shippingAddress: {
+      address: String,
+      city: String,
+      country: String,
+      postalCode: String,
     },
   },
   { timestamps: true },
