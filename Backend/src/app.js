@@ -82,13 +82,19 @@ app.post(
 // JSON parser
 app.use(express.json());
 
+// Print the coming request
+app.use((req, res, next) => {
+  console.log(`${req.method} ${req.originalUrl}`);
+  next();
+});
+
 //////////////////////////////////////////////////
 // STATIC FILES
 //////////////////////////////////////////////////
 
 app.use(
   "/products",
-  express.static(path.join(__dirname, "../public/img/products")),
+  express.static(path.join(__dirname, "../public/products")),
 );
 
 //////////////////////////////////////////////////

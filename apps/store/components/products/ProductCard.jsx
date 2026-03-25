@@ -13,18 +13,20 @@ export default function ProductCard({
   reviews = 109,
   discount,
 }) {
+  const imageUrl = `http://localhost:8000${image}`;
+
   return (
     <div className="relative bg-white rounded-2xl p-5 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col h-full">
       {" "}
       {/* Discount Badge */}
       {discount && (
-        <div className="absolute top-4 left-4 bg-red-500 text-white text-xs font-semibold px-3 py-1 rounded-full">
+        <div className="absolute top-4 left-4 bg-red-500 text-white text-xs font-semibold px-3 py-1 rounded-full z-10">
           {discount}% OFF
         </div>
       )}
       {/* Product Image */}
-      <div className="relative h-44 mb-4">
-        <Image src={image} alt={name} fill className="object-contain" />
+      <div className="relative w-full h-64">
+        <Image src={imageUrl} fill className="object-cover" alt="product" />
       </div>
       {/* Title */}
       <h3 className="font-semibold text-gray-800 text-sm leading-snug line-clamp-2 min-h-10">

@@ -1,5 +1,6 @@
 import { create } from "zustand";
-import { generateMockProducts } from "@/lib/mockProducts";
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export const useProductsStore = create((set, get) => ({
   products: [],
@@ -11,6 +12,7 @@ export const useProductsStore = create((set, get) => ({
 
   filters: {},
 
+  //  Set Filters
   setFilters: (filters) => {
     set({ filters });
   },
@@ -19,48 +21,72 @@ export const useProductsStore = create((set, get) => ({
     set({ filters: {} });
   },
 
-  fetchProducts: async (pageToFetch = 1) => {
+  // Fetch Products
+  fetchProducts: async (pageToFetch = 1, newFilters = null) => {
     const { products, filters } = get();
 
-    if (pageToFetch === 1) {
-      set({ initialLoading: true });
-    } else {
-      set({ loading: true });
+    const appliedFilters = newFilters || filters;
+
+    try {
+      if (pageToFetch === 1) {
+        set({ initialLoading: true, filters: appliedFilters });
+      } else {
+        set({ loading: true });
+      }
+
+      const query = new URLSearchParams({
+        page: pageToFetch,
+        ...appliedFilters,
+      }).toString();
+
+      const res = await fetch(`${API_URL}/products?${query}`);
+
+      if (!res.ok) throw new Error("Failed to fetch");
+
+      const data = await res.json();
+
+      set((state) => {
+        const combined =
+          pageToFetch === 1 ? data.data : [...state.products, ...data.data];
+
+        const uniqueProducts = Array.from(
+          new Map(combined.map((p) => [p._id, p])).values(),
+        );
+
+        return {
+          products: uniqueProducts,
+          page: pageToFetch,
+          hasMore:
+            data.meta?.page < data.meta?.lastPage || data.data.length > 0,
+          loading: false,
+          initialLoading: false,
+        };
+      });
+    } catch (error) {
+      console.error("Fetch error:", error);
+
+      set({
+        loading: false,
+        initialLoading: false,
+      });
     }
-
-    await new Promise((res) => setTimeout(res, 800));
-
-    const data = generateMockProducts(pageToFetch, 12, filters);
-
-    set({
-      products:
-        pageToFetch === 1 ? data.products : [...products, ...data.products],
-
-      page: pageToFetch,
-      hasMore: data.hasMore,
-
-      loading: false,
-      initialLoading: false,
-    });
   },
 
+  // ➕ Load More
   loadMore: () => {
     const { page, hasMore, loading } = get();
 
     if (!hasMore || loading) return;
 
-    const nextPage = page + 1;
-
-    get().fetchProducts(nextPage);
+    get().fetchProducts(page + 1);
   },
 
+  // 🔄 Reset
   reset: () => {
     set({
       products: [],
       page: 1,
       hasMore: true,
-      loading: false,
-      initialLoading: false,
     });
   },
 }));

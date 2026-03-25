@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { useProductsStore } from "@/lib/useProductsStore";
+
 import ProductCard from "@/components/products/ProductCard";
 import ProductCardSkeleton from "@/components/products/ProductCardSkeleton";
 import ActiveFilters from "@/components/products/ActiveFilters";
@@ -25,10 +26,9 @@ export default function ProductsLayout({ category }) {
     hasMore,
     loading,
     initialLoading,
-    reset,
   } = useProductsStore();
 
-  // Fetch Products
+  // 🚀 Fetch when filters change
   useEffect(() => {
     const filters = {
       category,
@@ -39,11 +39,10 @@ export default function ProductsLayout({ category }) {
       sort,
     };
 
-    reset();
     fetchProducts(1, filters);
   }, [category, brand, rating, min, max, sort]);
 
-  // Infinite Scroll
+  // ♾️ Infinite Scroll
   useEffect(() => {
     let ticking = false;
 
@@ -69,17 +68,17 @@ export default function ProductsLayout({ category }) {
   }, [hasMore, loading]);
 
   const title = category ? category.replace("-", " ") : "All Products";
+  console.log(products);
 
   return (
     <div className="max-w-7xl mx-auto px-6 py-10">
       {/* Header */}
       <div className="mb-8">
         <p className="text-sm text-muted-foreground">Shop / {title}</p>
-
         <h1 className="text-3xl font-bold mt-2 capitalize">{title}</h1>
       </div>
 
-      {/* Active Filters */}
+      {/* Filters */}
       <ActiveFilters />
 
       <div className="grid grid-cols-12 gap-8 mt-8">
@@ -113,11 +112,11 @@ export default function ProductsLayout({ category }) {
             <>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {products.map((product) => (
-                  <ProductCard key={product.id} {...product} />
+                  <ProductCard key={product._id} {...product} />
                 ))}
               </div>
 
-              {/* Loading more */}
+              {/* Load more skeleton */}
               {loading && (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
                   {Array.from({ length: 3 }).map((_, i) => (
@@ -126,6 +125,7 @@ export default function ProductsLayout({ category }) {
                 </div>
               )}
 
+              {/* End */}
               {!hasMore && !loading && (
                 <p className="text-center text-muted-foreground py-10">
                   No more products to load
