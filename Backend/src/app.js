@@ -3,6 +3,7 @@ import cors from "cors";
 import helmet from "helmet";
 import mongoSanitize from "express-mongo-sanitize";
 import xss from "xss";
+import cookieParser from "cookie-parser";
 import rateLimit from "express-rate-limit";
 
 import productRoutes from "./routes/product.routes.js";
@@ -28,6 +29,7 @@ const app = express();
 //////////////////////////////////////////////////
 
 app.use(helmet());
+app.use(cookieParser());
 
 // NoSQL injection
 app.use((req, res, next) => {
@@ -62,8 +64,12 @@ app.use("/api", limiter);
 //  GLOBAL MIDDLEWARES
 //////////////////////////////////////////////////
 
-app.use(cors());
-
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    credentials: true,
+  }),
+);
 //  IMPORTANT: Stripe Webhook BEFORE json()
 import { webhook } from "./controllers/order.controller.js";
 

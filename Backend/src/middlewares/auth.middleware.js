@@ -5,12 +5,17 @@ export const protect = async (req, res, next) => {
   try {
     let token;
 
-    // 1️) Check Authorization Header
+    // 1) Check Authorization header
     if (
       req.headers.authorization &&
       req.headers.authorization.startsWith("Bearer")
     ) {
       token = req.headers.authorization.split(" ")[1];
+    }
+
+    // 2) Check Cookies
+    if (!token && req.cookies?.token) {
+      token = req.cookies.token;
     }
 
     // No token
@@ -21,10 +26,10 @@ export const protect = async (req, res, next) => {
       });
     }
 
-    // 2) Verify Token
+    // 3) Verify Token
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-    // 3) Get User from DB
+    // 4) Get User from DB
     const user = await User.findById(decoded.id);
 
     if (!user) {
@@ -34,7 +39,7 @@ export const protect = async (req, res, next) => {
       });
     }
 
-    // 4) Attach user to request
+    // 5) Attach user
     req.user = user;
 
     next();
@@ -45,7 +50,6 @@ export const protect = async (req, res, next) => {
     });
   }
 };
-
 export const restrictTo = (...roles) => {
   return (req, res, next) => {
     if (!roles.includes(req.user.role)) {

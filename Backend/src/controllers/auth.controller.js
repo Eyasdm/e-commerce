@@ -24,9 +24,19 @@ export const signup = catchAsync(async (req, res, next) => {
 export const login = catchAsync(async (req, res, next) => {
   const result = await loginUser(req.body);
 
+  const token = result.token;
+
+  res.cookie("token", token, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "strict",
+  });
+
   res.status(200).json({
     success: true,
-    data: result,
+    data: {
+      user: result.user,
+    },
   });
 });
 
@@ -41,6 +51,15 @@ export const logout = catchAsync(async (req, res, next) => {
     message: "Logged out successfully",
   });
 });
+// ================= GET ME =================
+export const getMe = async (req, res) => {
+  res.status(200).json({
+    success: true,
+    data: {
+      user: req.user,
+    },
+  });
+};
 // ================= UPDATE PASSWORD =================
 export const updatePassword = catchAsync(async (req, res, next) => {
   const user = await User.findById(req.user._id).select("+password");
