@@ -1,5 +1,6 @@
 import { create } from "zustand";
 
+console.log(process.env.NEXT_PUBLIC_API_URL);
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export const useProductsStore = create((set, get) => ({
@@ -34,12 +35,25 @@ export const useProductsStore = create((set, get) => ({
         set({ loading: true });
       }
 
-      const query = new URLSearchParams({
+      const params = {
         page: pageToFetch,
-        ...appliedFilters,
-      }).toString();
+      };
+
+      Object.entries(appliedFilters || {}).forEach(([key, value]) => {
+        if (
+          value !== undefined &&
+          value !== null &&
+          value !== "" &&
+          value !== "undefined"
+        ) {
+          params[key] = value;
+        }
+      });
+
+      const query = new URLSearchParams(params).toString();
 
       const res = await fetch(`${API_URL}/products?${query}`);
+      console.log(`${API_URL}/products?${query}`);
 
       if (!res.ok) throw new Error("Failed to fetch");
 
@@ -56,8 +70,7 @@ export const useProductsStore = create((set, get) => ({
         return {
           products: uniqueProducts,
           page: pageToFetch,
-          hasMore:
-            data.meta?.page < data.meta?.lastPage || data.data.length > 0,
+          hasMore: data.page < data.pages,
           loading: false,
           initialLoading: false,
         };

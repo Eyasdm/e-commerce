@@ -1,19 +1,18 @@
-import Image from "next/image";
-import Link from "next/link";
-import { getFeaturedProducts } from "@/lib/getProducts";
+import ProductCard from "@/components/products/ProductCard";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
+import { getFeaturedProducts } from "@/lib/getProducts";
 import {
+  BatteryCharging,
   Headphones,
-  Zap,
+  Headset,
   Keyboard,
   Mouse,
-  BatteryCharging,
-  Truck,
   ShieldCheck,
-  Headset,
+  Truck,
+  Zap,
 } from "lucide-react";
-import ProductCard from "@/components/products/ProductCard";
+import Image from "next/image";
+import Link from "next/link";
 
 export default async function HomePage() {
   const products = await getFeaturedProducts();

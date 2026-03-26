@@ -13,8 +13,8 @@ import { useProductsStore } from "@/lib/useProductsStore";
 
 const SORT_OPTIONS = [
   { label: "Best Selling", value: "best" },
-  { label: "Price: Low to High", value: "priceLow" },
-  { label: "Price: High to Low", value: "priceHigh" },
+  { label: "Price: Low to High", value: "price_asc" },
+  { label: "Price: High to Low", value: "price_desc" },
   { label: "Top Rated", value: "rating" },
 ];
 

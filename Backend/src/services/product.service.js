@@ -5,13 +5,14 @@ export const getAllProducts = async (filters) => {
   const {
     category,
     keyword,
-    minPrice,
-    maxPrice,
+    min,
+    max,
     sort,
+    brand,
+    rating,
     page = 1,
     limit = 8,
   } = filters;
-
   let query = {};
 
   // Filter
@@ -19,17 +20,32 @@ export const getAllProducts = async (filters) => {
 
   // Search
   if (keyword) {
-    query.name = {
-      $regex: keyword,
-      $options: "i",
-    };
+    const words = keyword.toLowerCase().trim().split(" ").filter(Boolean);
+
+    query.$and = words.map((word) => ({
+      $or: [
+        { name: { $regex: word, $options: "i" } },
+        { category: { $regex: word, $options: "i" } },
+        { brand: { $regex: word, $options: "i" } },
+      ],
+    }));
   }
 
   // Price filter
-  if (minPrice || maxPrice) {
+  if (min || max) {
     query.price = {};
-    if (minPrice) query.price.$gte = Number(minPrice);
-    if (maxPrice) query.price.$lte = Number(maxPrice);
+    if (min) query.price.$gte = Number(min);
+    if (max) query.price.$lte = Number(max);
+  }
+
+  // Brand filter
+  if (brand) {
+    query.brand = brand;
+  }
+
+  // Rating filter
+  if (rating) {
+    query.rating = { $gte: Number(rating) };
   }
 
   let productsQuery = Product.find(query);
@@ -41,6 +57,8 @@ export const getAllProducts = async (filters) => {
     productsQuery = productsQuery.sort({ price: -1 });
   } else if (sort === "newest") {
     productsQuery = productsQuery.sort({ createdAt: -1 });
+  } else if (sort === "rating") {
+    productsQuery = productsQuery.sort({ rating: -1 });
   }
 
   // Pagination

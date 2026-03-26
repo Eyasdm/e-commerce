@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useSearchParams } from "next/navigation";
 import { useProductsStore } from "@/lib/useProductsStore";
 
@@ -13,12 +13,18 @@ import SortDropdown from "./SortDropdown";
 export default function ProductsLayout({ category }) {
   const params = useSearchParams();
 
-  const brand = params.get("brand");
-  const rating = params.get("rating");
-  const min = params.get("min");
-  const max = params.get("max");
-  const sort = params.get("sort");
-
+  const filters = useMemo(
+    () => ({
+      category,
+      keyword: params.get("q"),
+      brand: params.get("brand"),
+      rating: params.get("rating"),
+      min: params.get("min"),
+      max: params.get("max"),
+      sort: params.get("sort"),
+    }),
+    [category, params],
+  );
   const {
     products,
     fetchProducts,
@@ -28,38 +34,19 @@ export default function ProductsLayout({ category }) {
     initialLoading,
   } = useProductsStore();
 
-  // 🚀 Fetch when filters change
+  //  Fetch products when filters change
   useEffect(() => {
-    const filters = {
-      category,
-      brand,
-      rating,
-      min,
-      max,
-      sort,
-    };
-
     fetchProducts(1, filters);
-  }, [category, brand, rating, min, max, sort]);
+  }, [filters]);
 
-  // ♾️ Infinite Scroll
+  //  Infinite Scroll
   useEffect(() => {
-    let ticking = false;
-
     const handleScroll = () => {
-      if (!ticking) {
-        window.requestAnimationFrame(() => {
-          const scrollPosition = window.innerHeight + window.scrollY;
-          const bottom = document.documentElement.offsetHeight - 800;
+      const scrollPosition = window.innerHeight + window.scrollY;
+      const bottom = document.documentElement.offsetHeight - 800;
 
-          if (scrollPosition >= bottom && hasMore && !loading) {
-            loadMore();
-          }
-
-          ticking = false;
-        });
-
-        ticking = true;
+      if (scrollPosition >= bottom && hasMore && !loading) {
+        loadMore();
       }
     };
 
@@ -67,14 +54,22 @@ export default function ProductsLayout({ category }) {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [hasMore, loading]);
 
-  const title = category ? category.replace("-", " ") : "All Products";
-  console.log(products);
+  const searchQuery = params.get("q");
+
+  const title = searchQuery
+    ? `Search results for "${searchQuery}"`
+    : category
+      ? category.replace("-", " ")
+      : "All Products";
 
   return (
     <div className="max-w-7xl mx-auto px-6 py-10">
       {/* Header */}
       <div className="mb-8">
-        <p className="text-sm text-muted-foreground">Shop / {title}</p>
+        <p className="text-sm text-muted-foreground">
+          Shop / {searchQuery ? "Search" : title}
+        </p>
+
         <h1 className="text-3xl font-bold mt-2 capitalize">{title}</h1>
       </div>
 
@@ -94,29 +89,26 @@ export default function ProductsLayout({ category }) {
             <p className="text-sm text-muted-foreground">
               Showing {products.length} products
             </p>
-
             <SortDropdown />
           </div>
 
           {/* Initial Loading */}
-          {initialLoading && (
+          {initialLoading ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {Array.from({ length: 8 }).map((_, i) => (
                 <ProductCardSkeleton key={i} />
               ))}
             </div>
-          )}
-
-          {/* Products */}
-          {!initialLoading && (
+          ) : (
             <>
+              {/* Products */}
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {products.map((product) => (
                   <ProductCard key={product._id} {...product} />
                 ))}
               </div>
 
-              {/* Load more skeleton */}
+              {/* Load more */}
               {loading && (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
                   {Array.from({ length: 3 }).map((_, i) => (
@@ -128,7 +120,7 @@ export default function ProductsLayout({ category }) {
               {/* End */}
               {!hasMore && !loading && (
                 <p className="text-center text-muted-foreground py-10">
-                  No more products to load
+                  No more products
                 </p>
               )}
             </>

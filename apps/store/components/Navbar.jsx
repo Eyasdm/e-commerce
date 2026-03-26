@@ -87,7 +87,7 @@ export default function Navbar() {
 
                 <DropdownMenuItem asChild>
                   <Link
-                    href="/categories/Powerbanks"
+                    href="/categories/powerbanks"
                     className="flex items-center gap-3 px-2 py-2 rounded-lg hover:bg-gray-100 transition"
                   >
                     <span>Power Banks</span>

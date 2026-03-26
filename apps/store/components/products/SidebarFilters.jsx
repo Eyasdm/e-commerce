@@ -1,13 +1,35 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
+import { useProductsStore } from "@/lib/useProductsStore";
 
-const brands = ["Anker", "Razer", "Ugreen", "Logitech", "Aukey"];
+const brands = ["Anker", "Razer", "Ugreen", "Logitech"];
 
 export default function SidebarFilters() {
   const router = useRouter();
   const params = useSearchParams();
 
+  const { setFilters, fetchProducts, reset } = useProductsStore();
+
+  // 🔹 helper to build clean filters object
+  const buildFiltersFromParams = (searchParams) => {
+    const filters = {};
+
+    searchParams.forEach((value, key) => {
+      if (
+        value !== undefined &&
+        value !== null &&
+        value !== "" &&
+        value !== "undefined"
+      ) {
+        filters[key] = value;
+      }
+    });
+
+    return filters;
+  };
+
+  // 🔹 update param
   const updateParam = (key, value) => {
     const newParams = new URLSearchParams(params.toString());
 
@@ -17,11 +39,27 @@ export default function SidebarFilters() {
       newParams.set(key, value);
     }
 
-    router.push(`?${newParams.toString()}`);
+    const queryString = newParams.toString();
+
+    // 1. update URL
+    router.push(`?${queryString}`);
+
+    // 2. build clean filters
+    const updatedFilters = buildFiltersFromParams(newParams);
+
+    // 3. update store + refetch
+    setFilters(updatedFilters);
+    reset();
+    fetchProducts(1, updatedFilters);
   };
 
+  // 🔹 clear all filters
   const clearFilters = () => {
     router.push("?");
+
+    setFilters({});
+    reset();
+    fetchProducts(1, {});
   };
 
   return (
@@ -39,7 +77,6 @@ export default function SidebarFilters() {
                 checked={params.get("brand") === brand}
                 onChange={() => updateParam("brand", brand)}
               />
-
               {brand}
             </label>
           ))}
@@ -73,21 +110,22 @@ export default function SidebarFilters() {
           <input
             type="number"
             placeholder="Min"
-            defaultValue={params.get("min") || ""}
-            onBlur={(e) => updateParam("min", e.target.value)}
+            value={params.get("min") || ""}
+            onChange={(e) => updateParam("min", e.target.value)}
             className="w-full border rounded-lg px-3 py-2 text-sm"
           />
 
           <input
             type="number"
             placeholder="Max"
-            defaultValue={params.get("max") || ""}
-            onBlur={(e) => updateParam("max", e.target.value)}
+            value={params.get("max") || ""}
+            onChange={(e) => updateParam("max", e.target.value)}
             className="w-full border rounded-lg px-3 py-2 text-sm"
           />
         </div>
       </div>
 
+      {/* Clear */}
       <button
         onClick={clearFilters}
         className="w-full border rounded-full py-2 text-sm hover:bg-gray-50"
