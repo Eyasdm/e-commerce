@@ -8,7 +8,7 @@ import Linkedin from "./Linkedin";
 
 export default function Footer() {
   return (
-    <footer className="bg-slate-950 text-slate-400 mt-24 border-t border-slate-800">
+    <footer className="bg-slate-950 text-slate-400  border-t border-slate-800">
       {/* Top CTA */}
       <div className="border-b border-slate-800">
         <div className="container mx-auto px-6 py-12 text-center">

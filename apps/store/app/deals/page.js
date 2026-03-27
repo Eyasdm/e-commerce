@@ -8,13 +8,14 @@ import { useDealsProducts } from "@/lib/hooks/useDealsProducts";
 import { DealHeroBlueBanner } from "../../components/deals/DealHeroBlueBanner";
 import TopDealBanner from "@/components/deals/TopDealBanner";
 import { useState } from "react";
+import Link from "next/link";
 
 const categories = [
-  { name: "Headphones", image: "/products/headphone.png" },
-  { name: "Chargers", image: "/products/charger.png" },
-  { name: "Power Banks", image: "/products/powerbank.png" },
-  { name: "Keyboards", image: "/products/keyboard.png" },
-  { name: "Mouse", image: "/products/mouse.png" },
+  { name: "Headphones", image: "/products/headphone.png", slug: "headphones" },
+  { name: "Chargers", image: "/products/charger.png", slug: "charger" },
+  { name: "Power Banks", image: "/products/powerbank.png", slug: "powerbank" },
+  { name: "Keyboards", image: "/products/keyboard.png", slug: "keyboard" },
+  { name: "Mouse", image: "/products/mouse.png", slug: "mouse" },
 ];
 
 export default function DealsPage() {
@@ -38,8 +39,9 @@ export default function DealsPage() {
         {/* ================= CATEGORY ICONS ================= */}
         <section className="max-w-7xl mx-auto px-4 mt-4  ">
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
-            {categories.map((cat) => (
-              <div
+            {categories.map((cat, i) => (
+              <Link
+                href={`/categories/${cat.slug}`}
                 key={cat.name}
                 className="bg-white flex flex-col items-center gap-3 cursor-pointer transition-all"
                 style={{
@@ -77,7 +79,7 @@ export default function DealsPage() {
                 >
                   {cat.name}
                 </span>
-              </div>
+              </Link>
             ))}
           </div>
         </section>

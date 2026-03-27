@@ -1,35 +1,59 @@
 "use client";
-
 import { createContext, useContext, useEffect, useState } from "react";
-import api from "@/lib/api";
 
-const AuthContext = createContext();
+const AuthContext = createContext(null);
 
-export const AuthProvider = ({ children }) => {
+export function AuthProvider({ children }) {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  //  fetch current user
-  const fetchUser = async () => {
-    try {
-      const res = await api.get("/auth/me");
-      setUser(res.data.data.user);
-    } catch (err) {
-      setUser(null);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
-    fetchUser();
+    // The HttpOnly cookie is sent automatically by the browser
+    // Just call a protected endpoint to check if we're logged in
+    fetch("http://localhost:8000/api/v1/auth/me", {
+      credentials: "include", // ✅ sends HttpOnly cookies automatically
+    })
+      .then((res) => {
+        if (res.ok) return res.json();
+        throw new Error("Not authenticated");
+      })
+      .then((data) => {
+        setUser(data.user || data);
+        setIsAuthenticated(true);
+      })
+      .catch(() => {
+        setIsAuthenticated(false);
+      })
+      .finally(() => setLoading(false));
   }, []);
 
+  const clearAuth = () => {
+    fetch("http://localhost:8000/api/v1/auth/logout", {
+      method: "POST",
+      credentials: "include",
+    }).finally(() => {
+      setUser(null);
+      setIsAuthenticated(false);
+    });
+  };
+
   return (
-    <AuthContext.Provider value={{ user, loading, setUser }}>
+    <AuthContext.Provider
+      value={{
+        isAuthenticated,
+        user,
+        loading,
+        setUser,
+        setIsAuthenticated,
+        clearAuth,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
-};
+}
 
-export const useAuth = () => useContext(AuthContext);
+export function useAuth() {
+  return useContext(AuthContext);
+}

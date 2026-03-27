@@ -19,7 +19,7 @@ export default function ProductCard({
     <div className="relative bg-white rounded-2xl p-5 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col h-full">
       {" "}
       {/* Discount Badge */}
-      {discount && (
+      {Number(discount) > 0 && (
         <div className="absolute top-4 left-4 bg-red-500 text-white text-xs font-semibold px-3 py-1 rounded-full z-10">
           {discount}% OFF
         </div>
