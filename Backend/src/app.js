@@ -12,6 +12,7 @@ import userRoutes from "./routes/user.routes.js";
 import cartRoutes from "./routes/cart.routes.js";
 import orderRoutes from "./routes/order.routes.js";
 import adminRoutes from "./routes/admin.routes.js";
+import bundleRoutes from "./routes/bundle.routes.js";
 
 import { globalErrorHandler } from "./middlewares/error.middleware.js";
 
@@ -28,7 +29,11 @@ const app = express();
 //  SECURITY MIDDLEWARES
 //////////////////////////////////////////////////
 
-app.use(helmet());
+app.use(
+  helmet({
+    crossOriginResourcePolicy: { policy: "cross-origin" },
+  }),
+);
 app.use(cookieParser());
 
 // NoSQL injection
@@ -94,7 +99,11 @@ app.use((req, res, next) => {
 
 app.use(
   "/products",
-  express.static(path.join(__dirname, "../public/products")),
+  express.static(path.join(__dirname, "../public/products"), {
+    setHeaders: (res) => {
+      res.setHeader("Access-Control-Allow-Origin", "*");
+    },
+  }),
 );
 
 //////////////////////////////////////////////////
@@ -107,6 +116,7 @@ app.use("/api/v1/users", userRoutes);
 app.use("/api/v1/cart", cartRoutes);
 app.use("/api/v1/orders", orderRoutes);
 app.use("/api/v1/admin", adminRoutes);
+app.use("/api/v1/bundles", bundleRoutes);
 
 //////////////////////////////////////////////////
 //  ERROR HANDLING

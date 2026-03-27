@@ -7,7 +7,7 @@
     "image": "/products/headphones/headphone-1.png",
     "rating": 4.8,
     "reviews": 210,
-    "discount": 15,
+    "discount": 25,
     "brand": "Sony",
     "stock": 20
   },
@@ -43,7 +43,6 @@
     "image": "/products/headphones/headphone-4.png",
     "rating": 4.5,
     "reviews": 120,
-    "discount": 8,
     "brand": "Anker",
     "stock": 22
   },
@@ -68,7 +67,7 @@
     "image": "/products/chargers/charger-1.png",
     "rating": 4.6,
     "reviews": 90,
-    "discount": 10,
+    "discount": 30,
     "brand": "Anker",
     "stock": 50
   },
@@ -80,7 +79,7 @@
     "image": "/products/chargers/charger-2.png",
     "rating": 4.5,
     "reviews": 70,
-    "discount": 12,
+    "discount": 22,
     "brand": "Ugreen",
     "stock": 40
   },
@@ -92,7 +91,7 @@
     "image": "/products/chargers/charger-3.png",
     "rating": 4.7,
     "reviews": 110,
-    "discount": 15,
+    "discount": 35,
     "brand": "Baseus",
     "stock": 35
   },

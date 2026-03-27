@@ -11,6 +11,8 @@ export function FlashDealCard({ deal }) {
     setAdded(true);
     setTimeout(() => setAdded(false), 1500);
   };
+  console.log(deal.image);
+  const imageUrl = `http://localhost:8000${deal.image}`;
 
   return (
     <div className="bg-white rounded-2xl border border-slate-100 overflow-hidden hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 group">
@@ -18,14 +20,12 @@ export function FlashDealCard({ deal }) {
         <span className="absolute top-3 left-3 bg-orange-500 text-white text-xs font-bold px-2 py-0.5 rounded-full z-10">
           {deal.discount}% OFF
         </span>
-        <div className="h-36 flex items-center justify-center bg-slate-50 rounded-xl overflow-hidden">
+        <div className="h-36 bg-slate-50 rounded-xl overflow-hidden flex items-center justify-center">
+          {" "}
           <img
-            src={deal.image}
+            src={imageUrl}
             alt={deal.name}
-            className="h-28 w-auto object-contain group-hover:scale-105 transition-transform duration-300"
-            onError={(e) => {
-              e.target.style.display = "none";
-            }}
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
           />
         </div>
       </div>

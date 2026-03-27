@@ -24,6 +24,14 @@ const productSchema = new mongoose.Schema(
       type: String,
       maxlength: 1000,
     },
+    isFeatured: {
+      type: Boolean,
+      default: false,
+    },
+    discount: {
+      type: Number,
+      default: 0,
+    },
 
     image: {
       type: String,
@@ -57,11 +65,6 @@ const productSchema = new mongoose.Schema(
       default: 0,
     },
 
-    discount: {
-      type: Number,
-      default: 0,
-    },
-
     isFeatured: {
       type: Boolean,
       default: false,
@@ -71,6 +74,11 @@ const productSchema = new mongoose.Schema(
     timestamps: true,
   },
 );
+productSchema.virtual("discountedPrice").get(function () {
+  if (!this.discount) return this.price;
+
+  return Math.round(this.price - (this.price * this.discount) / 100);
+});
 
 const Product = mongoose.model("Product", productSchema);
 

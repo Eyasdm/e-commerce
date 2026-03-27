@@ -3,14 +3,16 @@
 import { Stars } from "@/lib/utils";
 
 export function BundleCard({ bundle }) {
+  console.log(bundle.image);
+  const imageUrl = `http://localhost:8000${bundle.image}`;
   return (
     <div className="bg-white rounded-2xl border border-slate-100 p-4 hover:shadow-md transition-all duration-200 flex flex-col gap-3">
       <div className="flex items-center gap-3">
         <div className="w-16 h-16 bg-slate-50 rounded-xl flex items-center justify-center overflow-hidden shrink-0">
           <img
-            src={bundle.image}
+            src={imageUrl}
             alt={bundle.name}
-            className="w-12 h-12 object-contain"
+            className="w-full h-full object-cover"
             onError={(e) => (e.target.style.display = "none")}
           />
         </div>
@@ -35,7 +37,7 @@ export function BundleCard({ bundle }) {
           </p>
           <div className="flex items-baseline gap-1.5">
             <span className="font-bold text-slate-900">
-              ${bundle.salePrice.toFixed(2)}
+              ${bundle.bundlePrice.toFixed(2)}
             </span>
             <span className="text-xs text-slate-400 line-through">
               ${bundle.originalPrice.toFixed(2)}

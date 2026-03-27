@@ -125,11 +125,3 @@ export const bundles = [
     image: "/products/powerbank.png",
   },
 ];
-
-export const categories = [
-  { name: "Headphones", image: "/products/headphones.png" },
-  { name: "Chargers", image: "/products/charger.png" },
-  { name: "Power Banks", image: "/products/powerbank.png" },
-  { name: "Keyboards", image: "/products/keyboard.png" },
-  { name: "Cables", image: "/products/cables.png" },
-];

@@ -1,6 +1,8 @@
+"use client";
+
 import ProductCard from "@/components/products/ProductCard";
 import { Button } from "@/components/ui/button";
-import { getFeaturedProducts } from "@/lib/getProducts";
+import { useFeaturedProducts } from "@/lib/hooks/useFeaturedProducts";
 import {
   BatteryCharging,
   Headphones,
@@ -14,8 +16,8 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 
-export default async function HomePage() {
-  const products = await getFeaturedProducts();
+export default function HomePage() {
+  const { data: products, isLoading, error } = useFeaturedProducts();
 
   return (
     <main className="bg-[#f5f7fb]">
@@ -102,19 +104,30 @@ export default async function HomePage() {
         </h2>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
-          {products.map((product) => (
+          {isLoading &&
+            Array.from({ length: 4 }).map((_, i) => (
+              <div
+                key={i}
+                className="h-64 bg-gray-200 animate-pulse rounded-xl"
+              />
+            ))}
+
+          {error && <p>Failed to load products</p>}
+
+          {products?.map((product) => (
             <ProductCard
-              key={product._id}
+              key={product.id}
               image={product.image}
               name={product.name}
               price={product.price}
-              oldPrice={product.price + 30}
-              rating={4}
-              reviews={109}
-              discount={15}
+              oldPrice={product.oldPrice}
+              rating={product.rating}
+              reviews={product.reviews}
+              discount={product.discount}
             />
           ))}
         </div>
+
         <div className="text-center mt-10">
           <Link
             href="/shop"

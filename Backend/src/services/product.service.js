@@ -10,6 +10,8 @@ export const getAllProducts = async (filters) => {
     sort,
     brand,
     rating,
+    discount,
+    featured,
     page = 1,
     limit = 8,
   } = filters;
@@ -30,6 +32,14 @@ export const getAllProducts = async (filters) => {
       ],
     }));
   }
+  let productsQuery = Product.find(query);
+
+  // Discount filter
+  if (discount === "true") {
+    query.discount = { $gt: 0 };
+
+    productsQuery = productsQuery.sort({ discount: -1 });
+  }
 
   // Price filter
   if (min || max) {
@@ -48,7 +58,10 @@ export const getAllProducts = async (filters) => {
     query.rating = { $gte: Number(rating) };
   }
 
-  let productsQuery = Product.find(query);
+  // Featured filter
+  if (featured === "true") {
+    query.isFeatured = true;
+  }
 
   // Sorting
   if (sort === "price_asc") {
