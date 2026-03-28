@@ -7,8 +7,11 @@ import {
   updateProduct,
 } from "../controllers/product.controller.js";
 import { protect, restrictTo } from "../middlewares/auth.middleware.js";
+import reviewRouter from "./review.routes.js";
 
 const router = express.Router();
+
+router.use("/:productId/reviews", reviewRouter);
 
 router
   .route("/")

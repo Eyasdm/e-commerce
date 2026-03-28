@@ -3,10 +3,32 @@ import catchAsync from "../utils/catchAsync.js";
 import AppError from "../utils/appError.js";
 
 // get current user
-export const getCurrentUser = catchAsync(async (req, res, next) => {
-  res.json({
+export const getMe = async (req, res) => {
+  const user = await User.findById(req.user._id).select(
+    "-password -__v -refreshToken",
+  );
+
+  res.status(200).json({
     success: true,
-    user: req.user,
+    data: {
+      user,
+    },
+  });
+};
+// update current user profile
+export const updateMe = catchAsync(async (req, res, next) => {
+  //  Only allow name update — not password or role
+  const { name } = req.body;
+
+  const user = await User.findByIdAndUpdate(
+    req.user._id,
+    { name },
+    { new: true, runValidators: true },
+  ).select("-password -__v -refreshToken");
+
+  res.status(200).json({
+    success: true,
+    user,
   });
 });
 

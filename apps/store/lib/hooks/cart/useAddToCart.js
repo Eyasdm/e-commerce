@@ -10,7 +10,6 @@ export function useAddToCart() {
     mutationFn: ({ productId, quantity }) =>
       cartApi.addItem({ productId, quantity }),
 
-    // ✅ Optimistic update
     onMutate: async ({ productId }) => {
       await queryClient.cancelQueries({ queryKey: CART_KEY });
       const previous = queryClient.getQueryData(CART_KEY);
@@ -18,18 +17,19 @@ export function useAddToCart() {
       queryClient.setQueryData(CART_KEY, (old = []) => {
         const exists = old.find((item) => item.productId === productId);
         if (exists) {
+          //  Only optimistically update quantity if item already exists
           return old.map((item) =>
             item.productId === productId
               ? { ...item, quantity: item.quantity + 1 }
               : item,
           );
         }
-        return [...old, { productId, quantity: 1 }];
+        // ✅ Don't optimistically add new items — wait for server response
+        return old;
       });
 
       return { previous };
     },
-
     // ✅ Rollback on error
     onError: (err, _, context) => {
       queryClient.setQueryData(CART_KEY, context.previous);

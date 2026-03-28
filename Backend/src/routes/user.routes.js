@@ -1,15 +1,17 @@
 import express from "express";
 import { protect, restrictTo } from "../middlewares/auth.middleware.js";
 import {
-  getCurrentUser,
+  getMe,
   getAllUsers,
   deleteUser,
   updateUserRole,
+  updateMe,
 } from "../controllers/user.controller.js";
 
 const router = express.Router();
 
-router.get("/me", protect, getCurrentUser);
+router.get("/me", protect, getMe);
+router.patch("/me", protect, updateMe);
 
 router.use(protect, restrictTo("admin"));
 

@@ -2,6 +2,7 @@ import express from "express";
 import {
   create,
   getMyOrders,
+  getOrderById,
   getAllOrders,
   updateOrderStatus,
   getCheckoutSession,
@@ -35,4 +36,9 @@ router.get("/admin", restrictTo("admin"), getAllOrders);
 // update status
 router.patch("/admin/:id/status", restrictTo("admin"), updateOrderStatus);
 
+//////////////////////////////////////////////////
+//  DYNAMICS ROUTES
+//////////////////////////////////////////////////
+
+router.get("/:id", getOrderById);
 export default router;

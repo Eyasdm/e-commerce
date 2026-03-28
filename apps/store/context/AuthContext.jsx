@@ -1,5 +1,6 @@
 "use client";
 import { createContext, useContext, useEffect, useState } from "react";
+import toast from "react-hot-toast";
 
 const AuthContext = createContext(null);
 
@@ -19,7 +20,8 @@ export function AuthProvider({ children }) {
         throw new Error("Not authenticated");
       })
       .then((data) => {
-        setUser(data.user || data);
+        const userData = data?.data?.user || data?.user || data;
+        setUser(userData);
         setIsAuthenticated(true);
       })
       .catch(() => {
@@ -32,10 +34,18 @@ export function AuthProvider({ children }) {
     fetch("http://localhost:8000/api/v1/auth/logout", {
       method: "POST",
       credentials: "include",
-    }).finally(() => {
-      setUser(null);
-      setIsAuthenticated(false);
-    });
+    })
+      .then(() => {
+        toast.success("Logged out successfully");
+      })
+      .catch(() => {
+        toast.error("Logout failed. Please try again.");
+      })
+      .finally(() => {
+        setUser(null);
+        setIsAuthenticated(false);
+        queryClient.clear();
+      });
   };
 
   return (

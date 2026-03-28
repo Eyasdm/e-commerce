@@ -12,9 +12,15 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useCart } from "@/lib/hooks/cart/useCart";
+import { useAuth } from "@/context/AuthContext";
 import Logo from "./Logo";
 
 export default function Navbar() {
+  const { data: cart = [] } = useCart();
+  const { isAuthenticated } = useAuth();
+
+  const cartCount = cart.reduce((acc, item) => acc + item.quantity, 0);
   const pathname = usePathname();
   const router = useRouter();
 
@@ -165,15 +171,17 @@ export default function Navbar() {
 
           <div className="h-6 w-px bg-border" />
 
-          <Button variant="ghost" size="icon">
-            <User size={20} />
-          </Button>
+          <Link href={isAuthenticated ? "/account" : "/auth"}>
+            <Button variant="ghost" size="icon">
+              <User size={20} />
+            </Button>
+          </Link>
 
           <Link href="/cart">
             <Button variant="ghost" size="icon" className="relative">
               <ShoppingCart size={20} />
               <span className="absolute -top-1 -right-1 text-xs bg-primary text-white px-1.5 rounded-full">
-                3
+                {cartCount}
               </span>
             </Button>
           </Link>

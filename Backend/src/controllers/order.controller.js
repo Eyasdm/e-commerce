@@ -74,6 +74,26 @@ export const getMyOrders = catchAsync(async (req, res, next) => {
 });
 
 //////////////////////////////////////////////////
+// GET ORDER BY ID
+//////////////////////////////////////////////////
+
+export const getOrderById = catchAsync(async (req, res, next) => {
+  const order = await Order.findOne({
+    _id: req.params.id,
+    user: req.user._id,
+  });
+
+  if (!order) {
+    return next(new AppError("Order not found", 404));
+  }
+
+  res.status(200).json({
+    success: true,
+    data: order,
+  });
+});
+
+//////////////////////////////////////////////////
 // ADMIN: GET ALL ORDERS
 //////////////////////////////////////////////////
 export const getAllOrders = catchAsync(async (req, res, next) => {
