@@ -1,9 +1,10 @@
 "use client";
 
 import Image from "next/image";
-import { Minus, Plus, Trash2 } from "lucide-react";
-import { useUpdateCartItem } from "@/lib/hooks/useUpdateCartItem";
-import { useRemoveCartItem } from "@/lib/hooks/useRemoveCartItem";
+import Link from "next/link";
+import { Minus, Plus, Trash2, Loader2 } from "lucide-react";
+import { useUpdateCartItem } from "@/lib/hooks/cart/useUpdateCartItem";
+import { useRemoveCartItem } from "@/lib/hooks/cart/useRemoveCartItem";
 
 export default function CartItem({ item }) {
   const { mutate: updateItem, isPending: isUpdating } = useUpdateCartItem();
@@ -11,17 +12,18 @@ export default function CartItem({ item }) {
 
   const imageUrl = `http://localhost:8000${item.image}`;
   const total = item.price * item.quantity;
-
   const hasDiscount = item.discount && item.discount > 0;
   const originalPrice = hasDiscount
     ? Math.round(item.price / (1 - item.discount / 100))
     : null;
 
-  const handleIncrease = () => {
+  const handleIncrease = (e) => {
+    e.stopPropagation();
     updateItem({ productId: item.productId, quantity: item.quantity + 1 });
   };
 
-  const handleDecrease = () => {
+  const handleDecrease = (e) => {
+    e.stopPropagation();
     if (item.quantity <= 1) {
       removeItem(item.productId);
     } else {
@@ -29,7 +31,8 @@ export default function CartItem({ item }) {
     }
   };
 
-  const handleRemove = () => {
+  const handleRemove = (e) => {
+    e.stopPropagation();
     removeItem(item.productId);
   };
 
@@ -41,26 +44,31 @@ export default function CartItem({ item }) {
         busy ? "opacity-60 pointer-events-none" : ""
       }`}
     >
-      {/* Image */}
-      <div className="relative shrink-0 w-20 h-20 rounded-xl overflow-hidden bg-slate-50">
-        <Image
-          src={imageUrl}
-          alt={item.name}
-          fill
-          className="object-contain p-1"
-        />
-        {hasDiscount && (
-          <span className="absolute top-1 left-1 bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-md leading-none">
-            {item.discount}% OFF
-          </span>
-        )}
-      </div>
+      {/* ✅ Clickable Image */}
+      <Link href={`/shop/${item.productId}`} className="shrink-0">
+        <div className="relative w-20 h-20 rounded-xl overflow-hidden bg-slate-50">
+          <Image
+            src={imageUrl}
+            alt={item.name}
+            fill
+            className="object-contain p-1"
+          />
+          {hasDiscount && (
+            <span className="absolute top-1 left-1 bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-md leading-none">
+              {item.discount}% OFF
+            </span>
+          )}
+        </div>
+      </Link>
 
-      {/* Name + price */}
+      {/* ✅ Clickable Name */}
       <div className="flex-1 min-w-0">
-        <h3 className="font-semibold text-slate-900 text-sm leading-snug truncate pr-2">
-          {item.name}
-        </h3>
+        <Link href={`/shop/${item.productId}`}>
+          <h3 className="font-semibold text-slate-900 text-sm leading-snug truncate pr-2 hover:text-blue-600 transition">
+            {item.name}
+          </h3>
+        </Link>
+
         <div className="flex items-baseline gap-2 mt-1">
           <span className="text-slate-900 font-bold text-sm">
             ${item.price}
@@ -80,7 +88,11 @@ export default function CartItem({ item }) {
           disabled={busy}
           className="w-8 h-8 rounded-full border border-slate-200 flex items-center justify-center text-slate-600 hover:border-blue-500 hover:text-blue-600 hover:bg-blue-50 transition-all disabled:opacity-40"
         >
-          <Minus size={13} />
+          {isUpdating ? (
+            <Loader2 size={13} className="animate-spin" />
+          ) : (
+            <Minus size={13} />
+          )}
         </button>
 
         <span className="w-6 text-center text-sm font-semibold text-slate-900">
@@ -92,7 +104,11 @@ export default function CartItem({ item }) {
           disabled={busy}
           className="w-8 h-8 rounded-full border border-slate-200 flex items-center justify-center text-slate-600 hover:border-blue-500 hover:text-blue-600 hover:bg-blue-50 transition-all disabled:opacity-40"
         >
-          <Plus size={13} />
+          {isUpdating ? (
+            <Loader2 size={13} className="animate-spin" />
+          ) : (
+            <Plus size={13} />
+          )}
         </button>
       </div>
 
@@ -112,7 +128,11 @@ export default function CartItem({ item }) {
         disabled={busy}
         className="shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-slate-300 hover:text-red-500 hover:bg-red-50 transition-all opacity-0 group-hover:opacity-100 disabled:opacity-40"
       >
-        <Trash2 size={15} />
+        {isRemoving ? (
+          <Loader2 size={15} className="animate-spin text-red-400" />
+        ) : (
+          <Trash2 size={15} />
+        )}
       </button>
     </div>
   );

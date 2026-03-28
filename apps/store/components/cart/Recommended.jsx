@@ -4,6 +4,7 @@ import { useFeaturedProducts } from "@/lib/hooks/useFeaturedProducts";
 
 export function Recommended() {
   const { data: products, isLoading, error } = useFeaturedProducts();
+  console.log(products);
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
@@ -14,17 +15,8 @@ export function Recommended() {
 
       {error && <p>Failed to load products</p>}
 
-      {products?.map((product) => (
-        <ProductCard
-          key={product.id}
-          image={product.image}
-          name={product.name}
-          price={product.price}
-          oldPrice={product.oldPrice}
-          rating={product.rating}
-          reviews={product.reviews}
-          discount={product.discount}
-        />
+      {products?.map((product, i) => (
+        <ProductCard _id={product.id} key={product.id || i} {...product} />
       ))}
     </div>
   );

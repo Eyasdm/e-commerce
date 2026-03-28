@@ -2,42 +2,47 @@ import * as cartService from "../services/cart.service.js";
 import AppError from "../utils/appError.js";
 import catchAsync from "../utils/catchAsync.js";
 
-// add item
-export const addItem = catchAsync(async (req, res) => {
-  try {
-    const cart = await cartService.addToCart(
-      req.user._id,
-      req.body.productId,
-      req.body.quantity,
-    );
-
-    res.json({ success: true, data: cart });
-  } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
-    return next(new AppError(error.message, 500));
-  }
+// ================= ADD ITEM =================
+export const addItem = catchAsync(async (req, res, next) => {
+  console.log("req.body:", req.body);
+  const cart = await cartService.addToCart(
+    req.user._id,
+    req.body.productId,
+    req.body.quantity,
+  );
+  res.status(200).json({
+    success: true,
+    data: cart,
+  });
 });
 
-// get cart
-export const getUserCart = catchAsync(async (req, res) => {
+// ================= GET CART =================
+export const getCart = catchAsync(async (req, res, next) => {
   const cart = await cartService.getCart(req.user._id);
-  res.json({ success: true, data: cart });
+  if (!cart) {
+    return next(new AppError("Cart not found", 404));
+  }
+  res.status(200).json({
+    success: true,
+    data: cart,
+  });
 });
 
-//  remove item
-export const removeItem = async (req, res) => {
+// ================= REMOVE ITEM =================
+export const removeItem = catchAsync(async (req, res, next) => {
   await cartService.removeFromCart(req.user._id, req.params.productId);
+  res.status(204).send();
+});
 
-  return res.status(204).send();
-};
-
-// update item
-export const updateItem = catchAsync(async (req, res) => {
+// ================= UPDATE ITEM =================
+export const updateItem = catchAsync(async (req, res, next) => {
   const cart = await cartService.updateQuantity(
     req.user._id,
     req.body.productId,
     req.body.quantity,
   );
-
-  res.json({ success: true, data: cart });
+  res.status(200).json({
+    success: true,
+    data: cart,
+  });
 });

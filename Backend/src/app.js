@@ -13,6 +13,7 @@ import cartRoutes from "./routes/cart.routes.js";
 import orderRoutes from "./routes/order.routes.js";
 import adminRoutes from "./routes/admin.routes.js";
 import bundleRoutes from "./routes/bundle.routes.js";
+import reviewRouter from "./routes/review.routes.js";
 
 import { globalErrorHandler } from "./middlewares/error.middleware.js";
 
@@ -112,6 +113,7 @@ app.use(
 
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/products", productRoutes);
+app.use("/api/v1/products/:productId/reviews", reviewRouter);
 app.use("/api/v1/users", userRoutes);
 app.use("/api/v1/cart", cartRoutes);
 app.use("/api/v1/orders", orderRoutes);

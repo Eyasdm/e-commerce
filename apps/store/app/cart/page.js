@@ -3,7 +3,7 @@
 import CartItem from "@/components/cart/CartItem";
 import OrderSummary from "@/components/cart/OrderSummary";
 import { Recommended } from "../../components/cart/Recommended";
-import { useCart } from "@/lib/hooks/useCart";
+import { useCart } from "@/lib/hooks/cart/useCart";
 
 export default function CartPage() {
   const { data: cart = [], isLoading, error } = useCart();
@@ -35,8 +35,8 @@ export default function CartPage() {
             <p className="text-muted-foreground">Your cart is empty</p>
           )}
 
-          {cart.map((item) => (
-            <CartItem key={item.id} item={item} />
+          {cart.map((item, i) => (
+            <CartItem key={item.id || i} item={item} />
           ))}
         </div>
 

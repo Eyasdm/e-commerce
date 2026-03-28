@@ -12,6 +12,9 @@ export const addToCart = async (userId, productId, quantity = 1) => {
     return cart;
   }
 
+  // ✅ Clean null items before doing anything
+  cart.items = cart.items.filter((item) => item.product != null);
+
   const existingItem = cart.items.find(
     (item) => item.product.toString() === productId,
   );

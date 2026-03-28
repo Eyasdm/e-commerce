@@ -9,7 +9,19 @@
     "reviews": 210,
     "discount": 25,
     "brand": "Sony",
-    "stock": 20
+    "stock": 20,
+    "isFeatured": true,
+    "description": "The Sony WH-1000XM5 sets the benchmark for noise-cancelling headphones. With 8 microphones and two processors, it delivers industry-leading noise cancellation in any environment. The redesigned 30mm driver unit delivers exceptional clarity across the entire frequency range, while the 30-hour battery life keeps you listening all day.",
+    "specs": [
+      { "label": "Driver Size", "value": "30mm" },
+      { "label": "Frequency Response", "value": "4Hz - 40,000Hz" },
+      { "label": "Battery Life", "value": "30 Hours" },
+      { "label": "Connectivity", "value": "Bluetooth 5.2" },
+      { "label": "Noise Cancelling", "value": "Active ANC (8 mics)" },
+      { "label": "Weight", "value": "250g" },
+      { "label": "Charging", "value": "USB-C, 3hr full charge" },
+      { "label": "Quick Charge", "value": "3 min = 3 hours" }
+    ]
   },
   {
     "name": "Bose QuietComfort 45",
@@ -21,7 +33,19 @@
     "reviews": 180,
     "discount": 12,
     "brand": "Bose",
-    "stock": 15
+    "stock": 15,
+    "isFeatured": true,
+    "description": "The Bose QuietComfort 45 combines legendary Bose noise cancellation with a lightweight, comfortable design. Whether you're working in a busy office or commuting on a loud train, the QC45 delivers quiet, balanced audio with clear highs and deep, powerful bass — all day long.",
+    "specs": [
+      { "label": "Driver Size", "value": "40mm" },
+      { "label": "Frequency Response", "value": "20Hz - 20,000Hz" },
+      { "label": "Battery Life", "value": "24 Hours" },
+      { "label": "Connectivity", "value": "Bluetooth 5.1" },
+      { "label": "Noise Cancelling", "value": "Active ANC" },
+      { "label": "Weight", "value": "240g" },
+      { "label": "Charging", "value": "USB-C" },
+      { "label": "Quick Charge", "value": "15 min = 3 hours" }
+    ]
   },
   {
     "name": "Logitech G733 Wireless",
@@ -33,7 +57,19 @@
     "reviews": 140,
     "discount": 10,
     "brand": "Logitech",
-    "stock": 18
+    "stock": 18,
+    "isFeatured": true,
+    "description": "Built for gamers who demand performance and style, the Logitech G733 features LIGHTSPEED wireless technology for ultra-low latency audio. The suspension headband and foam ear pads provide comfort during the longest gaming sessions, while the Blue Voice mic technology ensures crystal-clear voice communication.",
+    "specs": [
+      { "label": "Driver Size", "value": "40mm" },
+      { "label": "Frequency Response", "value": "20Hz - 20,000Hz" },
+      { "label": "Battery Life", "value": "29 Hours" },
+      { "label": "Connectivity", "value": "LIGHTSPEED Wireless / 3.5mm" },
+      { "label": "Microphone", "value": "Cardioid (unidirectional)" },
+      { "label": "Weight", "value": "278g" },
+      { "label": "Charging", "value": "USB-C" },
+      { "label": "RGB", "value": "LIGHTSYNC RGB" }
+    ]
   },
   {
     "name": "Anker Soundcore Life Q30",
@@ -44,7 +80,19 @@
     "rating": 4.5,
     "reviews": 120,
     "brand": "Anker",
-    "stock": 22
+    "stock": 22,
+    "isFeatured": false,
+    "description": "The Anker Soundcore Life Q30 delivers premium audio and active noise cancellation at an unbeatable price. Three ANC modes — Transport, Outdoor, and Indoor — adapt to your environment, while Hi-Res Audio certification and custom EQ via the Soundcore app let you tune your sound exactly how you like it.",
+    "specs": [
+      { "label": "Driver Size", "value": "40mm" },
+      { "label": "Frequency Response", "value": "16Hz - 40,000Hz" },
+      { "label": "Battery Life", "value": "40 Hours (ANC off)" },
+      { "label": "Connectivity", "value": "Bluetooth 5.0" },
+      { "label": "Noise Cancelling", "value": "Hybrid ANC (3 modes)" },
+      { "label": "Weight", "value": "260g" },
+      { "label": "Charging", "value": "USB-C" },
+      { "label": "Hi-Res Audio", "value": "Certified" }
+    ]
   },
   {
     "name": "JBL Tune 760NC",
@@ -56,9 +104,20 @@
     "reviews": 100,
     "discount": 10,
     "brand": "JBL",
-    "stock": 25
+    "stock": 25,
+    "isFeatured": true,
+    "description": "The JBL Tune 760NC offers powerful JBL Pure Bass sound with adaptive noise cancellation in a foldable, lightweight design. With up to 35 hours of battery life and the ability to switch seamlessly between ANC and ambient aware modes, the Tune 760NC is your perfect everyday companion.",
+    "specs": [
+      { "label": "Driver Size", "value": "40mm" },
+      { "label": "Frequency Response", "value": "20Hz - 20,000Hz" },
+      { "label": "Battery Life", "value": "35 Hours (ANC off)" },
+      { "label": "Connectivity", "value": "Bluetooth 5.0" },
+      { "label": "Noise Cancelling", "value": "Adaptive ANC" },
+      { "label": "Weight", "value": "222g" },
+      { "label": "Charging", "value": "USB-C" },
+      { "label": "Foldable", "value": "Yes" }
+    ]
   },
-
   {
     "name": "Anker 20W USB-C Charger",
     "price": 25,
@@ -69,7 +128,19 @@
     "reviews": 90,
     "discount": 30,
     "brand": "Anker",
-    "stock": 50
+    "stock": 50,
+    "isFeatured": false,
+    "description": "The Anker 20W USB-C Charger uses PowerIQ 3.0 technology to deliver the fastest possible charge to any device. Its compact design makes it perfect for travel, and it's compatible with iPhone, iPad, Samsung, and all USB-C devices.",
+    "specs": [
+      { "label": "Output Power", "value": "20W" },
+      { "label": "Port", "value": "1x USB-C" },
+      { "label": "Protocol", "value": "PowerIQ 3.0 / PD 3.0" },
+      { "label": "Input", "value": "100-240V" },
+      { "label": "Dimensions", "value": "36 x 30 x 30mm" },
+      { "label": "Weight", "value": "40g" },
+      { "label": "Compatibility", "value": "iPhone, iPad, Android, MacBook" },
+      { "label": "Safety", "value": "MultiProtect safety system" }
+    ]
   },
   {
     "name": "Ugreen Fast Charger 30W",
@@ -81,7 +152,19 @@
     "reviews": 70,
     "discount": 22,
     "brand": "Ugreen",
-    "stock": 40
+    "stock": 40,
+    "isFeatured": false,
+    "description": "The Ugreen 30W Fast Charger supports GaN technology for efficient power delivery in a miniature form factor. It supports PPS, PD 3.0, QC 4.0, and more protocols, making it universally compatible with virtually any modern device.",
+    "specs": [
+      { "label": "Output Power", "value": "30W" },
+      { "label": "Port", "value": "1x USB-C" },
+      { "label": "Technology", "value": "GaN" },
+      { "label": "Protocols", "value": "PD 3.0, QC 4.0, PPS" },
+      { "label": "Input", "value": "100-240V" },
+      { "label": "Weight", "value": "45g" },
+      { "label": "Foldable Plug", "value": "Yes" },
+      { "label": "Compatibility", "value": "Universal" }
+    ]
   },
   {
     "name": "Baseus GaN 65W Charger",
@@ -93,7 +176,19 @@
     "reviews": 110,
     "discount": 35,
     "brand": "Baseus",
-    "stock": 35
+    "stock": 35,
+    "isFeatured": true,
+    "description": "The Baseus GaN 65W Charger features 3 ports — 2 USB-C and 1 USB-A — allowing you to charge a laptop, phone, and tablet simultaneously. GaN technology keeps it 40% smaller than conventional chargers of the same power, making it the ultimate travel charger.",
+    "specs": [
+      { "label": "Output Power", "value": "65W total" },
+      { "label": "Ports", "value": "2x USB-C + 1x USB-A" },
+      { "label": "Technology", "value": "GaN II" },
+      { "label": "Protocols", "value": "PD 3.0, QC 3.0, SCP, FCP" },
+      { "label": "Input", "value": "100-240V" },
+      { "label": "Weight", "value": "88g" },
+      { "label": "Laptop Charging", "value": "Up to 65W (USB-C1)" },
+      { "label": "Compatibility", "value": "MacBook, iPhone, Android" }
+    ]
   },
   {
     "name": "Apple 20W Adapter",
@@ -105,7 +200,19 @@
     "reviews": 200,
     "discount": 5,
     "brand": "Apple",
-    "stock": 30
+    "stock": 30,
+    "isFeatured": false,
+    "description": "The Apple 20W USB-C Power Adapter offers fast, efficient charging at home, in the office, or on the go. With support for USB Power Delivery, it charges the latest iPhone models up to 50% in around 30 minutes.",
+    "specs": [
+      { "label": "Output Power", "value": "20W" },
+      { "label": "Port", "value": "1x USB-C" },
+      { "label": "Protocol", "value": "USB Power Delivery 2.0" },
+      { "label": "Input", "value": "100-240V AC" },
+      { "label": "Dimensions", "value": "45 x 45 x 25mm" },
+      { "label": "Weight", "value": "45g" },
+      { "label": "Cable Included", "value": "No" },
+      { "label": "Compatibility", "value": "iPhone 8 and later, iPad" }
+    ]
   },
   {
     "name": "Samsung Super Fast Charger",
@@ -117,9 +224,20 @@
     "reviews": 150,
     "discount": 10,
     "brand": "Samsung",
-    "stock": 28
+    "stock": 28,
+    "isFeatured": false,
+    "description": "The Samsung 45W Super Fast Charger delivers ultra-fast charging for compatible Galaxy devices. With USB-C Power Delivery support, it also works with other USB-C smartphones, tablets, and laptops, making it a versatile addition to your charging setup.",
+    "specs": [
+      { "label": "Output Power", "value": "45W" },
+      { "label": "Port", "value": "1x USB-C" },
+      { "label": "Protocol", "value": "Super Fast Charging 2.0, PD 3.0" },
+      { "label": "Input", "value": "100-240V" },
+      { "label": "Weight", "value": "52g" },
+      { "label": "Cable Included", "value": "No" },
+      { "label": "Compatibility", "value": "Galaxy S21+, S22+, Note20 Ultra+" },
+      { "label": "Quick Charge", "value": "0-50% in 30 minutes" }
+    ]
   },
-
   {
     "name": "Anker PowerCore 10000",
     "price": 45,
@@ -130,7 +248,19 @@
     "reviews": 140,
     "discount": 15,
     "brand": "Anker",
-    "stock": 40
+    "stock": 40,
+    "isFeatured": true,
+    "description": "The Anker PowerCore 10000 is one of the smallest and lightest 10000mAh portable chargers available. Despite its compact size, it can charge an iPhone 15 nearly three times. PowerIQ and VoltageBoost combine to deliver the fastest possible charge to any device.",
+    "specs": [
+      { "label": "Capacity", "value": "10000mAh" },
+      { "label": "Output", "value": "2x USB-A (12W each)" },
+      { "label": "Input", "value": "Micro-USB, 5V/2A" },
+      { "label": "Technology", "value": "PowerIQ + VoltageBoost" },
+      { "label": "Dimensions", "value": "92 x 60 x 22mm" },
+      { "label": "Weight", "value": "180g" },
+      { "label": "iPhone 15 Charges", "value": "~2.9x" },
+      { "label": "Recharge Time", "value": "~6.5 hours" }
+    ]
   },
   {
     "name": "Xiaomi Mi Power Bank 10000",
@@ -142,7 +272,19 @@
     "reviews": 130,
     "discount": 12,
     "brand": "Xiaomi",
-    "stock": 45
+    "stock": 45,
+    "isFeatured": false,
+    "description": "The Xiaomi Mi Power Bank 10000 features a sleek aluminum body and dual output ports for charging two devices simultaneously. Its 10000mAh capacity and 18W fast charging support make it ideal for travel and everyday use.",
+    "specs": [
+      { "label": "Capacity", "value": "10000mAh" },
+      { "label": "Output", "value": "1x USB-A + 1x USB-C (18W)" },
+      { "label": "Input", "value": "USB-C, 18W" },
+      { "label": "Body", "value": "Aluminum alloy" },
+      { "label": "Dimensions", "value": "146 x 71 x 14mm" },
+      { "label": "Weight", "value": "220g" },
+      { "label": "Fast Charging", "value": "18W" },
+      { "label": "Recharge Time", "value": "~3.5 hours" }
+    ]
   },
   {
     "name": "Baseus 20000mAh Power Bank",
@@ -154,7 +296,19 @@
     "reviews": 160,
     "discount": 18,
     "brand": "Baseus",
-    "stock": 35
+    "stock": 35,
+    "isFeatured": false,
+    "description": "The Baseus 20000mAh Power Bank packs massive capacity into a sleek design with a built-in digital display showing remaining power. With 65W two-way fast charging, it can charge a MacBook from 0 to 50% in under an hour and recharges itself in just 2 hours.",
+    "specs": [
+      { "label": "Capacity", "value": "20000mAh" },
+      { "label": "Output", "value": "2x USB-C + 1x USB-A (65W max)" },
+      { "label": "Input", "value": "USB-C, 65W" },
+      { "label": "Display", "value": "Digital power indicator" },
+      { "label": "Dimensions", "value": "155 x 74 x 19mm" },
+      { "label": "Weight", "value": "440g" },
+      { "label": "Laptop Charging", "value": "Yes (up to 65W)" },
+      { "label": "Recharge Time", "value": "~2 hours (65W)" }
+    ]
   },
   {
     "name": "RAVPower 15000mAh",
@@ -166,7 +320,19 @@
     "reviews": 100,
     "discount": 10,
     "brand": "RAVPower",
-    "stock": 30
+    "stock": 30,
+    "isFeatured": false,
+    "description": "The RAVPower 15000mAh Power Bank delivers reliable, fast charging for all your devices. Triple outputs let you charge three devices at once, while the iSmart technology intelligently identifies your device and delivers the optimal charging current.",
+    "specs": [
+      { "label": "Capacity", "value": "15000mAh" },
+      { "label": "Output", "value": "2x USB-A + 1x USB-C (30W)" },
+      { "label": "Input", "value": "USB-C / Micro-USB" },
+      { "label": "Technology", "value": "iSmart 2.0" },
+      { "label": "Dimensions", "value": "155 x 75 x 19mm" },
+      { "label": "Weight", "value": "310g" },
+      { "label": "Simultaneous Charging", "value": "3 devices" },
+      { "label": "Safety", "value": "8-point protection" }
+    ]
   },
   {
     "name": "Samsung Battery Pack 10000",
@@ -178,9 +344,20 @@
     "reviews": 120,
     "discount": 8,
     "brand": "Samsung",
-    "stock": 25
+    "stock": 25,
+    "isFeatured": false,
+    "description": "The Samsung 10000mAh Battery Pack features Super Fast Charging support and a slim, premium design that fits easily in your pocket. Its 25W output ensures compatible Galaxy devices charge at maximum speed, while the USB-C input recharges the pack itself quickly.",
+    "specs": [
+      { "label": "Capacity", "value": "10000mAh" },
+      { "label": "Output", "value": "1x USB-C (25W) + 1x USB-A (15W)" },
+      { "label": "Input", "value": "USB-C, 25W" },
+      { "label": "Super Fast Charging", "value": "Yes (Galaxy devices)" },
+      { "label": "Dimensions", "value": "149 x 70 x 14mm" },
+      { "label": "Weight", "value": "209g" },
+      { "label": "Simultaneous Charging", "value": "2 devices" },
+      { "label": "Recharge Time", "value": "~2 hours" }
+    ]
   },
-
   {
     "name": "Logitech MX Keys",
     "price": 99,
@@ -191,7 +368,19 @@
     "reviews": 200,
     "discount": 20,
     "brand": "Logitech",
-    "stock": 25
+    "stock": 25,
+    "isFeatured": true,
+    "description": "The Logitech MX Keys is a smart illuminated keyboard designed for productivity. Spherically-shaped keys perfectly match your fingertips for a comfortable, precise keystroke. Backlit keys auto-adjust to your environment, and a single charge lasts up to 10 days with backlighting.",
+    "specs": [
+      { "label": "Switch Type", "value": "Scissor (low-profile)" },
+      { "label": "Connectivity", "value": "Bluetooth / USB Receiver" },
+      { "label": "Battery Life", "value": "10 days (backlit) / 5 months" },
+      { "label": "Backlight", "value": "Smart auto-adjust" },
+      { "label": "Multi-device", "value": "Up to 3 devices" },
+      { "label": "Charging", "value": "USB-C" },
+      { "label": "Layout", "value": "Full-size with numpad" },
+      { "label": "Weight", "value": "810g" }
+    ]
   },
   {
     "name": "Keychron K2 Mechanical",
@@ -203,7 +392,19 @@
     "reviews": 180,
     "discount": 15,
     "brand": "Keychron",
-    "stock": 20
+    "stock": 20,
+    "isFeatured": false,
+    "description": "The Keychron K2 is a compact 75% wireless mechanical keyboard that works seamlessly across macOS, Windows, iOS, and Android. With hot-swappable switches, RGB backlighting, and a solid aluminum frame, it's the ideal keyboard for enthusiasts and professionals alike.",
+    "specs": [
+      { "label": "Switch Type", "value": "Gateron (hot-swappable)" },
+      { "label": "Layout", "value": "75% compact" },
+      { "label": "Connectivity", "value": "Bluetooth 5.1 / USB-C" },
+      { "label": "Battery", "value": "4000mAh" },
+      { "label": "Battery Life", "value": "~200 hours (no RGB)" },
+      { "label": "Backlight", "value": "RGB" },
+      { "label": "Frame", "value": "Aluminum" },
+      { "label": "OS Support", "value": "macOS, Windows, iOS, Android" }
+    ]
   },
   {
     "name": "Razer BlackWidow V3",
@@ -215,7 +416,19 @@
     "reviews": 160,
     "discount": 12,
     "brand": "Razer",
-    "stock": 18
+    "stock": 18,
+    "isFeatured": false,
+    "description": "The Razer BlackWidow V3 brings iconic Razer Green mechanical switches and Chroma RGB lighting to a sleek, full-size design with a sturdy metal top plate. Programmable macro support and gaming-grade anti-ghosting make it the weapon of choice for competitive gamers.",
+    "specs": [
+      { "label": "Switch Type", "value": "Razer Green (clicky)" },
+      { "label": "Actuation Force", "value": "45g" },
+      { "label": "Actuation Point", "value": "1.9mm" },
+      { "label": "Connectivity", "value": "USB-A (wired)" },
+      { "label": "Backlight", "value": "Razer Chroma RGB" },
+      { "label": "Anti-Ghosting", "value": "Full N-Key rollover" },
+      { "label": "Frame", "value": "Aluminum top plate" },
+      { "label": "Weight", "value": "1.13kg" }
+    ]
   },
   {
     "name": "Apple Magic Keyboard",
@@ -227,7 +440,19 @@
     "reviews": 140,
     "discount": 5,
     "brand": "Apple",
-    "stock": 22
+    "stock": 22,
+    "isFeatured": false,
+    "description": "The Apple Magic Keyboard features a refined low-profile design with an enhanced scissor mechanism beneath each key for improved responsiveness. Its rechargeable battery lasts about a month between charges, and it connects instantly via Bluetooth to your Mac, iPad, or iPhone.",
+    "specs": [
+      { "label": "Switch Type", "value": "Scissor mechanism" },
+      { "label": "Connectivity", "value": "Bluetooth / Lightning (charging)" },
+      { "label": "Battery Life", "value": "~1 month" },
+      { "label": "Charging", "value": "Lightning" },
+      { "label": "Layout", "value": "Tenkeyless" },
+      { "label": "Weight", "value": "231g" },
+      { "label": "Compatibility", "value": "macOS, iPadOS, iOS" },
+      { "label": "Touch ID", "value": "Available on select models" }
+    ]
   },
   {
     "name": "SteelSeries Apex Pro",
@@ -239,9 +464,20 @@
     "reviews": 190,
     "discount": 18,
     "brand": "SteelSeries",
-    "stock": 15
+    "stock": 15,
+    "isFeatured": true,
+    "description": "The SteelSeries Apex Pro is the world's first keyboard with adjustable mechanical switches. Using OmniPoint 2.0 Adjustable HyperMagnetic switches, you can set actuation per key from 0.1mm to 4.0mm, giving you unparalleled precision for both gaming and typing.",
+    "specs": [
+      { "label": "Switch Type", "value": "OmniPoint 2.0 (magnetic)" },
+      { "label": "Actuation Point", "value": "0.1mm - 4.0mm (adjustable)" },
+      { "label": "Connectivity", "value": "USB-A (wired)" },
+      { "label": "Backlight", "value": "Per-key RGB OLED" },
+      { "label": "Display", "value": "OLED smart display" },
+      { "label": "Anti-Ghosting", "value": "Full N-Key rollover" },
+      { "label": "Frame", "value": "Aircraft-grade aluminum" },
+      { "label": "Weight", "value": "1.36kg" }
+    ]
   },
-
   {
     "name": "Logitech MX Master 3S",
     "price": 89,
@@ -252,7 +488,19 @@
     "reviews": 300,
     "discount": 18,
     "brand": "Logitech",
-    "stock": 30
+    "stock": 30,
+    "isFeatured": true,
+    "description": "The Logitech MX Master 3S is the ultimate mouse for creators and power users. Its 8000 DPI sensor tracks on virtually any surface including glass, while MagSpeed electromagnetic scrolling lets you scroll through 1000 lines in a second. Customize every button and workflow with Logitech Options+.",
+    "specs": [
+      { "label": "Sensor", "value": "Darkfield 8000 DPI" },
+      { "label": "Connectivity", "value": "Bluetooth / USB Receiver" },
+      { "label": "Battery Life", "value": "70 days" },
+      { "label": "Charging", "value": "USB-C" },
+      { "label": "Scrolling", "value": "MagSpeed electromagnetic" },
+      { "label": "Buttons", "value": "7 programmable" },
+      { "label": "Multi-device", "value": "Up to 3 devices" },
+      { "label": "Weight", "value": "141g" }
+    ]
   },
   {
     "name": "Razer Basilisk X",
@@ -264,7 +512,19 @@
     "reviews": 220,
     "discount": 15,
     "brand": "Razer",
-    "stock": 28
+    "stock": 28,
+    "isFeatured": false,
+    "description": "The Razer Basilisk X HyperSpeed combines Razer's most advanced wireless technology with a comfortable, ergonomic design. Using HyperSpeed Wireless, it delivers a connection 25% faster than other wireless gaming mice, with up to 450 hours of battery life.",
+    "specs": [
+      { "label": "Sensor", "value": "Razer 5G Advanced 16000 DPI" },
+      { "label": "Connectivity", "value": "HyperSpeed Wireless / Bluetooth" },
+      { "label": "Battery Life", "value": "450 hours (Bluetooth)" },
+      { "label": "Switches", "value": "Razer mechanical (50M clicks)" },
+      { "label": "Buttons", "value": "6 programmable" },
+      { "label": "Scroll Wheel", "value": "Tilt-click" },
+      { "label": "Weight", "value": "83g" },
+      { "label": "Charging", "value": "AA battery" }
+    ]
   },
   {
     "name": "Logitech G Pro X Superlight",
@@ -276,7 +536,19 @@
     "reviews": 260,
     "discount": 20,
     "brand": "Logitech",
-    "stock": 20
+    "stock": 20,
+    "isFeatured": true,
+    "description": "The Logitech G Pro X Superlight is the lightest pro gaming mouse ever made, weighing less than 61 grams. Designed with and for esports pros, it features the HERO 25K sensor for exceptional accuracy, and LIGHTSPEED wireless for a connection that's faster than wired.",
+    "specs": [
+      { "label": "Sensor", "value": "HERO 25K (100-25600 DPI)" },
+      { "label": "Connectivity", "value": "LIGHTSPEED Wireless" },
+      { "label": "Battery Life", "value": "70 hours" },
+      { "label": "Charging", "value": "USB-C" },
+      { "label": "Weight", "value": "61g" },
+      { "label": "Switches", "value": "Omron (50M clicks)" },
+      { "label": "Buttons", "value": "5 programmable" },
+      { "label": "Zero Additive", "value": "No RGB (weight optimized)" }
+    ]
   },
   {
     "name": "Apple Magic Mouse",
@@ -288,7 +560,19 @@
     "reviews": 150,
     "discount": 10,
     "brand": "Apple",
-    "stock": 18
+    "stock": 18,
+    "isFeatured": false,
+    "description": "The Apple Magic Mouse features a seamless multi-touch surface that allows you to perform simple gestures such as swiping between web pages and scrolling through documents. Its elegant design and wireless Bluetooth connectivity make it the natural companion for any Mac.",
+    "specs": [
+      { "label": "Connectivity", "value": "Bluetooth" },
+      { "label": "Charging", "value": "Lightning" },
+      { "label": "Battery Life", "value": "~1 month" },
+      { "label": "Surface", "value": "Multi-Touch" },
+      { "label": "Gestures", "value": "Swipe, scroll, tap" },
+      { "label": "Weight", "value": "99g" },
+      { "label": "Compatibility", "value": "macOS 10.15+, iPadOS 13.4+" },
+      { "label": "Tracking", "value": "Laser tracking" }
+    ]
   },
   {
     "name": "SteelSeries Rival 3",
@@ -300,6 +584,18 @@
     "reviews": 170,
     "discount": 12,
     "brand": "SteelSeries",
-    "stock": 25
+    "stock": 25,
+    "isFeatured": false,
+    "description": "The SteelSeries Rival 3 delivers reliable, accurate performance at an accessible price point. With the TrueMove Core optical sensor and 6 programmable buttons, it gives you everything you need for competitive gaming without breaking the bank.",
+    "specs": [
+      { "label": "Sensor", "value": "TrueMove Core 8500 DPI" },
+      { "label": "Connectivity", "value": "USB-A (wired)" },
+      { "label": "Backlight", "value": "3-zone RGB" },
+      { "label": "Switches", "value": "SteelSeries (30M clicks)" },
+      { "label": "Buttons", "value": "6 programmable" },
+      { "label": "Weight", "value": "77g" },
+      { "label": "Cable", "value": "1.8m braided" },
+      { "label": "Polling Rate", "value": "1000Hz" }
+    ]
   }
 ]

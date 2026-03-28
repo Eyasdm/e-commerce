@@ -14,9 +14,27 @@ import User from "../models/user.model.js";
 export const signup = catchAsync(async (req, res, next) => {
   const result = await signupUser(req.body);
 
+  //  extract token
+  const token = result.accessToken;
+
+  //  sanitize user
+  const user = result.user.toObject();
+  delete user.password;
+  delete user.refreshToken;
+  delete user.__v;
+
+  //  set cookie (optional but recommended)
+  res.cookie("token", token, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "lax",
+  });
+
   res.status(201).json({
     success: true,
-    data: result,
+    data: {
+      user,
+    },
   });
 });
 
@@ -24,18 +42,23 @@ export const signup = catchAsync(async (req, res, next) => {
 export const login = catchAsync(async (req, res, next) => {
   const result = await loginUser(req.body);
 
-  const token = result.token;
+  const token = result.accessToken;
+
+  const user = result.user.toObject();
+  delete user.password;
+  delete user.refreshToken;
+  delete user.__v;
 
   res.cookie("token", token, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
-    sameSite: "strict",
+    sameSite: "lax",
   });
 
   res.status(200).json({
     success: true,
     data: {
-      user: result.user,
+      user,
     },
   });
 });

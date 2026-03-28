@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import api from "../api";
+import api from "../../api";
 
 export const useCart = () => {
   return useQuery({

@@ -59,6 +59,12 @@ const productSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
+    specs: [
+      {
+        label: { type: String },
+        value: { type: String },
+      },
+    ],
 
     stock: {
       type: Number,
@@ -70,6 +76,7 @@ const productSchema = new mongoose.Schema(
       default: false,
     },
   },
+
   {
     timestamps: true,
   },
