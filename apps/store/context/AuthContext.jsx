@@ -1,6 +1,13 @@
 "use client";
-import { createContext, useContext, useEffect, useState } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  useCallback,
+} from "react";
 import toast from "react-hot-toast";
+import { useQueryClient } from "@tanstack/react-query";
 
 const AuthContext = createContext(null);
 
@@ -8,12 +15,12 @@ export function AuthProvider({ children }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const queryClient = useQueryClient();
 
-  useEffect(() => {
-    // The HttpOnly cookie is sent automatically by the browser
-    // Just call a protected endpoint to check if we're logged in
+  const checkAuth = useCallback(() => {
+    setLoading(true);
     fetch("http://localhost:8000/api/v1/auth/me", {
-      credentials: "include", // ✅ sends HttpOnly cookies automatically
+      credentials: "include",
     })
       .then((res) => {
         if (res.ok) return res.json();
@@ -25,9 +32,14 @@ export function AuthProvider({ children }) {
         setIsAuthenticated(true);
       })
       .catch(() => {
+        setUser(null);
         setIsAuthenticated(false);
       })
       .finally(() => setLoading(false));
+  }, []);
+
+  useEffect(() => {
+    checkAuth();
   }, []);
 
   const clearAuth = () => {
@@ -35,12 +47,8 @@ export function AuthProvider({ children }) {
       method: "POST",
       credentials: "include",
     })
-      .then(() => {
-        toast.success("Logged out successfully");
-      })
-      .catch(() => {
-        toast.error("Logout failed. Please try again.");
-      })
+      .then(() => toast.success("Logged out successfully"))
+      .catch(() => toast.error("Logout failed. Please try again."))
       .finally(() => {
         setUser(null);
         setIsAuthenticated(false);
@@ -57,6 +65,7 @@ export function AuthProvider({ children }) {
         setUser,
         setIsAuthenticated,
         clearAuth,
+        checkAuth,
       }}
     >
       {children}
