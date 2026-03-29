@@ -1,14 +1,21 @@
 import mongoose from "mongoose";
 
+// order.model.js - update orderItemSchema
 const orderItemSchema = new mongoose.Schema(
   {
     product: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Product",
-      required: true,
+      required: false, // ✅ not required for bundles
     },
-
-    //  snapshot
+    bundle: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Bundle",
+    },
+    isBundle: {
+      type: Boolean,
+      default: false,
+    },
     name: String,
     price: Number,
     quantity: Number,

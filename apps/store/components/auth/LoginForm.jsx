@@ -1,10 +1,10 @@
 "use client";
-
 import { useState } from "react";
-import { Mail, Lock, Eye, EyeOff } from "lucide-react";
-import { useLogin } from "@/lib/hooks/useAuth";
+import { Mail, Lock, Eye, EyeOff, Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
-
+import { useAuth } from "@/context/AuthContext";
+import api from "@/lib/api";
+import toast from "react-hot-toast";
 import AuthInput from "./AuthInput";
 import AuthDivider from "./AuthDivider";
 import GoogleButton from "./GoogleButton";
@@ -12,27 +12,28 @@ import Link from "next/link";
 
 export default function LoginForm({ onForgot }) {
   const [showPass, setShowPass] = useState(false);
-  const [remember, setRemember] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isPending, setIsPending] = useState(false);
+  const [error, setError] = useState(null);
 
   const router = useRouter();
+  const { checkAuth } = useAuth();
 
-  //  hook
-  const { mutate: login, isPending, error } = useLogin();
-
-  //  submit handler
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setError(null);
+    setIsPending(true);
 
-    login(
-      { email, password },
-      {
-        onSuccess: () => {
-          router.push("/");
-        },
-      },
-    );
+    try {
+      await api.post("/auth/login", { email, password });
+      await checkAuth(); // ✅ re-fetch user after login
+      router.push("/");
+    } catch (err) {
+      setError(err.response?.data?.message || "Invalid email or password");
+    } finally {
+      setIsPending(false);
+    }
   };
 
   return (
@@ -55,22 +56,11 @@ export default function LoginForm({ onForgot }) {
         onRightClick={() => setShowPass(!showPass)}
       />
 
-      {/* Remember + Forgot */}
       <div className="flex items-center justify-between">
-        <label className="flex items-center gap-2 cursor-pointer text-xs text-slate-500 select-none">
-          <input
-            type="checkbox"
-            checked={remember}
-            onChange={() => setRemember(!remember)}
-            className="accent-blue-600 w-3.5 h-3.5"
-          />
-          Remember me
-        </label>
-
         <button
           type="button"
           onClick={onForgot}
-          className="text-xs font-semibold text-blue-600 hover:text-blue-700 transition-colors"
+          className="text-xs font-semibold text-blue-600 hover:text-blue-700 transition-colors ml-auto"
         >
           Forgot password?
         </button>
@@ -78,18 +68,19 @@ export default function LoginForm({ onForgot }) {
 
       <button
         type="submit"
-        disabled={isPending} // ✅ disable while loading
-        className="w-full py-3 rounded-xl bg-linear-to-r from-blue-600 to-blue-700 text-white font-bold text-sm tracking-wide shadow-[0_4px_14px_rgba(37,99,235,0.35)] hover:opacity-90 active:scale-[0.985] transition-all duration-150 disabled:opacity-60"
+        disabled={isPending}
+        className="w-full py-3 rounded-xl bg-linear-to-r from-blue-600 to-blue-700 text-white font-bold text-sm tracking-wide shadow-[0_4px_14px_rgba(37,99,235,0.35)] hover:opacity-90 active:scale-[0.985] transition-all duration-150 disabled:opacity-60 flex items-center justify-center gap-2"
       >
-        {isPending ? "Logging in..." : "Login"}
+        {isPending ? (
+          <>
+            <Loader2 size={16} className="animate-spin" /> Logging in...
+          </>
+        ) : (
+          "Login"
+        )}
       </button>
 
-      {/*  error handling */}
-      {error && (
-        <p className="text-xs text-red-500 text-center">
-          Invalid email or password
-        </p>
-      )}
+      {error && <p className="text-xs text-red-500 text-center">{error}</p>}
 
       <AuthDivider />
       <GoogleButton />

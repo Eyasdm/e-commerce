@@ -43,7 +43,10 @@ export const createOrder = async (userId) => {
 
 //  get user orders
 export const getUserOrders = async (userId) => {
-  return await Order.find({ user: userId }).sort({ createdAt: -1 });
+  const orders = await Order.find({ user: userId }).sort({ createdAt: -1 });
+  console.log("orders found:", orders.length, "for user:", userId);
+
+  return orders;
 };
 
 //  CREATE STRIPE CHECKOUT SESSION
@@ -54,24 +57,32 @@ export const createCheckoutSession = async (user) => {
     throw new Error("Cart is empty");
   }
 
-  // ✅ Filter out items where product was deleted
-  const validItems = cart.items.filter((item) => item.product !== null);
+  // ✅ Clean null products and filter valid items
+  const validItems = cart.items.filter(
+    (item) => item.bundle || item.product !== null,
+  );
 
-  if (validItems.length === 0) {
-    throw new Error("No valid items in cart");
-  }
+  if (validItems.length === 0) throw new Error("No valid items in cart");
 
-  const line_items = validItems.map((item) => ({
-    price_data: {
-      currency: "usd",
-      product_data: {
-        name: item.product.name,
-        images: [`${process.env.BASE_URL}${item.product.image}`],
+  const line_items = validItems.map((item) => {
+    // ✅ Handle bundle items
+    const isBundle = !!item.bundle;
+    const name = isBundle ? item.name : item.product?.name;
+    const price = isBundle ? item.price : item.product?.price;
+    const image = isBundle ? item.image : item.product?.image;
+
+    return {
+      price_data: {
+        currency: "usd",
+        product_data: {
+          name,
+          images: [`${process.env.BASE_URL}${image}`],
+        },
+        unit_amount: price * 100,
       },
-      unit_amount: item.product.price * 100,
-    },
-    quantity: item.quantity,
-  }));
+      quantity: item.quantity,
+    };
+  });
 
   const session = await stripe.checkout.sessions.create({
     payment_method_types: ["card"],
@@ -80,46 +91,61 @@ export const createCheckoutSession = async (user) => {
     success_url: `${process.env.CLIENT_URL}/success`,
     cancel_url: `${process.env.CLIENT_URL}/cancel`,
     customer_email: user.email,
-    metadata: {
-      userId: user._id.toString(),
-    },
+    metadata: { userId: user._id.toString() },
   });
 
   return session;
 };
 
 export const createOrderFromSession = async (session) => {
-  const userId = session.metadata.userId;
+  try {
+    const userId = session.metadata.userId;
+    const cart = await Cart.findOne({ user: userId }).populate("items.product");
 
-  // get cart
-  const cart = await Cart.findOne({ user: userId }).populate("items.product");
-  if (!cart || cart.items.length === 0) return;
+    console.log("creating order for user:", userId);
+    console.log("cart items:", cart?.items?.length);
 
-  const orderItems = cart.items.map((item) => ({
-    product: item.product._id,
-    name: item.product.name,
-    price: item.product.price,
-    quantity: item.quantity,
-    image: item.product.image,
-  }));
+    if (!cart || cart.items.length === 0) return;
 
-  const totalPrice = orderItems.reduce(
-    (acc, item) => acc + item.price * item.quantity,
-    0,
-  );
+    const orderItems = cart.items
+      .filter((item) => item.bundle || item.product)
+      .map((item) => {
+        const isBundle = !!item.bundle;
+        return {
+          product: isBundle ? undefined : item.product._id,
+          bundle: isBundle ? item.bundle : undefined,
+          isBundle,
+          name: isBundle ? item.name : item.product.name,
+          price: isBundle ? item.price : item.product.price,
+          quantity: item.quantity,
+          image: isBundle ? item.image : item.product.image,
+        };
+      });
 
-  await Order.create({
-    user: userId,
-    items: orderItems,
-    totalPrice,
-    isPaid: true,
-    paidAt: Date.now(),
-    status: "paid",
-    stripeSessionId: session.id,
-    paymentMethod: "stripe",
-  });
+    console.log("orderItems built:", orderItems.length);
 
-  // clear cart
-  cart.items = [];
-  await cart.save();
+    const totalPrice = orderItems.reduce(
+      (acc, item) => acc + item.price * item.quantity,
+      0,
+    );
+
+    const order = await Order.create({
+      user: userId,
+      items: orderItems,
+      totalPrice,
+      isPaid: true,
+      paidAt: Date.now(),
+      status: "paid",
+      stripeSessionId: session.id,
+      paymentMethod: "stripe",
+    });
+
+    console.log("order created:", order._id);
+
+    cart.items = [];
+    await cart.save();
+  } catch (err) {
+    console.error("ORDER CREATION ERROR:", err.message);
+    console.error(err.stack);
+  }
 };

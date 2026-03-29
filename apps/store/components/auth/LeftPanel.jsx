@@ -17,13 +17,13 @@ export default function LeftPanel() {
       }}
     >
       {/* Background illustration */}
-      <Image
+      {/* <Image
         src="/auth-bg.png"
         alt=""
         fill
         style={{ objectFit: "cover", opacity: 0.18 }}
         priority
-      />
+      /> */}
 
       {/* Decorative circles */}
       <div className="absolute inset-0 pointer-events-none">

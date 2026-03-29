@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo } from "react";
 import { useSearchParams } from "next/navigation";
-import { useProductsStore } from "@/lib/useProductsStore";
+import { useProductsStore } from "@/store/useProductsStore";
 
 import ProductCard from "@/components/products/ProductCard";
 import ProductCardSkeleton from "@/components/products/ProductCardSkeleton";

@@ -42,7 +42,7 @@ export default function OrderCard({ order, statusColors }) {
               src={`http://localhost:8000${item.image}`}
               alt={item.name}
               fill
-              className="object-contain p-1"
+              className="object-contain "
             />
           </div>
         ))}

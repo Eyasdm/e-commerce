@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
-import { useProductsStore } from "@/lib/useProductsStore";
+import { useProductsStore } from "@/store/useProductsStore";
 
 const SORT_OPTIONS = [
   { label: "Best Selling", value: "best" },

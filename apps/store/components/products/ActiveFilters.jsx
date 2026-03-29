@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
-import { useProductsStore } from "@/lib/useProductsStore";
+import { useProductsStore } from "@/store/useProductsStore";
 
 export default function ActiveFilters() {
   const router = useRouter();

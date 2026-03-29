@@ -54,33 +54,30 @@ export const signupUser = async (data) => {
 export const loginUser = async (data) => {
   const { email, password } = data;
 
-  const user = await User.findOne({ email }).select("+password");
+  try {
+    const user = await User.findOne({ email }).select("+password");
+    console.log("user found:", !!user);
 
-  if (!user) {
-    throw new Error("Invalid credentials");
+    if (!user) throw new Error("Invalid credentials");
+
+    const isMatch = await user.comparePassword(password, user.password);
+    console.log("password match:", isMatch);
+
+    if (!isMatch) throw new Error("Invalid credentials");
+
+    const accessToken = generateAccessToken(user._id);
+    const refreshToken = generateRefreshToken();
+
+    user.refreshToken = hashToken(refreshToken);
+    await user.save({ validateBeforeSave: false });
+    console.log("login success");
+
+    return { user, accessToken, refreshToken };
+  } catch (err) {
+    console.error("LOGIN ERROR:", err.message); // 👈 this will show the real error
+    throw err;
   }
-
-  const isMatch = await user.comparePassword(password, user.password);
-
-  if (!isMatch) {
-    throw new Error("Invalid credentials");
-  }
-
-  //  generate tokens
-  const accessToken = generateAccessToken(user._id);
-  const refreshToken = generateRefreshToken();
-
-  //  replace old refresh token
-  user.refreshToken = hashToken(refreshToken);
-  await user.save({ validateBeforeSave: false });
-
-  return {
-    user,
-    accessToken,
-    refreshToken,
-  };
 };
-
 // ================= LOGOUT =================
 export const logoutUser = async (userId) => {
   return await User.findByIdAndUpdate(

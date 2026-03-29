@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
-import { useProductsStore } from "@/lib/useProductsStore";
+import { useProductsStore } from "@/store/useProductsStore";
 
 const brands = ["Anker", "Razer", "Ugreen", "Logitech"];
 

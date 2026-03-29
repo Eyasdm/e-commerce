@@ -5,8 +5,13 @@ import Link from "next/link";
 import { Minus, Plus, Trash2, Loader2 } from "lucide-react";
 import { useUpdateCartItem } from "@/lib/hooks/cart/useUpdateCartItem";
 import { useRemoveCartItem } from "@/lib/hooks/cart/useRemoveCartItem";
+import BundleCartItem from "./BundleCartItem";
 
 export default function CartItem({ item }) {
+  if (item.isBundle) {
+    return <BundleCartItem item={item} />;
+  }
+
   const { mutate: updateItem, isPending: isUpdating } = useUpdateCartItem();
   const { mutate: removeItem, isPending: isRemoving } = useRemoveCartItem();
 
@@ -69,7 +74,12 @@ export default function CartItem({ item }) {
           </h3>
         </Link>
 
-        <div className="flex items-baseline gap-2 mt-1">
+        <div className="flex items-center gap-2 mt-1">
+          {item.isBundle && (
+            <span className="text-[10px] font-bold bg-blue-100 text-blue-600 px-1.5 py-0.5 rounded-md">
+              BUNDLE
+            </span>
+          )}
           <span className="text-slate-900 font-bold text-sm">
             ${item.price}
           </span>

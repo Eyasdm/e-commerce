@@ -46,3 +46,25 @@ export const updateItem = catchAsync(async (req, res, next) => {
     data: cart,
   });
 });
+
+// ================= Add BUNDLE Item =================
+export const addBundleItem = catchAsync(async (req, res, next) => {
+  const cart = await cartService.addBundleToCart(
+    req.user._id,
+    req.params.bundleId,
+  );
+  res.status(200).json({ success: true, data: cart });
+});
+
+// ================= Remove Item By Id =================
+export const removeItemById = catchAsync(async (req, res, next) => {
+  const cart = await Cart.findOne({ user: req.user._id });
+  if (!cart) return next(new AppError("Cart not found", 404));
+
+  cart.items = cart.items.filter(
+    (item) => item._id.toString() !== req.params.itemId,
+  );
+
+  await cart.save();
+  res.status(204).send();
+});

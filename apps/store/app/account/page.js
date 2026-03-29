@@ -1,31 +1,29 @@
 "use client";
-import { useState, useEffect } from "react";
 import { useAuth } from "@/context/AuthContext";
-import { useUpdateProfile } from "@/lib/hooks/useUpdateProfile";
-import { useMyOrders } from "@/lib/hooks/useMyOrders";
-import { useRouter } from "next/navigation";
 import api from "@/lib/api";
-import toast from "react-hot-toast";
+import { useMyOrders } from "@/lib/hooks/useMyOrders";
+import { useUpdateProfile } from "@/lib/hooks/useUpdateProfile";
 import {
-  User,
-  Mail,
-  Shield,
-  Package,
-  LogOut,
-  Loader2,
+  Check,
   ChevronRight,
-  Lock,
   Eye,
   EyeOff,
+  Loader2,
+  Lock,
+  LogOut,
+  Mail,
+  Package,
   Pencil,
-  Check,
+  Shield,
   X,
 } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 
 export default function AccountPage() {
   const { user, setUser, clearAuth, isAuthenticated, loading } = useAuth();
-  console.log("user object:", user);
   const router = useRouter();
   const { data: orders = [] } = useMyOrders();
   const { mutate: updateProfile, isPending: isUpdating } = useUpdateProfile();
