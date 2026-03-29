@@ -1,6 +1,7 @@
 "use client";
 
 import { Recommended } from "@/components/cart/Recommended";
+import HeroSlider from "@/components/HeroSlider";
 import { Button } from "@/components/ui/button";
 import {
   BatteryCharging,
@@ -19,53 +20,10 @@ export default function HomePage() {
   return (
     <main className="bg-[#f5f7fb]">
       {/* ================= HERO ================= */}
-      <section className="relative overflow-hidden pt-20 pb-28">
-        <div className="absolute inset-0 -z-10 bg-linear-to-br from-blue-100 via-white to-blue-200" />
-
-        <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-2 items-center gap-12">
-          {/* LEFT */}
-          <div>
-            <h1 className="text-5xl md:text-6xl font-bold leading-tight text-gray-900">
-              Premium Accessories
-              <br />
-              for Modern Devices
-            </h1>
-
-            <p className="mt-6 text-lg text-gray-600 max-w-lg">
-              High-quality chargers, headphones, keyboards, and power banks to
-              enhance your tech lifestyle.
-            </p>
-
-            <div className="mt-8 flex gap-4">
-              <Button size="lg" className="rounded-xl px-8">
-                <Link href="/shop">Shop Accessories</Link>
-              </Button>
-
-              <Button
-                variant="secondary"
-                size="lg"
-                className="rounded-xl px-8 bg-white"
-              >
-                <Link href="/deals">Today’s Deals</Link>
-              </Button>
-            </div>
-          </div>
-
-          {/* RIGHT IMAGE */}
-          <div className="relative h-105">
-            <Image
-              src="/hero-bg.png"
-              alt="Hero"
-              fill
-              priority
-              className="object-contain drop-shadow-xl"
-            />
-          </div>
-        </div>
-      </section>
+      <HeroSlider />
 
       {/* ================= CATEGORY FLOATING BAR ================= */}
-      <section className="-mt-16 relative z-20 ">
+      <section className="mt-16 relative z-20 ">
         <div className="max-w-7xl mx-auto px-6">
           <div className="bg-white rounded-2xl shadow-lg p-6 flex flex-wrap justify-between gap-4">
             {[
