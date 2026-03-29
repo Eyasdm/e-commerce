@@ -9,6 +9,7 @@ import ProductCardSkeleton from "@/components/products/ProductCardSkeleton";
 import ActiveFilters from "@/components/products/ActiveFilters";
 import SidebarFilters from "@/components/products/SidebarFilters";
 import SortDropdown from "./SortDropdown";
+import { PageError } from "@/components/ErrorStates";
 
 export default function ProductsLayout({ category }) {
   const params = useSearchParams();
@@ -25,6 +26,7 @@ export default function ProductsLayout({ category }) {
     }),
     [category, params],
   );
+
   const {
     products,
     fetchProducts,
@@ -32,30 +34,28 @@ export default function ProductsLayout({ category }) {
     hasMore,
     loading,
     initialLoading,
+    error, // ← pull error from your store
   } = useProductsStore();
 
-  //  Fetch products when filters change
+  // Fetch products when filters change
   useEffect(() => {
     fetchProducts(1, filters);
   }, [filters]);
 
-  //  Infinite Scroll
+  // Infinite scroll
   useEffect(() => {
     const handleScroll = () => {
       const scrollPosition = window.innerHeight + window.scrollY;
       const bottom = document.documentElement.offsetHeight - 800;
-
       if (scrollPosition >= bottom && hasMore && !loading) {
         loadMore();
       }
     };
-
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, [hasMore, loading]);
 
   const searchQuery = params.get("q");
-
   const title = searchQuery
     ? `Search results for "${searchQuery}"`
     : category
@@ -69,7 +69,6 @@ export default function ProductsLayout({ category }) {
         <p className="text-sm text-muted-foreground">
           Shop / {searchQuery ? "Search" : title}
         </p>
-
         <h1 className="text-3xl font-bold mt-2 capitalize">{title}</h1>
       </div>
 
@@ -84,7 +83,7 @@ export default function ProductsLayout({ category }) {
 
         {/* Products */}
         <div className="col-span-9">
-          {/* Sort */}
+          {/* Sort bar */}
           <div className="flex justify-between items-center mb-6">
             <p className="text-sm text-muted-foreground">
               Showing {products.length} products
@@ -92,27 +91,49 @@ export default function ProductsLayout({ category }) {
             <SortDropdown />
           </div>
 
-          {/* Initial Loading */}
+          {/* ── Initial loading ────────────────────────────────────────────── */}
           {initialLoading ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {Array.from({ length: 8 }).map((_, i) => (
                 <ProductCardSkeleton key={i} />
               ))}
             </div>
+          ) : /* ── Initial fetch error ─────────────────────────────────────────── */
+          error ? (
+            <PageError
+              error={error}
+              onRetry={() => fetchProducts(1, filters)}
+            />
           ) : (
+            /* ── Happy path ──────────────────────────────────────────────────── */
             <>
-              {/* Products */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {products.map((product, i) => (
-                  <ProductCard
-                    key={product.id || i}
-                    _id={product.id}
-                    {...product}
-                  />
-                ))}
-              </div>
+              {/* Empty state */}
+              {products.length === 0 && !loading && (
+                <div className="flex flex-col items-center justify-center py-24 text-center gap-3">
+                  <p className="text-4xl">🔍</p>
+                  <p className="font-semibold text-slate-700">
+                    No products found
+                  </p>
+                  <p className="text-sm text-muted-foreground max-w-xs">
+                    Try adjusting your filters or search term.
+                  </p>
+                </div>
+              )}
 
-              {/* Load more */}
+              {/* Product grid */}
+              {products.length > 0 && (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {products.map((product, i) => (
+                    <ProductCard
+                      key={product.id || i}
+                      _id={product.id}
+                      {...product}
+                    />
+                  ))}
+                </div>
+              )}
+
+              {/* Load-more skeletons (infinite scroll) */}
               {loading && (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
                   {Array.from({ length: 3 }).map((_, i) => (
@@ -121,8 +142,8 @@ export default function ProductsLayout({ category }) {
                 </div>
               )}
 
-              {/* End */}
-              {!hasMore && !loading && (
+              {/* End of results */}
+              {!hasMore && !loading && products.length > 0 && (
                 <p className="text-center text-muted-foreground py-10">
                   No more products
                 </p>

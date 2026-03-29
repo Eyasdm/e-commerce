@@ -1,7 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { useAuth } from "./context/AuthContext";
 import AdminLayout from "./components/layout/AdminLayout";
-import Login from "./pages/Login";
 import Overview from "./pages/Overview";
 import Orders from "./pages/Orders";
 import Products from "./pages/Products";
@@ -18,7 +17,24 @@ function ProtectedRoute({ children }) {
       </div>
     );
 
-  if (!admin) return <Navigate to="/login" replace />;
+  if (!admin)
+    return (
+      <div className="h-screen flex items-center justify-center bg-slate-950">
+        <div className="text-center">
+          <p className="text-white text-lg font-semibold mb-2">Access Denied</p>
+          <p className="text-slate-400 text-sm">
+            Please login from the store first.
+          </p>
+          <a
+            href="http://localhost:3000/auth"
+            className="mt-4 inline-block bg-blue-600 text-white px-6 py-2 rounded-xl text-sm font-semibold"
+          >
+            Go to Login
+          </a>
+        </div>
+      </div>
+    );
+
   return children;
 }
 
@@ -26,7 +42,6 @@ export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/login" element={<Login />} />
         <Route
           path="/"
           element={

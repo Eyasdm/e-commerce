@@ -1,7 +1,9 @@
 "use client";
+
 import { useState } from "react";
 import { useMyOrders } from "@/lib/hooks/useMyOrders";
 import OrderCard from "@/components/orders/OrderCard";
+import { QueryError } from "@/components/ErrorStates";
 import { Package } from "lucide-react";
 import Link from "next/link";
 
@@ -22,8 +24,40 @@ const STATUS_COLORS = {
   cancelled: "bg-red-100 text-red-600",
 };
 
+// ── Skeleton ───────────────────────────────────────────────────────────────────
+function OrderCardSkeleton() {
+  return (
+    <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-5 animate-pulse">
+      <div className="flex items-center justify-between mb-4">
+        <div className="flex flex-col gap-2">
+          <div className="h-4 w-32 bg-slate-100 rounded" />
+          <div className="h-3 w-24 bg-slate-100 rounded" />
+        </div>
+        <div className="h-6 w-20 bg-slate-100 rounded-full" />
+      </div>
+      <div className="flex gap-3">
+        {[...Array(3)].map((_, i) => (
+          <div key={i} className="w-14 h-14 bg-slate-100 rounded-xl shrink-0" />
+        ))}
+      </div>
+      <div className="flex items-center justify-between mt-4 pt-4 border-t border-slate-50">
+        <div className="h-4 w-28 bg-slate-100 rounded" />
+        <div className="h-8 w-24 bg-slate-100 rounded-xl" />
+      </div>
+    </div>
+  );
+}
+
+// ── Page ───────────────────────────────────────────────────────────────────────
 export default function OrdersPage() {
-  const { data: orders = [], isLoading } = useMyOrders();
+  const {
+    data: orders = [],
+    isLoading,
+    isError,
+    error,
+    refetch,
+  } = useMyOrders();
+
   const [filter, setFilter] = useState("All");
 
   const filtered =
@@ -54,20 +88,20 @@ export default function OrdersPage() {
         ))}
       </div>
 
-      {/* Loading */}
+      {/* ── Loading ─────────────────────────────────────────────────────────── */}
       {isLoading && (
         <div className="space-y-4">
-          {[1, 2, 3].map((i) => (
-            <div
-              key={i}
-              className="h-36 bg-gray-100 animate-pulse rounded-2xl"
-            />
+          {[...Array(3)].map((_, i) => (
+            <OrderCardSkeleton key={i} />
           ))}
         </div>
       )}
 
-      {/* Empty */}
-      {!isLoading && filtered.length === 0 && (
+      {/* ── Error ───────────────────────────────────────────────────────────── */}
+      {isError && !isLoading && <QueryError error={error} onRetry={refetch} />}
+
+      {/* ── Empty state ─────────────────────────────────────────────────────── */}
+      {!isLoading && !isError && filtered.length === 0 && (
         <div className="text-center py-20">
           <Package size={56} className="text-slate-200 mx-auto mb-4" />
           <p className="text-slate-500 text-lg font-medium">No orders found</p>
@@ -85,16 +119,18 @@ export default function OrdersPage() {
         </div>
       )}
 
-      {/* Orders */}
-      <div className="space-y-4">
-        {filtered.map((order) => (
-          <OrderCard
-            key={order._id}
-            order={order}
-            statusColors={STATUS_COLORS}
-          />
-        ))}
-      </div>
+      {/* ── Orders ──────────────────────────────────────────────────────────── */}
+      {!isLoading && !isError && filtered.length > 0 && (
+        <div className="space-y-4">
+          {filtered.map((order) => (
+            <OrderCard
+              key={order._id}
+              order={order}
+              statusColors={STATUS_COLORS}
+            />
+          ))}
+        </div>
+      )}
     </main>
   );
 }

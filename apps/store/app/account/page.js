@@ -1,8 +1,10 @@
 "use client";
+
 import { useAuth } from "@/context/AuthContext";
 import api from "@/lib/api";
 import { useMyOrders } from "@/lib/hooks/useMyOrders";
 import { useUpdateProfile } from "@/lib/hooks/useUpdateProfile";
+import { QueryError } from "@/components/ErrorStates";
 import {
   Check,
   ChevronRight,
@@ -22,17 +24,81 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
+// ── Skeleton helpers ───────────────────────────────────────────────────────────
+function Shimmer({ className = "" }) {
+  return (
+    <div className={`bg-slate-100 rounded-xl animate-pulse ${className}`} />
+  );
+}
+
+function AccountSkeleton() {
+  return (
+    <main className="max-w-2xl mx-auto px-6 py-10">
+      <div className="mb-8">
+        <Shimmer className="h-8 w-40 mb-2" />
+        <Shimmer className="h-4 w-56" />
+      </div>
+
+      <div className="space-y-4">
+        {/* Profile card skeleton */}
+        <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-6">
+          <div className="flex items-center gap-4 mb-6">
+            <Shimmer className="w-16 h-16 rounded-full shrink-0" />
+            <div className="flex-1 flex flex-col gap-2">
+              <Shimmer className="h-5 w-36" />
+              <Shimmer className="h-4 w-48" />
+            </div>
+          </div>
+          <div className="grid grid-cols-2 gap-3">
+            <Shimmer className="h-16 rounded-xl" />
+            <Shimmer className="h-16 rounded-xl" />
+          </div>
+        </div>
+
+        {/* Orders skeleton */}
+        <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-6">
+          <div className="flex justify-between mb-4">
+            <Shimmer className="h-5 w-32" />
+            <Shimmer className="h-4 w-16" />
+          </div>
+          <div className="space-y-2">
+            {[...Array(3)].map((_, i) => (
+              <Shimmer key={i} className="h-14 rounded-xl" />
+            ))}
+          </div>
+        </div>
+
+        {/* Password skeleton */}
+        <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-6">
+          <Shimmer className="h-5 w-40 mb-4" />
+          <div className="space-y-3">
+            {[...Array(3)].map((_, i) => (
+              <Shimmer key={i} className="h-11 rounded-xl" />
+            ))}
+            <Shimmer className="h-11 rounded-xl" />
+          </div>
+        </div>
+
+        {/* Logout skeleton */}
+        <Shimmer className="h-14 rounded-2xl" />
+      </div>
+    </main>
+  );
+}
+
+// ── Main page ──────────────────────────────────────────────────────────────────
 export default function AccountPage() {
   const { user, setUser, clearAuth, isAuthenticated, loading } = useAuth();
   const router = useRouter();
-  const { data: orders = [] } = useMyOrders();
+  const {
+    data: orders = [],
+    isError: ordersError,
+    refetch: refetchOrders,
+  } = useMyOrders();
   const { mutate: updateProfile, isPending: isUpdating } = useUpdateProfile();
 
-  // Edit name state
   const [editingName, setEditingName] = useState(false);
   const [nameValue, setNameValue] = useState("");
-
-  // Change password state
   const [pwForm, setPwForm] = useState({
     currentPassword: "",
     newPassword: "",
@@ -51,13 +117,10 @@ export default function AccountPage() {
     }
   }, [loading, isAuthenticated]);
 
-  if (loading || !user)
-    return (
-      <main className="max-w-2xl mx-auto px-6 py-20 flex items-center justify-center">
-        <Loader2 size={32} className="animate-spin text-slate-300" />
-      </main>
-    );
+  // ── Loading state — show skeleton instead of a spinner ──────────────────────
+  if (loading || !user) return <AccountSkeleton />;
 
+  // ── Handlers ─────────────────────────────────────────────────────────────────
   const handleSaveName = () => {
     if (!nameValue.trim() || nameValue === user.name) {
       setEditingName(false);
@@ -69,6 +132,10 @@ export default function AccountPage() {
         onSuccess: (updatedUser) => {
           setUser(updatedUser);
           setEditingName(false);
+          toast.success("Name updated!");
+        },
+        onError: (err) => {
+          toast.error(err?.response?.data?.message || "Failed to update name.");
         },
       },
     );
@@ -107,6 +174,7 @@ export default function AccountPage() {
 
   const recentOrders = orders.slice(0, 3);
 
+  // ── Render ───────────────────────────────────────────────────────────────────
   return (
     <main className="max-w-2xl mx-auto px-6 py-10">
       {/* Header */}
@@ -118,7 +186,7 @@ export default function AccountPage() {
       </div>
 
       <div className="space-y-4">
-        {/* Profile Card */}
+        {/* ── Profile Card ──────────────────────────────────────────────────── */}
         <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-6">
           <div className="flex items-center gap-4 mb-6">
             <div className="w-16 h-16 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold text-xl shrink-0">
@@ -196,7 +264,7 @@ export default function AccountPage() {
           </div>
         </div>
 
-        {/* Orders Summary */}
+        {/* ── Orders Summary ────────────────────────────────────────────────── */}
         <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-6">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
@@ -211,7 +279,14 @@ export default function AccountPage() {
             </Link>
           </div>
 
-          {recentOrders.length === 0 ? (
+          {/* Inline error for orders — doesn't crash the whole page */}
+          {ordersError ? (
+            <QueryError
+              error={ordersError}
+              onRetry={refetchOrders}
+              className="mt-2"
+            />
+          ) : recentOrders.length === 0 ? (
             <p className="text-slate-400 text-sm">No orders yet.</p>
           ) : (
             <div className="space-y-2">
@@ -248,7 +323,7 @@ export default function AccountPage() {
           )}
         </div>
 
-        {/* Change Password */}
+        {/* ── Change Password ───────────────────────────────────────────────── */}
         <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-6">
           <div className="flex items-center gap-2 mb-4">
             <Lock size={16} className="text-blue-600" />
@@ -303,7 +378,7 @@ export default function AccountPage() {
           </form>
         </div>
 
-        {/* Logout */}
+        {/* ── Logout ───────────────────────────────────────────────────────── */}
         <button
           onClick={handleLogout}
           className="w-full bg-white rounded-2xl border border-red-100 shadow-sm p-4 flex items-center justify-between text-red-500 hover:bg-red-50 transition group"

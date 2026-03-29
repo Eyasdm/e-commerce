@@ -1,6 +1,5 @@
-import AuthNav from "../../components/auth/AuthNav";
-import LeftPanel from "../../components/auth/LeftPanel";
 import AuthCard from "../../components/auth/AuthCard";
+import LeftPanel from "../../components/auth/LeftPanel";
 
 export default function AuthPage() {
   return (
