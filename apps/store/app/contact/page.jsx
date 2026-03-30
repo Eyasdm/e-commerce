@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { Mail, Phone, Github, Linkedin, ExternalLink } from "lucide-react";
+import ContactForm from "@/components/ContactForm";
 
 export default function ContactPage() {
   return (
@@ -114,100 +115,7 @@ export default function ContactPage() {
           </div>
         </div>
 
-        <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-6">
-          <h2 className="font-bold text-slate-900 text-lg mb-1">
-            Send a Message
-          </h2>
-          <p className="text-slate-400 text-sm mb-6">
-            I will get back to you as soon as possible.
-          </p>
-
-          <form
-            action="https://formsubmit.co/Eyasadam01@outlook.com"
-            method="POST"
-            className="space-y-4"
-          >
-            <input type="hidden" name="_captcha" value="false" />
-            <input
-              type="hidden"
-              name="_subject"
-              value="New message from TechNest portfolio"
-            />
-            <input
-              type="hidden"
-              name="_next"
-              value="http://localhost:3000/contact?sent=true"
-            />
-
-            <div>
-              <label className="text-xs font-semibold text-slate-500 mb-1 block">
-                Your Name
-              </label>
-              <input
-                type="text"
-                name="name"
-                required
-                placeholder="John Doe"
-                className="w-full border border-slate-200 rounded-xl px-4 py-2.5 text-sm outline-none focus:border-blue-400 transition"
-              />
-            </div>
-
-            <div>
-              <label className="text-xs font-semibold text-slate-500 mb-1 block">
-                Your Email
-              </label>
-              <input
-                type="email"
-                name="email"
-                required
-                placeholder="john@example.com"
-                className="w-full border border-slate-200 rounded-xl px-4 py-2.5 text-sm outline-none focus:border-blue-400 transition"
-              />
-            </div>
-
-            <div>
-              <label className="text-xs font-semibold text-slate-500 mb-1 block">
-                Subject
-              </label>
-              <input
-                type="text"
-                name="subject"
-                placeholder="Collaboration, job opportunity, feedback..."
-                className="w-full border border-slate-200 rounded-xl px-4 py-2.5 text-sm outline-none focus:border-blue-400 transition"
-              />
-            </div>
-
-            <div>
-              <label className="text-xs font-semibold text-slate-500 mb-1 block">
-                Message
-              </label>
-              <textarea
-                name="message"
-                required
-                rows={5}
-                placeholder="Tell me what is on your mind..."
-                className="w-full border border-slate-200 rounded-xl px-4 py-2.5 text-sm outline-none focus:border-blue-400 transition resize-none"
-              />
-            </div>
-
-            <button
-              type="submit"
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-xl transition-all text-sm"
-            >
-              Send Message
-            </button>
-          </form>
-
-          <p className="text-center text-xs text-slate-400 mt-4">
-            Or email me directly at{" "}
-            <a
-              href="mailto:Eyasadam01@outlook.com"
-              className="text-blue-600 hover:underline"
-            >
-              Eyasadam01@outlook.com
-            </a>
-          </p>
-        </div>
+        <ContactForm />
       </div>
 
       <div className="mt-10 bg-linear-to-r from-blue-50 to-slate-50 rounded-2xl p-6 border border-blue-100">

@@ -14,6 +14,7 @@ import orderRoutes from "./routes/order.routes.js";
 import adminRoutes from "./routes/admin.routes.js";
 import bundleRoutes from "./routes/bundle.routes.js";
 import chatRoutes from "./routes/chat.routes.js";
+import contactRouter from "./routes/contact.route.js";
 
 import { webhook } from "./controllers/order.controller.js";
 
@@ -88,7 +89,7 @@ app.use("/api/v1/orders", orderRoutes);
 app.use("/api/v1/admin", adminRoutes);
 app.use("/api/v1/bundles", bundleRoutes);
 app.use("/api/v1/chat", chatRoutes);
-
+app.use("/api/v1/contact", contactRouter);
 app.use(globalErrorHandler);
 
 app.get("/", (req, res) => res.send("API Running..."));

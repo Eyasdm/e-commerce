@@ -54,4 +54,8 @@ export default class Email {
   async sendPasswordReset() {
     await this.send("passwordReset", "Reset your password (valid for 10 min)");
   }
+
+  async sendNewsletter() {
+    await this.send("newsletter", "Your 10% off code is inside 🎁");
+  }
 }

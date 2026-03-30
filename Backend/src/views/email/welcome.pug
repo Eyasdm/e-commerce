@@ -1,0 +1,58 @@
+doctype html
+html
+  head
+    meta(charset="UTF-8")
+    title Welcome to TechNest
+    style.
+      body { font-family: Arial, sans-serif; background: #f4f6f9; margin: 0; padding: 0; }
+      .wrapper { max-width: 560px; margin: 40px auto; background: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+      .header { background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%); padding: 36px 40px; text-align: center; }
+      .header h1 { color: #ffffff; margin: 0; font-size: 24px; font-weight: 700; letter-spacing: -0.5px; }
+      .header p { color: #bfdbfe; margin: 6px 0 0; font-size: 14px; }
+      .body { padding: 36px 40px; }
+      .body h2 { color: #0f172a; font-size: 20px; margin: 0 0 12px; }
+      .body p { color: #475569; font-size: 15px; line-height: 1.7; margin: 0 0 16px; }
+      .btn { display: inline-block; background: #2563eb; color: #ffffff !important; text-decoration: none; padding: 14px 32px; border-radius: 10px; font-weight: 700; font-size: 15px; margin: 8px 0 24px; }
+      .features { background: #f8fafc; border-radius: 10px; padding: 20px 24px; margin: 20px 0; }
+      .feature { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 14px; }
+      .feature:last-child { margin-bottom: 0; }
+      .feature-icon { font-size: 20px; flex-shrink: 0; margin-top: 2px; }
+      .feature-text { color: #334155; font-size: 14px; line-height: 1.5; }
+      .feature-text strong { display: block; color: #0f172a; font-size: 14px; margin-bottom: 2px; }
+      .footer { background: #f8fafc; border-top: 1px solid #e2e8f0; padding: 24px 40px; text-align: center; }
+      .footer p { color: #94a3b8; font-size: 13px; margin: 0; line-height: 1.6; }
+  body
+    .wrapper
+      .header
+        h1 📦 TechNest
+        p Premium Tech Accessories
+
+      .body
+        h2 Welcome aboard, #{firstName}! 🎉
+        p You're now part of the TechNest family. Your account is all set up and ready to go.
+
+        a.btn(href=url) Start Shopping →
+
+        .features
+          .feature
+            .feature-icon 🚚
+            .feature-text
+              strong Fast Delivery
+              | Get your accessories shipped quickly right to your door.
+          .feature
+            .feature-icon ⚡
+            .feature-text
+              strong Exclusive Member Deals
+              | Access flash deals and bundle offers only available to members.
+          .feature
+            .feature-icon 🔒
+            .feature-text
+              strong Secure Checkout
+              | Every order is protected with end-to-end encrypted payments.
+
+        p If you have any questions, just reply to this email — we're always happy to help.
+        p Enjoy shopping!
+
+      .footer
+        p © 2026 TechNest. All rights reserved.
+        p You received this because you created an account with us.

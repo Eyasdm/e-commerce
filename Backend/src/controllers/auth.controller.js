@@ -1,3 +1,4 @@
+import crypto from "crypto";
 import {
   signupUser,
   loginUser,
@@ -5,7 +6,7 @@ import {
   generateRefreshToken,
   hashToken,
 } from "../services/auth.service.js";
-
+import Email from "../utils/email.js";
 import catchAsync from "../utils/catchAsync.js";
 import AppError from "../utils/appError.js";
 import User from "../models/user.model.js";
@@ -14,16 +15,24 @@ import User from "../models/user.model.js";
 export const signup = catchAsync(async (req, res, next) => {
   const result = await signupUser(req.body);
 
-  //  extract token
+  // extract token
   const token = result.accessToken;
 
-  //  sanitize user
+  // sanitize user
   const user = result.user.toObject();
   delete user.password;
   delete user.refreshToken;
   delete user.__v;
 
-  //  set cookie (optional but recommended)
+  // send welcome email (non-blocking — failure won't break signup)
+  try {
+    const shopURL = `${req.protocol}://${req.get("host")}/shop`;
+    await new Email(result.user, shopURL).sendWelcome();
+  } catch (err) {
+    console.error("Welcome email failed to send:", err.message);
+  }
+
+  // set cookie
   res.cookie("token", token, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
@@ -32,12 +41,9 @@ export const signup = catchAsync(async (req, res, next) => {
 
   res.status(201).json({
     success: true,
-    data: {
-      user,
-    },
+    data: { user },
   });
 });
-
 // ================= LOGIN =================
 export const login = catchAsync(async (req, res, next) => {
   const result = await loginUser(req.body);
@@ -140,8 +146,6 @@ export const forgotPassword = catchAsync(async (req, res, next) => {
   });
 });
 // ================= RESET PASSWORD =================
-import crypto from "crypto";
-import Email from "../utils/email.js";
 
 export const resetPassword = catchAsync(async (req, res, next) => {
   const hashedToken = crypto
