@@ -1,5 +1,7 @@
-import { useQuery } from "@tanstack/react-query";
-import api from "../api/axios";
+import { useState } from "react";
+import { useRevenue } from "../hooks/useRevenue";
+import { useDailySales } from "../hooks/useDailySales";
+import { useAllOrders } from "../hooks/useAllOrders";
 import {
   DollarSign,
   ShoppingBag,
@@ -18,7 +20,13 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-// ── Stat Card ─────────────────────────────────────────────────────────────────
+const RANGES = [
+  { label: "Today", value: "1d" },
+  { label: "7 Days", value: "7d" },
+  { label: "30 Days", value: "30d" },
+  { label: "All Time", value: "" },
+];
+
 function StatCard({
   title,
   value,
@@ -39,9 +47,7 @@ function StatCard({
         </div>
         {trendValue && (
           <div
-            className={`flex items-center gap-1 text-xs font-semibold px-2 py-1 rounded-full ${
-              isUp ? "bg-green-50 text-green-600" : "bg-red-50 text-red-500"
-            }`}
+            className={`flex items-center gap-1 text-xs font-semibold px-2 py-1 rounded-full ${isUp ? "bg-green-50 text-green-600" : "bg-red-50 text-red-500"}`}
           >
             {isUp ? <ArrowUpRight size={12} /> : <ArrowDownRight size={12} />}
             {trendValue}
@@ -55,7 +61,6 @@ function StatCard({
   );
 }
 
-// ── Status Badge ──────────────────────────────────────────────────────────────
 const STATUS_STYLES = {
   paid: "bg-green-100 text-green-700",
   pending: "bg-yellow-100 text-yellow-700",
@@ -74,92 +79,90 @@ function StatusBadge({ status }) {
   );
 }
 
-// ── Overview Page ─────────────────────────────────────────────────────────────
 export default function Overview() {
-  const { data: revenue } = useQuery({
-    queryKey: ["admin-revenue"],
-    queryFn: async () => {
-      const res = await api.get("/admin/analytics/revenue");
-      return res.data.data;
-    },
-  });
+  const [range, setRange] = useState("30d");
 
-  const { data: orders } = useQuery({
-    queryKey: ["admin-orders-stats"],
-    queryFn: async () => {
-      const res = await api.get("/admin/analytics/orders");
-      return res.data.data;
-    },
-  });
-
-  const { data: dailySales } = useQuery({
-    queryKey: ["admin-daily-sales"],
-    queryFn: async () => {
-      const res = await api.get("/admin/analytics/daily-sales");
-      return res.data.data;
-    },
-  });
-
-  const { data: allOrders } = useQuery({
-    queryKey: ["admin-all-orders"],
-    queryFn: async () => {
-      const res = await api.get("/orders/admin");
-      return res.data.data;
-    },
-  });
+  const { data: revenue } = useRevenue(range);
+  const { data: dailySales } = useDailySales(range);
+  const { data: allOrders } = useAllOrders();
 
   const recentOrders = allOrders?.slice(0, 6) || [];
-  const chartData = dailySales?.slice(-7) || [];
+  const chartData = dailySales || [];
 
   return (
     <div className="space-y-6">
+      {/* Range selector */}
+      <div className="flex items-center justify-between">
+        <div>
+          <h2 className="text-xl font-bold text-slate-900">
+            Dashboard Overview
+          </h2>
+          <p className="text-sm text-slate-400">Track your store performance</p>
+        </div>
+        <div className="flex gap-1 bg-white border border-slate-200 rounded-xl p-1">
+          {RANGES.map((r) => (
+            <button
+              key={r.value}
+              onClick={() => setRange(r.value)}
+              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+                range === r.value
+                  ? "bg-blue-600 text-white"
+                  : "text-slate-500 hover:text-slate-700"
+              }`}
+            >
+              {r.label}
+            </button>
+          ))}
+        </div>
+      </div>
+
       {/* Stat Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
         <StatCard
           title="Total Revenue"
-          value={`$${revenue?.totalRevenue?.toLocaleString() || "0"}`}
-          subtitle="All time revenue"
+          value={`$${revenue?.current?.revenue?.toLocaleString() || "0"}`}
+          subtitle="Selected period"
           icon={DollarSign}
           color="bg-blue-600"
-          trend="up"
-          trendValue={`+${revenue?.growthRate || 0}%`}
+          trend={revenue?.growth?.revenueGrowth >= 0 ? "up" : "down"}
+          trendValue={`${revenue?.growth?.revenueGrowth >= 0 ? "+" : ""}${revenue?.growth?.revenueGrowth?.toFixed(1) || 0}%`}
         />
         <StatCard
           title="Total Orders"
-          value={orders?.total?.toLocaleString() || "0"}
-          subtitle="All time orders"
+          value={revenue?.current?.orders?.toLocaleString() || "0"}
+          subtitle="Selected period"
           icon={ShoppingBag}
           color="bg-violet-500"
-          trend="up"
-          trendValue="+8%"
+          trend={revenue?.growth?.ordersGrowth >= 0 ? "up" : "down"}
+          trendValue={`${revenue?.growth?.ordersGrowth >= 0 ? "+" : ""}${revenue?.growth?.ordersGrowth?.toFixed(1) || 0}%`}
         />
         <StatCard
-          title="Total Users"
-          value={revenue?.totalUsers?.toLocaleString() || "0"}
-          subtitle="Registered accounts"
+          title="Total Customers"
+          value={
+            allOrders
+              ? [...new Set(allOrders.map((o) => o.user?._id))].length
+              : "—"
+          }
+          subtitle="Unique buyers"
           icon={Users}
           color="bg-emerald-500"
-          trend="up"
-          trendValue="+5%"
         />
         <StatCard
           title="Avg Order Value"
-          value={`$${revenue?.avgOrderValue?.toFixed(0) || "0"}`}
-          subtitle="Per order average"
+          value={`$${revenue?.current?.aov?.toFixed(0) || "0"}`}
+          subtitle="Selected period"
           icon={TrendingUp}
           color="bg-orange-500"
-          trend="up"
-          trendValue="+3%"
         />
       </div>
 
       {/* Revenue Chart */}
       <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-6">
-        <div className="flex items-center justify-between mb-6">
-          <div>
-            <h2 className="font-bold text-slate-900">Revenue Overview</h2>
-            <p className="text-sm text-slate-400">Last 7 days</p>
-          </div>
+        <div className="mb-6">
+          <h2 className="font-bold text-slate-900">Revenue Overview</h2>
+          <p className="text-sm text-slate-400">
+            {RANGES.find((r) => r.value === range)?.label}
+          </p>
         </div>
         <ResponsiveContainer width="100%" height={260}>
           <AreaChart data={chartData}>
@@ -172,12 +175,12 @@ export default function Overview() {
             <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
             <XAxis
               dataKey="_id"
-              tick={{ fontSize: 12, fill: "#94a3b8" }}
+              tick={{ fontSize: 11, fill: "#94a3b8" }}
               axisLine={false}
               tickLine={false}
             />
             <YAxis
-              tick={{ fontSize: 12, fill: "#94a3b8" }}
+              tick={{ fontSize: 11, fill: "#94a3b8" }}
               axisLine={false}
               tickLine={false}
               tickFormatter={(v) => `$${v}`}
@@ -196,8 +199,8 @@ export default function Overview() {
               stroke="#2563eb"
               strokeWidth={2.5}
               fill="url(#colorRevenue)"
-              dot={{ fill: "#2563eb", r: 4 }}
-              activeDot={{ r: 6 }}
+              dot={{ fill: "#2563eb", r: 3 }}
+              activeDot={{ r: 5 }}
             />
           </AreaChart>
         </ResponsiveContainer>
@@ -205,39 +208,36 @@ export default function Overview() {
 
       {/* Recent Orders */}
       <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-6">
-        <div className="flex items-center justify-between mb-5">
-          <div>
-            <h2 className="font-bold text-slate-900">Recent Orders</h2>
-            <p className="text-sm text-slate-400">Latest 6 orders</p>
-          </div>
+        <div className="mb-5">
+          <h2 className="font-bold text-slate-900">Recent Orders</h2>
+          <p className="text-sm text-slate-400">Latest 6 orders</p>
         </div>
-
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-slate-100">
-                <th className="text-left text-xs font-semibold text-slate-400 pb-3">
-                  Order ID
-                </th>
-                <th className="text-left text-xs font-semibold text-slate-400 pb-3">
-                  Date
-                </th>
-                <th className="text-left text-xs font-semibold text-slate-400 pb-3">
-                  Items
-                </th>
-                <th className="text-left text-xs font-semibold text-slate-400 pb-3">
-                  Total
-                </th>
-                <th className="text-left text-xs font-semibold text-slate-400 pb-3">
-                  Status
-                </th>
+                {[
+                  "Order ID",
+                  "Customer",
+                  "Date",
+                  "Items",
+                  "Total",
+                  "Status",
+                ].map((h) => (
+                  <th
+                    key={h}
+                    className="text-left text-xs font-semibold text-slate-400 pb-3 pr-4"
+                  >
+                    {h}
+                  </th>
+                ))}
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-50">
               {recentOrders.length === 0 ? (
                 <tr>
                   <td
-                    colSpan={5}
+                    colSpan={6}
                     className="py-8 text-center text-slate-400 text-sm"
                   >
                     No orders yet
@@ -246,21 +246,24 @@ export default function Overview() {
               ) : (
                 recentOrders.map((order) => (
                   <tr key={order._id} className="hover:bg-slate-50 transition">
-                    <td className="py-3 font-mono text-xs text-slate-600">
+                    <td className="py-3 font-mono text-xs text-slate-600 pr-4">
                       #{order._id.slice(-8).toUpperCase()}
                     </td>
-                    <td className="py-3 text-slate-500">
+                    <td className="py-3 text-slate-700 pr-4">
+                      {order.user?.name || "—"}
+                    </td>
+                    <td className="py-3 text-slate-500 pr-4">
                       {new Date(order.createdAt).toLocaleDateString("en-GB", {
                         day: "2-digit",
                         month: "short",
                         year: "numeric",
                       })}
                     </td>
-                    <td className="py-3 text-slate-600">
+                    <td className="py-3 text-slate-600 pr-4">
                       {order.items?.length} item
                       {order.items?.length > 1 ? "s" : ""}
                     </td>
-                    <td className="py-3 font-semibold text-slate-900">
+                    <td className="py-3 font-semibold text-slate-900 pr-4">
                       ${order.totalPrice?.toFixed(2)}
                     </td>
                     <td className="py-3">
