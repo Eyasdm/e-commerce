@@ -16,7 +16,6 @@ import {
 } from "lucide-react";
 
 export default function Account() {
-  console.log("Account rendering");
   const { admin, setAdmin } = useAuth();
 
   const [editingName, setEditingName] = useState(false);
