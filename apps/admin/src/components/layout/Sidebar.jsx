@@ -2,7 +2,6 @@ import { NavLink } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { useSidebar } from "../../context/SidebarContext";
-import { useNavigate } from "react-router-dom";
 
 import {
   LayoutDashboard,
@@ -26,6 +25,7 @@ const navItems = [
 export default function Sidebar() {
   const { admin, logout } = useAuth();
   const { isOpen, toggle } = useSidebar();
+  const navigate = useNavigate();
 
   const initials = admin?.name
     ?.split(" ")

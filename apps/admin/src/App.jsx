@@ -6,6 +6,7 @@ import Orders from "./pages/Orders";
 import Products from "./pages/Products";
 import Users from "./pages/Users";
 import Analytics from "./pages/Analytics";
+import Account from "./pages/Account";
 
 function ProtectedRoute({ children }) {
   const { admin, loading } = useAuth();
@@ -35,7 +36,7 @@ function ProtectedRoute({ children }) {
       </div>
     );
 
-  return children;
+  return <>{children}</>;
 }
 
 export default function App() {
@@ -55,6 +56,7 @@ export default function App() {
           <Route path="products" element={<Products />} />
           <Route path="users" element={<Users />} />
           <Route path="analytics" element={<Analytics />} />
+          <Route path="account" element={<Account />} />
         </Route>
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
