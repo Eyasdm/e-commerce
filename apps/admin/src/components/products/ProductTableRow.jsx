@@ -15,7 +15,7 @@ export default function ProductTableRow({
           <img
             src={imageUrl}
             alt={product.name}
-            className="w-full h-full object-contain p-1"
+            className="w-full h-full object-contain "
           />
         </div>
       </td>

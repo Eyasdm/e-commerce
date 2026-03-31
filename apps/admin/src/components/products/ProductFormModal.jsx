@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { X, Loader2 } from "lucide-react";
 
 const CATEGORIES = [
@@ -20,30 +20,31 @@ const EMPTY_FORM = {
   description: "",
 };
 
+// Derive initial form state directly from the product prop —
+// no useEffect needed. When the parent passes a new `key`, React
+// unmounts and remounts this component, so useState re-runs cleanly.
+function buildForm(product) {
+  if (!product) return EMPTY_FORM;
+  return {
+    name: product.name || "",
+    price: product.price || "",
+    oldPrice: product.oldPrice || "",
+    discount: product.discount || "",
+    category: product.category || "headphones",
+    brand: product.brand || "",
+    stock: product.stock || "",
+    description: product.description || "",
+  };
+}
+
 export default function ProductFormModal({
   product,
   onSubmit,
   onClose,
   isPending,
 }) {
-  const [form, setForm] = useState(EMPTY_FORM);
-
-  useEffect(() => {
-    if (product) {
-      setForm({
-        name: product.name || "",
-        price: product.price || "",
-        oldPrice: product.oldPrice || "",
-        discount: product.discount || "",
-        category: product.category || "headphones",
-        brand: product.brand || "",
-        stock: product.stock || "",
-        description: product.description || "",
-      });
-    } else {
-      setForm(EMPTY_FORM);
-    }
-  }, [product]);
+  // Initialized once from the product prop — no effect, no cascading renders
+  const [form, setForm] = useState(() => buildForm(product));
 
   const handleChange = (e) => {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -91,6 +92,7 @@ export default function ProductFormModal({
                 className="w-full border border-slate-200 rounded-xl px-3 py-2 text-sm outline-none focus:border-blue-400 transition"
               />
             </div>
+
             <div>
               <label className="text-xs font-semibold text-slate-500 mb-1 block">
                 Price ($)
@@ -104,6 +106,7 @@ export default function ProductFormModal({
                 className="w-full border border-slate-200 rounded-xl px-3 py-2 text-sm outline-none focus:border-blue-400 transition"
               />
             </div>
+
             <div>
               <label className="text-xs font-semibold text-slate-500 mb-1 block">
                 Old Price ($)
@@ -116,6 +119,7 @@ export default function ProductFormModal({
                 className="w-full border border-slate-200 rounded-xl px-3 py-2 text-sm outline-none focus:border-blue-400 transition"
               />
             </div>
+
             <div>
               <label className="text-xs font-semibold text-slate-500 mb-1 block">
                 Discount (%)
@@ -128,6 +132,7 @@ export default function ProductFormModal({
                 className="w-full border border-slate-200 rounded-xl px-3 py-2 text-sm outline-none focus:border-blue-400 transition"
               />
             </div>
+
             <div>
               <label className="text-xs font-semibold text-slate-500 mb-1 block">
                 Stock
@@ -141,6 +146,7 @@ export default function ProductFormModal({
                 className="w-full border border-slate-200 rounded-xl px-3 py-2 text-sm outline-none focus:border-blue-400 transition"
               />
             </div>
+
             <div>
               <label className="text-xs font-semibold text-slate-500 mb-1 block">
                 Category
@@ -158,6 +164,7 @@ export default function ProductFormModal({
                 ))}
               </select>
             </div>
+
             <div>
               <label className="text-xs font-semibold text-slate-500 mb-1 block">
                 Brand
@@ -169,6 +176,7 @@ export default function ProductFormModal({
                 className="w-full border border-slate-200 rounded-xl px-3 py-2 text-sm outline-none focus:border-blue-400 transition"
               />
             </div>
+
             <div className="col-span-2">
               <label className="text-xs font-semibold text-slate-500 mb-1 block">
                 Description

@@ -27,8 +27,14 @@ export default function LoginForm({ onForgot }) {
 
     try {
       await api.post("/auth/login", { email, password });
-      await checkAuth(); // ✅ re-fetch user after login
-      router.push("/");
+      const user = await checkAuth();
+
+      // 👇 Admin goes to dashboard, everyone else stays on store
+      if (user?.role === "admin") {
+        window.location.href = "http://localhost:5173";
+      } else {
+        router.push("/");
+      }
     } catch (err) {
       setError(err.response?.data?.message || "Invalid email or password");
     } finally {

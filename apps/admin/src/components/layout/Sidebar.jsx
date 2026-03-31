@@ -1,6 +1,9 @@
 import { NavLink } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { useSidebar } from "../../context/SidebarContext";
+import { useNavigate } from "react-router-dom";
+
 import {
   LayoutDashboard,
   ShoppingBag,
@@ -90,17 +93,20 @@ export default function Sidebar() {
       {/* Admin info + logout */}
       <div className="px-2 py-4 border-t border-slate-800 space-y-1">
         {isOpen && (
-          <div className="flex items-center gap-3 px-3 py-2">
+          <button
+            onClick={() => navigate("/account")}
+            className="flex items-center gap-3 px-3 py-2 w-full rounded-xl hover:bg-slate-800 transition"
+          >
             <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white text-xs font-bold shrink-0">
               {initials}
             </div>
-            <div className="min-w-0">
+            <div className="min-w-0 text-left">
               <p className="text-white text-sm font-semibold truncate">
                 {admin?.name}
               </p>
               <p className="text-slate-500 text-xs truncate">{admin?.email}</p>
             </div>
-          </div>
+          </button>
         )}
         <button
           onClick={logout}

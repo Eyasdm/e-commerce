@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Plus, Search, Loader2 } from "lucide-react";
+import { Plus, Search, Loader2, ChevronLeft, ChevronRight } from "lucide-react";
 import { useAllProducts } from "../hooks/useAllProducts";
 import {
   useDeleteProduct,
@@ -18,17 +18,27 @@ const CATEGORIES = [
   "mouse",
 ];
 
+const PAGE_SIZE = 10;
+
 export default function Products() {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("all");
+  const [page, setPage] = useState(1);
   const [modalOpen, setModalOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
 
-  const { data: products = [], isLoading } = useAllProducts();
+  const {
+    data: { products = [], total = 0, pages = 1 } = {},
+    isLoading,
+    isFetching,
+  } = useAllProducts({ page, limit: PAGE_SIZE });
+
   const { mutate: deleteProduct, isPending: isDeleting } = useDeleteProduct();
   const { mutate: createProduct, isPending: isCreating } = useCreateProduct();
   const { mutate: updateProduct, isPending: isUpdating } = useUpdateProduct();
 
+  // Client-side filter only applies to the current page's data
+  // (search + category are cheap since we only have PAGE_SIZE rows in memory)
   const filtered = products.filter((p) => {
     const matchCategory = category === "all" || p.category === category;
     const matchSearch =
@@ -36,6 +46,16 @@ export default function Products() {
       p.brand?.toLowerCase().includes(search.toLowerCase());
     return matchCategory && matchSearch;
   });
+
+  // Reset to page 1 when filters change
+  const handleCategoryChange = (c) => {
+    setCategory(c);
+    setPage(1);
+  };
+  const handleSearchChange = (e) => {
+    setSearch(e.target.value);
+    setPage(1);
+  };
 
   const handleEdit = (product) => {
     setEditingProduct(product);
@@ -60,13 +80,11 @@ export default function Products() {
 
   return (
     <div className="space-y-6">
-      {/* Header */}
+      {/* ── Header ─────────────────────────────────────────────────────────── */}
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-xl font-bold text-slate-900">Products</h2>
-          <p className="text-sm text-slate-400">
-            {products.length} total products
-          </p>
+          <p className="text-sm text-slate-400">{total} total products</p>
         </div>
         <button
           onClick={() => setModalOpen(true)}
@@ -77,7 +95,7 @@ export default function Products() {
         </button>
       </div>
 
-      {/* Filters */}
+      {/* ── Filters ────────────────────────────────────────────────────────── */}
       <div className="flex items-center gap-3 flex-wrap">
         <div className="relative">
           <Search
@@ -88,15 +106,16 @@ export default function Products() {
             type="text"
             placeholder="Search products..."
             value={search}
-            onChange={(e) => setSearch(e.target.value)}
+            onChange={handleSearchChange}
             className="border border-slate-200 rounded-xl pl-9 pr-4 py-2 text-sm outline-none focus:border-blue-400 transition w-56"
           />
         </div>
+
         <div className="flex gap-1 bg-white border border-slate-200 rounded-xl p-1">
           {CATEGORIES.map((c) => (
             <button
               key={c}
-              onClick={() => setCategory(c)}
+              onClick={() => handleCategoryChange(c)}
               className={`px-3 py-1.5 rounded-lg text-xs font-semibold capitalize transition-all ${
                 category === c
                   ? "bg-blue-600 text-white"
@@ -107,9 +126,14 @@ export default function Products() {
             </button>
           ))}
         </div>
+
+        {/* Fetching indicator — subtle, doesn't block the UI */}
+        {isFetching && !isLoading && (
+          <Loader2 size={15} className="animate-spin text-slate-300 ml-1" />
+        )}
       </div>
 
-      {/* Table */}
+      {/* ── Table ──────────────────────────────────────────────────────────── */}
       <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
@@ -133,6 +157,7 @@ export default function Products() {
                 ))}
               </tr>
             </thead>
+
             <tbody className="divide-y divide-slate-50">
               {isLoading ? (
                 <tr>
@@ -166,16 +191,63 @@ export default function Products() {
             </tbody>
           </table>
         </div>
-        {filtered.length > 0 && (
-          <div className="px-4 py-3 border-t border-slate-100 text-xs text-slate-400">
-            Showing {filtered.length} of {products.length} products
+
+        {/* ── Pagination footer ─────────────────────────────────────────── */}
+        {!isLoading && total > 0 && (
+          <div className="px-4 py-3 border-t border-slate-100 flex items-center justify-between">
+            {/* Count */}
+            <p className="text-xs text-slate-400">
+              Showing{" "}
+              <span className="font-semibold text-slate-600">
+                {(page - 1) * PAGE_SIZE + 1}–{Math.min(page * PAGE_SIZE, total)}
+              </span>{" "}
+              of <span className="font-semibold text-slate-600">{total}</span>{" "}
+              products
+            </p>
+
+            {/* Page buttons */}
+            <div className="flex items-center gap-1">
+              {/* Prev */}
+              <button
+                onClick={() => setPage((p) => Math.max(1, p - 1))}
+                disabled={page === 1}
+                className="w-7 h-7 rounded-lg border border-slate-200 flex items-center justify-center text-slate-500 hover:bg-slate-50 disabled:opacity-40 disabled:cursor-not-allowed transition"
+              >
+                <ChevronLeft size={14} />
+              </button>
+
+              {/* Page number pills */}
+              {Array.from({ length: pages }, (_, i) => i + 1).map((p) => (
+                <button
+                  key={p}
+                  onClick={() => setPage(p)}
+                  className={`w-7 h-7 rounded-lg text-xs font-semibold transition-all ${
+                    p === page
+                      ? "bg-blue-600 text-white"
+                      : "border border-slate-200 text-slate-500 hover:bg-slate-50"
+                  }`}
+                >
+                  {p}
+                </button>
+              ))}
+
+              {/* Next */}
+              <button
+                onClick={() => setPage((p) => Math.min(pages, p + 1))}
+                disabled={page === pages}
+                className="w-7 h-7 rounded-lg border border-slate-200 flex items-center justify-center text-slate-500 hover:bg-slate-50 disabled:opacity-40 disabled:cursor-not-allowed transition"
+              >
+                <ChevronRight size={14} />
+              </button>
+            </div>
           </div>
         )}
       </div>
 
-      {/* Modal */}
+      {/* ── Modal ──────────────────────────────────────────────────────────── */}
       {modalOpen && (
         <ProductFormModal
+          key={editingProduct?._id ?? "new"}
           product={editingProduct}
           onSubmit={handleSubmit}
           onClose={handleClose}

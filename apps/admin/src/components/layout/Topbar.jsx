@@ -1,4 +1,4 @@
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Bell } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
 
@@ -8,11 +8,13 @@ const pageTitles = {
   "/products": "Products",
   "/users": "Users",
   "/analytics": "Analytics",
+  "/account": "Account",
 };
 
 export default function Topbar() {
   const { pathname } = useLocation();
   const { admin } = useAuth();
+  const navigate = useNavigate();
   const title = pageTitles[pathname] || "Dashboard";
 
   return (
@@ -28,9 +30,13 @@ export default function Topbar() {
         <button className="relative w-9 h-9 rounded-full border border-slate-200 flex items-center justify-center text-slate-500 hover:bg-slate-50 transition">
           <Bell size={16} />
         </button>
-        <div className="w-9 h-9 rounded-full bg-blue-600 flex items-center justify-center text-white text-xs font-bold">
+        {/* ✅ Clickable avatar */}
+        <button
+          onClick={() => navigate("/account")}
+          className="w-9 h-9 rounded-full bg-blue-600 flex items-center justify-center text-white text-xs font-bold hover:bg-blue-700 transition"
+        >
           {admin?.name?.[0]?.toUpperCase()}
-        </div>
+        </button>
       </div>
     </header>
   );

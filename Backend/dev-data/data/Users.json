@@ -1,0 +1,82 @@
+[
+  {
+    "_id": "000000000000000000000001",
+    "name": "Alice Johnson",
+    "email": "alice@test.com",
+    "password": "Test1234",
+    "passwordConfirm": "Test1234",
+    "role": "user"
+  },
+  {
+    "_id": "000000000000000000000002",
+    "name": "Bob Martinez",
+    "email": "bob@test.com",
+    "password": "Test1234",
+    "passwordConfirm": "Test1234",
+    "role": "user"
+  },
+  {
+    "_id": "000000000000000000000003",
+    "name": "Carol Smith",
+    "email": "carol@test.com",
+    "password": "Test1234",
+    "passwordConfirm": "Test1234",
+    "role": "user"
+  },
+  {
+    "_id": "000000000000000000000004",
+    "name": "David Kim",
+    "email": "david@test.com",
+    "password": "Test1234",
+    "passwordConfirm": "Test1234",
+    "role": "user"
+  },
+  {
+    "_id": "000000000000000000000005",
+    "name": "Emma Davis",
+    "email": "emma@test.com",
+    "password": "Test1234",
+    "passwordConfirm": "Test1234",
+    "role": "user"
+  },
+  {
+    "_id": "000000000000000000000006",
+    "name": "Frank Wilson",
+    "email": "frank@test.com",
+    "password": "Test1234",
+    "passwordConfirm": "Test1234",
+    "role": "user"
+  },
+  {
+    "_id": "000000000000000000000007",
+    "name": "Grace Lee",
+    "email": "grace@test.com",
+    "password": "Test1234",
+    "passwordConfirm": "Test1234",
+    "role": "user"
+  },
+  {
+    "_id": "000000000000000000000008",
+    "name": "Henry Brown",
+    "email": "henry@test.com",
+    "password": "Test1234",
+    "passwordConfirm": "Test1234",
+    "role": "user"
+  },
+  {
+    "_id": "000000000000000000000009",
+    "name": "Isabel Garcia",
+    "email": "isabel@test.com",
+    "password": "Test1234",
+    "passwordConfirm": "Test1234",
+    "role": "user"
+  },
+  {
+    "_id": "000000000000000000000010",
+    "name": "James Taylor",
+    "email": "james@test.com",
+    "password": "Test1234",
+    "passwordConfirm": "Test1234",
+    "role": "user"
+  }
+]

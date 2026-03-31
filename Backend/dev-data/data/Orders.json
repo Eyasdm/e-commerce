@@ -1,0 +1,552 @@
+[
+  {
+    "user": "000000000000000000000001",
+    "items": [
+      {
+        "name": "Bose QuietComfort 45",
+        "image": "/products/headphones/headphone-2.png",
+        "price": 279,
+        "quantity": 1
+      },
+      {
+        "name": "Anker 20W USB-C Charger",
+        "image": "/products/chargers/charger-1.png",
+        "price": 25,
+        "quantity": 2
+      }
+    ],
+    "shippingAddress": {
+      "fullName": "Alice Johnson",
+      "address": "12 Oak Street",
+      "city": "New York",
+      "postalCode": "10001",
+      "country": "US"
+    },
+    "paymentMethod": "stripe",
+    "totalPrice": 329,
+    "isPaid": true,
+    "paidAt": "2026-03-24T09:15:00.000Z",
+    "status": "delivered",
+    "createdAt": "2026-03-24T08:50:00.000Z"
+  },
+  {
+    "user": "000000000000000000000002",
+    "items": [
+      {
+        "name": "Sony WH-1000XM5",
+        "image": "/products/headphones/headphone-1.png",
+        "price": 299,
+        "quantity": 1
+      }
+    ],
+    "shippingAddress": {
+      "fullName": "Bob Martinez",
+      "address": "88 Elm Ave",
+      "city": "Los Angeles",
+      "postalCode": "90001",
+      "country": "US"
+    },
+    "paymentMethod": "stripe",
+    "totalPrice": 299,
+    "isPaid": true,
+    "paidAt": "2026-03-24T14:30:00.000Z",
+    "status": "shipped",
+    "createdAt": "2026-03-24T14:00:00.000Z"
+  },
+  {
+    "user": "000000000000000000000003",
+    "items": [
+      {
+        "name": "Logitech G733 Wireless",
+        "image": "/products/headphones/headphone-3.png",
+        "price": 199,
+        "quantity": 1
+      },
+      {
+        "name": "Ugreen Fast Charger 30W",
+        "image": "/products/chargers/charger-2.png",
+        "price": 29,
+        "quantity": 1
+      }
+    ],
+    "shippingAddress": {
+      "fullName": "Carol Smith",
+      "address": "5 Pine Road",
+      "city": "Chicago",
+      "postalCode": "60601",
+      "country": "US"
+    },
+    "paymentMethod": "paypal",
+    "totalPrice": 228,
+    "isPaid": true,
+    "paidAt": "2026-03-25T10:00:00.000Z",
+    "status": "delivered",
+    "createdAt": "2026-03-25T09:30:00.000Z"
+  },
+  {
+    "user": "000000000000000000000004",
+    "items": [
+      {
+        "name": "Anker PowerCore 10000",
+        "image": "/products/powerbanks/powerbank-1.png",
+        "price": 45,
+        "quantity": 3
+      }
+    ],
+    "shippingAddress": {
+      "fullName": "David Kim",
+      "address": "200 Maple Blvd",
+      "city": "Houston",
+      "postalCode": "77001",
+      "country": "US"
+    },
+    "paymentMethod": "stripe",
+    "totalPrice": 135,
+    "isPaid": true,
+    "paidAt": "2026-03-25T16:45:00.000Z",
+    "status": "delivered",
+    "createdAt": "2026-03-25T16:20:00.000Z"
+  },
+  {
+    "user": "000000000000000000000005",
+    "items": [
+      {
+        "name": "Samsung Super Fast Charger",
+        "image": "/products/chargers/charger-3.png",
+        "price": 45,
+        "quantity": 1
+      },
+      {
+        "name": "Xiaomi Mi Power Bank 10000",
+        "image": "/products/powerbanks/powerbank-2.png",
+        "price": 35,
+        "quantity": 2
+      }
+    ],
+    "shippingAddress": {
+      "fullName": "Emma Davis",
+      "address": "77 Cedar Lane",
+      "city": "Phoenix",
+      "postalCode": "85001",
+      "country": "US"
+    },
+    "paymentMethod": "stripe",
+    "totalPrice": 115,
+    "isPaid": false,
+    "status": "pending",
+    "createdAt": "2026-03-25T20:10:00.000Z"
+  },
+  {
+    "user": "000000000000000000000006",
+    "items": [
+      {
+        "name": "JBL Tune 760NC",
+        "image": "/products/headphones/headphone-4.png",
+        "price": 149,
+        "quantity": 2
+      }
+    ],
+    "shippingAddress": {
+      "fullName": "Frank Wilson",
+      "address": "33 Birch St",
+      "city": "Philadelphia",
+      "postalCode": "19101",
+      "country": "US"
+    },
+    "paymentMethod": "paypal",
+    "totalPrice": 298,
+    "isPaid": true,
+    "paidAt": "2026-03-26T08:00:00.000Z",
+    "status": "paid",
+    "createdAt": "2026-03-26T07:40:00.000Z"
+  },
+  {
+    "user": "000000000000000000000007",
+    "items": [
+      {
+        "name": "Bose QuietComfort 45",
+        "image": "/products/headphones/headphone-2.png",
+        "price": 279,
+        "quantity": 1
+      },
+      {
+        "name": "Samsung Super Fast Charger",
+        "image": "/products/chargers/charger-3.png",
+        "price": 45,
+        "quantity": 1
+      }
+    ],
+    "shippingAddress": {
+      "fullName": "Grace Lee",
+      "address": "9 Willow Way",
+      "city": "San Antonio",
+      "postalCode": "78201",
+      "country": "US"
+    },
+    "paymentMethod": "stripe",
+    "totalPrice": 324,
+    "isPaid": true,
+    "paidAt": "2026-03-26T13:20:00.000Z",
+    "status": "shipped",
+    "createdAt": "2026-03-26T13:00:00.000Z"
+  },
+  {
+    "user": "000000000000000000000008",
+    "items": [
+      {
+        "name": "Anker Soundcore Life Q30",
+        "image": "/products/headphones/headphone-5.png",
+        "price": 129,
+        "quantity": 1
+      },
+      {
+        "name": "Ugreen Fast Charger 30W",
+        "image": "/products/chargers/charger-2.png",
+        "price": 29,
+        "quantity": 2
+      }
+    ],
+    "shippingAddress": {
+      "fullName": "Henry Brown",
+      "address": "456 Spruce Ave",
+      "city": "San Diego",
+      "postalCode": "92101",
+      "country": "US"
+    },
+    "paymentMethod": "stripe",
+    "totalPrice": 187,
+    "isPaid": true,
+    "paidAt": "2026-03-26T18:00:00.000Z",
+    "status": "delivered",
+    "createdAt": "2026-03-26T17:30:00.000Z"
+  },
+  {
+    "user": "000000000000000000000009",
+    "items": [
+      {
+        "name": "Sony WH-1000XM5",
+        "image": "/products/headphones/headphone-1.png",
+        "price": 299,
+        "quantity": 1
+      },
+      {
+        "name": "Anker PowerCore 10000",
+        "image": "/products/powerbanks/powerbank-1.png",
+        "price": 45,
+        "quantity": 1
+      }
+    ],
+    "shippingAddress": {
+      "fullName": "Isabel Garcia",
+      "address": "2 Chestnut Pl",
+      "city": "Dallas",
+      "postalCode": "75201",
+      "country": "US"
+    },
+    "paymentMethod": "stripe",
+    "totalPrice": 344,
+    "isPaid": true,
+    "paidAt": "2026-03-27T09:00:00.000Z",
+    "status": "delivered",
+    "createdAt": "2026-03-27T08:30:00.000Z"
+  },
+  {
+    "user": "000000000000000000000010",
+    "items": [
+      {
+        "name": "Logitech G733 Wireless",
+        "image": "/products/headphones/headphone-3.png",
+        "price": 199,
+        "quantity": 2
+      }
+    ],
+    "shippingAddress": {
+      "fullName": "James Taylor",
+      "address": "100 Walnut Dr",
+      "city": "San Jose",
+      "postalCode": "95101",
+      "country": "US"
+    },
+    "paymentMethod": "paypal",
+    "totalPrice": 398,
+    "isPaid": true,
+    "paidAt": "2026-03-27T12:45:00.000Z",
+    "status": "shipped",
+    "createdAt": "2026-03-27T12:00:00.000Z"
+  },
+  {
+    "user": "000000000000000000000001",
+    "items": [
+      {
+        "name": "Anker 20W USB-C Charger",
+        "image": "/products/chargers/charger-1.png",
+        "price": 25,
+        "quantity": 4
+      }
+    ],
+    "shippingAddress": {
+      "fullName": "Alice Johnson",
+      "address": "12 Oak Street",
+      "city": "New York",
+      "postalCode": "10001",
+      "country": "US"
+    },
+    "paymentMethod": "stripe",
+    "totalPrice": 100,
+    "isPaid": true,
+    "paidAt": "2026-03-27T15:00:00.000Z",
+    "status": "delivered",
+    "createdAt": "2026-03-27T14:40:00.000Z"
+  },
+  {
+    "user": "000000000000000000000002",
+    "items": [
+      {
+        "name": "JBL Tune 760NC",
+        "image": "/products/headphones/headphone-4.png",
+        "price": 149,
+        "quantity": 1
+      },
+      {
+        "name": "Xiaomi Mi Power Bank 10000",
+        "image": "/products/powerbanks/powerbank-2.png",
+        "price": 35,
+        "quantity": 1
+      }
+    ],
+    "shippingAddress": {
+      "fullName": "Bob Martinez",
+      "address": "88 Elm Ave",
+      "city": "Los Angeles",
+      "postalCode": "90001",
+      "country": "US"
+    },
+    "paymentMethod": "stripe",
+    "totalPrice": 184,
+    "isPaid": false,
+    "status": "cancelled",
+    "createdAt": "2026-03-27T19:00:00.000Z"
+  },
+  {
+    "user": "000000000000000000000003",
+    "items": [
+      {
+        "name": "Bose QuietComfort 45",
+        "image": "/products/headphones/headphone-2.png",
+        "price": 279,
+        "quantity": 1
+      },
+      {
+        "name": "Anker Soundcore Life Q30",
+        "image": "/products/headphones/headphone-5.png",
+        "price": 129,
+        "quantity": 1
+      }
+    ],
+    "shippingAddress": {
+      "fullName": "Carol Smith",
+      "address": "5 Pine Road",
+      "city": "Chicago",
+      "postalCode": "60601",
+      "country": "US"
+    },
+    "paymentMethod": "paypal",
+    "totalPrice": 408,
+    "isPaid": true,
+    "paidAt": "2026-03-28T08:00:00.000Z",
+    "status": "paid",
+    "createdAt": "2026-03-28T07:30:00.000Z"
+  },
+  {
+    "user": "000000000000000000000004",
+    "items": [
+      {
+        "name": "Samsung Super Fast Charger",
+        "image": "/products/chargers/charger-3.png",
+        "price": 45,
+        "quantity": 2
+      },
+      {
+        "name": "Ugreen Fast Charger 30W",
+        "image": "/products/chargers/charger-2.png",
+        "price": 29,
+        "quantity": 3
+      }
+    ],
+    "shippingAddress": {
+      "fullName": "David Kim",
+      "address": "200 Maple Blvd",
+      "city": "Houston",
+      "postalCode": "77001",
+      "country": "US"
+    },
+    "paymentMethod": "stripe",
+    "totalPrice": 177,
+    "isPaid": true,
+    "paidAt": "2026-03-28T11:30:00.000Z",
+    "status": "shipped",
+    "createdAt": "2026-03-28T11:00:00.000Z"
+  },
+  {
+    "user": "000000000000000000000005",
+    "items": [
+      {
+        "name": "Sony WH-1000XM5",
+        "image": "/products/headphones/headphone-1.png",
+        "price": 299,
+        "quantity": 1
+      }
+    ],
+    "shippingAddress": {
+      "fullName": "Emma Davis",
+      "address": "77 Cedar Lane",
+      "city": "Phoenix",
+      "postalCode": "85001",
+      "country": "US"
+    },
+    "paymentMethod": "stripe",
+    "totalPrice": 299,
+    "isPaid": true,
+    "paidAt": "2026-03-28T16:00:00.000Z",
+    "status": "delivered",
+    "createdAt": "2026-03-28T15:30:00.000Z"
+  },
+  {
+    "user": "000000000000000000000006",
+    "items": [
+      {
+        "name": "Anker PowerCore 10000",
+        "image": "/products/powerbanks/powerbank-1.png",
+        "price": 45,
+        "quantity": 2
+      },
+      {
+        "name": "Logitech G733 Wireless",
+        "image": "/products/headphones/headphone-3.png",
+        "price": 199,
+        "quantity": 1
+      }
+    ],
+    "shippingAddress": {
+      "fullName": "Frank Wilson",
+      "address": "33 Birch St",
+      "city": "Philadelphia",
+      "postalCode": "19101",
+      "country": "US"
+    },
+    "paymentMethod": "paypal",
+    "totalPrice": 289,
+    "isPaid": true,
+    "paidAt": "2026-03-29T09:15:00.000Z",
+    "status": "paid",
+    "createdAt": "2026-03-29T09:00:00.000Z"
+  },
+  {
+    "user": "000000000000000000000007",
+    "items": [
+      {
+        "name": "Bose QuietComfort 45",
+        "image": "/products/headphones/headphone-2.png",
+        "price": 279,
+        "quantity": 2
+      }
+    ],
+    "shippingAddress": {
+      "fullName": "Grace Lee",
+      "address": "9 Willow Way",
+      "city": "San Antonio",
+      "postalCode": "78201",
+      "country": "US"
+    },
+    "paymentMethod": "stripe",
+    "totalPrice": 558,
+    "isPaid": true,
+    "paidAt": "2026-03-29T13:00:00.000Z",
+    "status": "shipped",
+    "createdAt": "2026-03-29T12:30:00.000Z"
+  },
+  {
+    "user": "000000000000000000000008",
+    "items": [
+      {
+        "name": "JBL Tune 760NC",
+        "image": "/products/headphones/headphone-4.png",
+        "price": 149,
+        "quantity": 1
+      },
+      {
+        "name": "Anker 20W USB-C Charger",
+        "image": "/products/chargers/charger-1.png",
+        "price": 25,
+        "quantity": 3
+      }
+    ],
+    "shippingAddress": {
+      "fullName": "Henry Brown",
+      "address": "456 Spruce Ave",
+      "city": "San Diego",
+      "postalCode": "92101",
+      "country": "US"
+    },
+    "paymentMethod": "stripe",
+    "totalPrice": 224,
+    "isPaid": true,
+    "paidAt": "2026-03-29T17:30:00.000Z",
+    "status": "delivered",
+    "createdAt": "2026-03-29T17:00:00.000Z"
+  },
+  {
+    "user": "000000000000000000000009",
+    "items": [
+      {
+        "name": "Xiaomi Mi Power Bank 10000",
+        "image": "/products/powerbanks/powerbank-2.png",
+        "price": 35,
+        "quantity": 2
+      },
+      {
+        "name": "Samsung Super Fast Charger",
+        "image": "/products/chargers/charger-3.png",
+        "price": 45,
+        "quantity": 1
+      }
+    ],
+    "shippingAddress": {
+      "fullName": "Isabel Garcia",
+      "address": "2 Chestnut Pl",
+      "city": "Dallas",
+      "postalCode": "75201",
+      "country": "US"
+    },
+    "paymentMethod": "paypal",
+    "totalPrice": 115,
+    "isPaid": true,
+    "paidAt": "2026-03-30T08:30:00.000Z",
+    "status": "delivered",
+    "createdAt": "2026-03-30T08:00:00.000Z"
+  },
+  {
+    "user": "000000000000000000000010",
+    "items": [
+      {
+        "name": "Anker Soundcore Life Q30",
+        "image": "/products/headphones/headphone-5.png",
+        "price": 129,
+        "quantity": 3
+      }
+    ],
+    "shippingAddress": {
+      "fullName": "James Taylor",
+      "address": "100 Walnut Dr",
+      "city": "San Jose",
+      "postalCode": "95101",
+      "country": "US"
+    },
+    "paymentMethod": "stripe",
+    "totalPrice": 387,
+    "isPaid": true,
+    "paidAt": "2026-03-30T14:00:00.000Z",
+    "status": "paid",
+    "createdAt": "2026-03-30T13:30:00.000Z"
+  }
+]

@@ -19,7 +19,8 @@ export function AuthProvider({ children }) {
 
   const checkAuth = useCallback(() => {
     setLoading(true);
-    fetch("http://localhost:8000/api/v1/auth/me", {
+    return fetch("http://localhost:8000/api/v1/auth/me", {
+      // 👈 return the promise
       credentials: "include",
     })
       .then((res) => {
@@ -30,10 +31,12 @@ export function AuthProvider({ children }) {
         const userData = data?.data?.user || data?.user || data;
         setUser(userData);
         setIsAuthenticated(true);
+        return userData; // 👈 return user so LoginForm can read role
       })
       .catch(() => {
         setUser(null);
         setIsAuthenticated(false);
+        return null; //  return null on failure
       })
       .finally(() => setLoading(false));
   }, []);
