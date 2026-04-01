@@ -10,7 +10,7 @@ const pageTitles = {
   "/admin/products": "Products",
   "/admin/users": "Users",
   "/admin/analytics": "Analytics",
-  "/account": "Account",
+  "/admin/account": "Account",
 };
 
 export default function Topbar() {
