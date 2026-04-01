@@ -31,7 +31,7 @@ export default function LoginForm({ onForgot }) {
 
       // 👇 Admin goes to dashboard, everyone else stays on store
       if (user?.role === "admin") {
-        window.location.href = "http://localhost:5173";
+        router.push("/admin/overview");
       } else {
         router.push("/");
       }

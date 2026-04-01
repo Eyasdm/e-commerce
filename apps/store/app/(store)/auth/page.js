@@ -1,0 +1,17 @@
+import AuthCard from "../../../components/auth/AuthCard";
+import LeftPanel from "../../../components/auth/LeftPanel";
+
+export default function AuthPage() {
+  return (
+    <div className="min-h-screen flex flex-col bg-slate-100">
+      <div className="flex flex-1">
+        <LeftPanel />
+
+        {/* Right panel */}
+        <div className="flex-1 flex items-center justify-center pt-10">
+          <AuthCard />
+        </div>
+      </div>
+    </div>
+  );
+}

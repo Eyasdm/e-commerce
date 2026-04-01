@@ -17,9 +17,11 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
   const queryClient = useQueryClient();
 
+  const API = process.env.NEXT_PUBLIC_API_URL;
+
   const checkAuth = useCallback(() => {
     setLoading(true);
-    return fetch("http://localhost:8000/api/v1/auth/me", {
+    return fetch(`${API}/auth/me`, {
       // 👈 return the promise
       credentials: "include",
     })
@@ -46,7 +48,7 @@ export function AuthProvider({ children }) {
   }, []);
 
   const clearAuth = () => {
-    fetch("http://localhost:8000/api/v1/auth/logout", {
+    fetch(`${API}/auth/logout`, {
       method: "POST",
       credentials: "include",
     })
