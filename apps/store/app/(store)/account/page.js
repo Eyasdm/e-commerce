@@ -18,6 +18,7 @@ import {
   Pencil,
   Shield,
   X,
+  LayoutDashboard,
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -263,6 +264,19 @@ export default function AccountPage() {
             </div>
           </div>
         </div>
+
+        {/* Go to Dashboard — only for admins */}
+        {user?.role === "admin" && (
+          <div className="mt-4 pt-4 border-t border-slate-100">
+            <Link
+              href="/admin/overview"
+              className="flex items-center gap-2 text-sm text-slate-500 hover:text-blue-600 transition font-medium"
+            >
+              <LayoutDashboard size={14} />
+              Go to Dashboard
+            </Link>
+          </div>
+        )}
 
         {/* ── Orders Summary ────────────────────────────────────────────────── */}
         <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-6">
