@@ -52,7 +52,11 @@ app.use(
 );
 app.use(
   cors({
-    origin: ["http://localhost:3000", "http://localhost:5173"],
+    origin: [
+      "http://localhost:3000",
+      "http://localhost:5173",
+      "https://e-commerce-eyasdms-projects.vercel.app",
+    ],
     credentials: true,
   }),
 );
