@@ -12,7 +12,7 @@ const nextConfig = {
     return [
       {
         source: "/api/v1/chat",
-        destination: "http://localhost:8000/api/v1/chat",
+        destination: "https://technest-cnxo.onrender.com/api/v1/chat",
       },
     ];
   },
@@ -24,8 +24,12 @@ const nextConfig = {
         port: "8000",
         pathname: "/products/**",
       },
+      {
+        protocol: "https",
+        hostname: "technest-cnxo.onrender.com",
+        pathname: "/products/**",
+      },
     ],
-    dangerouslyAllowLocalIP: true,
   },
 };
 
