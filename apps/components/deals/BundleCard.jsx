@@ -35,7 +35,7 @@ export function BundleCard({ bundle }) {
       {/* Image */}
       <div className="relative w-16 h-16 rounded-xl bg-slate-50 shrink-0 overflow-hidden">
         <img
-          src={`${process.env.NEXT_PUBLIC_API_URL}${bundle.image}`}
+          src={`${process.env.NEXT_BASE_API_URL}${bundle.image}`}
           alt={bundle.name}
           className="w-full h-full object-contain "
         />

@@ -18,7 +18,7 @@ export function FlashDealCard({ deal }) {
   const { data: cart = [] } = useCart();
   const router = useRouter();
 
-  const imageUrl = `${process.env.NEXT_PUBLIC_API_URL}${deal.image}`;
+  const imageUrl = `${process.env.NEXT_BASE_API_URL}${deal.image}`;
   const productId = deal.id || deal._id;
 
   const alreadyInCart = cart.some((item) => item.productId === productId);
