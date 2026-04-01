@@ -12,6 +12,7 @@ export default function Footer() {
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState("idle"); // "idle" | "loading" | "success" | "error"
   const [message, setMessage] = useState("");
+  console.log("test");
 
   const handleSubscribe = async () => {
     if (!email.trim()) return;

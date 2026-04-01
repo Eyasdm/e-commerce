@@ -80,6 +80,7 @@ export default function HeroSlider() {
   const [current, setCurrent] = useState(0);
   const [animating, setAnimating] = useState(false);
   const [direction, setDirection] = useState("right");
+  console.log("test");
 
   const goTo = useCallback(
     (index, dir = "right") => {
@@ -112,7 +113,7 @@ export default function HeroSlider() {
 
   return (
     <>
-      {/* ═══════════════════ HERO ══════════════════ */}
+      {/* ═══════════════════ HERO ════════════════ */}
       <section
         className="relative overflow-hidden"
         style={{ minHeight: "560px" }}
