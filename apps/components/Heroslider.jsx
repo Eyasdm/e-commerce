@@ -15,7 +15,7 @@ import {
   BatteryCharging,
 } from "lucide-react";
 
-// ── Slide data ─────────────────────────────────────────────────────────────────
+// ── Slide data ───────────────────────────────────────────────────────────────
 const SLIDES = [
   {
     id: "accessories",
@@ -112,7 +112,7 @@ export default function HeroSlider() {
 
   return (
     <>
-      {/* ═══════════════════ HERO ═══════════════════ */}
+      {/* ═══════════════════ HERO ══════════════════ */}
       <section
         className="relative overflow-hidden"
         style={{ minHeight: "560px" }}
