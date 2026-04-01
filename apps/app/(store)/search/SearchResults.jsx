@@ -8,7 +8,7 @@ import ProductCard from "@/components/products/ProductCard";
 import ProductCardSkeleton from "@/components/products/ProductCardSkeleton";
 import ActiveFilters from "@/components/products/ActiveFilters";
 import SidebarFilters from "@/components/products/SidebarFilters";
-import SortDropdown from "./SortDropdown";
+import SortDropdown from "@/components/products/SortDropdown";
 import { PageError } from "@/components/ErrorStates";
 
 export default function SearchResults() {
