@@ -17,6 +17,10 @@ const geistMono = Geist_Mono({
 export const metadata = {
   title: "TechNest",
   description: "Premium tech accessories, delivered.",
+  icons: {
+    icon: "/logo-without-background.png",
+    apple: "/logo-without-background.png",
+  },
 };
 
 export default function RootLayout({ children }) {
