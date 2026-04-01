@@ -21,7 +21,7 @@ export default function ProductCard({
   reviews = 109,
   discount,
 }) {
-  const imageUrl = `http://localhost:8000${image}`;
+  const imageUrl = `${proccess.env.NEXT_PUBLIC_API_URL}${image}`;
   const { isAuthenticated } = useAuth();
   const { mutate: addToCart, isPending } = useAddToCart();
   const { data: cart = [] } = useCart();
