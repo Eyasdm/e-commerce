@@ -15,7 +15,7 @@ export default function CartItem({ item }) {
   const { mutate: updateItem, isPending: isUpdating } = useUpdateCartItem();
   const { mutate: removeItem, isPending: isRemoving } = useRemoveCartItem();
 
-  const imageUrl = `${proccess.env.NEXT_PUBLIC_API_URL}${item.image}`;
+  const imageUrl = `${process.env.NEXT_PUBLIC_API_URL}${item.image}`;
   const total = item.price * item.quantity;
   const hasDiscount = item.discount && item.discount > 0;
   const originalPrice = hasDiscount

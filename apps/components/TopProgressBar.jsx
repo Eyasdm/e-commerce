@@ -54,7 +54,7 @@ export default function TopProgressBar() {
 
   return (
     <div
-      className="fixed top-0 left-0 z-[9999] h-[3px] bg-gradient-to-r from-blue-500 via-blue-400 to-blue-600 shadow-[0_0_8px_rgba(59,130,246,0.6)] transition-all duration-200 ease-out"
+      className="fixed top-0 left-0 z-9999 h-0.75 bg-linear-to-r from-blue-500 via-blue-400 to-blue-600 shadow-[0_0_8px_rgba(59,130,246,0.6)] transition-all duration-200 ease-out"
       style={{ width: `${progress}%` }}
     />
   );

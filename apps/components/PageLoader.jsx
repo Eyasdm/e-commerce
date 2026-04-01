@@ -22,7 +22,7 @@ export default function PageLoader({ isLoading }) {
 
   return (
     <div
-      className={`fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-white transition-opacity duration-500 ${
+      className={`fixed inset-0 z-9999 flex flex-col items-center justify-center bg-white transition-opacity duration-500 ${
         fading ? "opacity-0" : "opacity-100"
       }`}
     >
@@ -35,7 +35,7 @@ export default function PageLoader({ isLoading }) {
         {/* Inner pulse ring */}
         <span className="absolute w-14 h-14 rounded-full bg-blue-50 animate-[ping_1.8s_ease-in-out_infinite] opacity-60" />
         {/* Logo box */}
-        <div className="relative z-10 w-12 h-12 rounded-xl bg-gradient-to-br from-blue-600 to-blue-400 flex items-center justify-center shadow-lg shadow-blue-200 text-2xl select-none">
+        <div className="relative z-10 w-12 h-12 rounded-xl bg-linear-to-br from-blue-600 to-blue-400 flex items-center justify-center shadow-lg shadow-blue-200 text-2xl select-none">
           📦
         </div>
       </div>
@@ -47,14 +47,23 @@ export default function PageLoader({ isLoading }) {
 
       {/* Progress bar */}
       <div className="w-40 h-1 bg-slate-100 rounded-full overflow-hidden mt-3">
-        <div className="h-full bg-gradient-to-r from-blue-500 to-blue-400 rounded-full animate-[progress_1.4s_ease-in-out_infinite]" />
+        <div className="h-full bg-linear-to-r from-blue-500 to-blue-400 rounded-full animate-[progress_1.4s_ease-in-out_infinite]" />
       </div>
 
       <style jsx>{`
         @keyframes progress {
-          0%   { width: 0%;   margin-left: 0%; }
-          50%  { width: 70%;  margin-left: 15%; }
-          100% { width: 0%;   margin-left: 100%; }
+          0% {
+            width: 0%;
+            margin-left: 0%;
+          }
+          50% {
+            width: 70%;
+            margin-left: 15%;
+          }
+          100% {
+            width: 0%;
+            margin-left: 100%;
+          }
         }
       `}</style>
     </div>
