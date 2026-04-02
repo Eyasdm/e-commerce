@@ -116,7 +116,7 @@ export default function AccountPage() {
     if (!loading && !isAuthenticated) {
       router.push("/auth");
     }
-  }, [loading, isAuthenticated]);
+  }, [loading, isAuthenticated, router]);
 
   // ── Loading state — show skeleton instead of a spinner ──────────────────────
   if (loading || !user) return <AccountSkeleton />;

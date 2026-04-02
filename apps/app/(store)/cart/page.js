@@ -7,32 +7,51 @@ import { useCart } from "@/lib/hooks/cart/useCart";
 import PageLoader from "@/components/PageLoader";
 import { PageError } from "@/components/ErrorStates";
 import { CartItemSkeleton, OrderSummarySkeleton } from "@/components/Skeletons";
+import { useAuth } from "@/context/AuthContext";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+
+function CartSkeleton() {
+  return (
+    <main className="max-w-7xl mx-auto px-6 py-10">
+      <div className="mb-10">
+        <div className="h-8 w-40 bg-slate-100 rounded-lg animate-pulse mb-2" />
+        <div className="h-4 w-24 bg-slate-100 rounded animate-pulse" />
+      </div>
+      <div className="grid lg:grid-cols-[2fr_1fr] gap-10">
+        <div className="space-y-4">
+          {[...Array(3)].map((_, i) => (
+            <CartItemSkeleton key={i} />
+          ))}
+        </div>
+        <OrderSummarySkeleton />
+      </div>
+    </main>
+  );
+}
 
 export default function CartPage() {
+  const { isAuthenticated, loading: authLoading } = useAuth();
+  const router = useRouter();
   const { data: cart = [], isLoading, isError, error, refetch } = useCart();
 
-  // ── Full-screen branded loader on first fetch ────────────────────────────────
+  // ── Auth guard — wait for auth check before redirecting ─────────────────────
+  useEffect(() => {
+    if (!authLoading && !isAuthenticated) {
+      router.push("/auth");
+    }
+  }, [authLoading, isAuthenticated, router]);
+
+  // ── Show skeleton while auth is resolving OR cart is loading ────────────────
+  if (authLoading || (!isAuthenticated && !authLoading)) {
+    return <CartSkeleton />;
+  }
+
   if (isLoading) {
     return (
       <>
         <PageLoader isLoading={true} />
-
-        {/* Skeleton layout underneath so there's no jump when data arrives */}
-        <main className="max-w-7xl mx-auto px-6 py-10">
-          <div className="mb-10">
-            <div className="h-8 w-40 bg-slate-100 rounded-lg animate-pulse mb-2" />
-            <div className="h-4 w-24 bg-slate-100 rounded animate-pulse" />
-          </div>
-
-          <div className="grid lg:grid-cols-[2fr_1fr] gap-10">
-            <div className="space-y-4">
-              {[...Array(3)].map((_, i) => (
-                <CartItemSkeleton key={i} />
-              ))}
-            </div>
-            <OrderSummarySkeleton />
-          </div>
-        </main>
+        <CartSkeleton />
       </>
     );
   }
@@ -45,15 +64,12 @@ export default function CartPage() {
   // ── Happy path ───────────────────────────────────────────────────────────────
   return (
     <main className="max-w-7xl mx-auto px-6 py-10">
-      {/* Header */}
       <div className="mb-10">
         <h1 className="text-3xl font-bold">Your Cart</h1>
         <p className="text-muted-foreground">Home / Cart</p>
       </div>
 
-      {/* Cart Layout */}
       <div className="grid lg:grid-cols-[2fr_1fr] gap-10">
-        {/* Cart Items */}
         <div className="space-y-4">
           {cart.length === 0 ? (
             <p className="text-muted-foreground">Your cart is empty</p>
@@ -61,12 +77,9 @@ export default function CartPage() {
             cart.map((item, i) => <CartItem key={item.id || i} item={item} />)
           )}
         </div>
-
-        {/* Order Summary */}
         <OrderSummary cart={cart} />
       </div>
 
-      {/* Recommended */}
       <div className="mt-16">
         <h2 className="text-xl font-semibold mb-6">You May Also Like</h2>
         <Recommended />
