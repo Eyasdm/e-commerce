@@ -217,7 +217,7 @@ export default function OrderDetailPage() {
             >
               <div className="relative w-16 h-16 rounded-xl bg-slate-50 border border-slate-100 shrink-0 overflow-hidden">
                 <Image
-                  src={`http://localhost:8000${item.image}`}
+                  src={`${process.env.NEXT_PUBLIC_BASE_API_URL}${item.image}`}
                   alt={item.name}
                   fill
                   className="object-contain"

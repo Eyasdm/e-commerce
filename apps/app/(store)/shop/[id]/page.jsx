@@ -29,7 +29,10 @@ export default function ProductPage() {
 
   const productId = product?.id || product?._id;
   const alreadyInCart = cart.some((item) => item.productId === productId);
-  const imageUrl = product ? `http://localhost:8000${product.image}` : null;
+
+  const imageUrl = product
+    ? `${process.env.NEXT_PUBLIC_BASE_API_URL}${product.image}`
+    : null;
 
   const handleAddToCart = () => {
     if (!isAuthenticated) {

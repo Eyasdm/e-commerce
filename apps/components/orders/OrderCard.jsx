@@ -39,7 +39,7 @@ export default function OrderCard({ order, statusColors }) {
             className="w-14 h-14 rounded-xl border border-slate-100 bg-slate-50 overflow-hidden shrink-0 relative"
           >
             <Image
-              src={`${process.env.NEXT_BASE_API_URL}${item.image}`}
+              src={`${process.env.NEXT_PUBLIC_BASE_API_URL}${item.image}`}
               alt={item.name}
               fill
               className="object-contain "
