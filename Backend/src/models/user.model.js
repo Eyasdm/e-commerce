@@ -29,22 +29,25 @@ const userSchema = new mongoose.Schema(
 
     password: {
       type: String,
-      required: [true, "Please provide your password"],
-      minlength: 6,
+      required: function () {
+        return !this.googleId; // only required if NOT a Google user
+      },
       select: false,
+      minlength: 8,
     },
 
     passwordConfirm: {
       type: String,
-      required: [true, "Please confirm your password"],
+      required: function () {
+        return !this.googleId; // only required if NOT a Google user
+      },
       validate: {
-        validator: function (el) {
-          return el === this.password;
+        validator: function (val) {
+          return !this.googleId ? val === this.password : true;
         },
-        message: "Passwords are not the same!",
+        message: "Passwords do not match",
       },
     },
-
     passwordChangedAt: Date,
     refreshToken: String,
     passwordResetToken: String,

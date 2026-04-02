@@ -227,7 +227,7 @@ export const googleCallback = async (req, res) => {
 
     return res.redirect(redirectUrl);
   } catch (err) {
-    console.error(err);
+    console.error("GOOGLE CALLBACK ERROR:", err.message);
     return res.redirect(`${process.env.CLIENT_URL}/auth?error=server_error`);
   }
 };
