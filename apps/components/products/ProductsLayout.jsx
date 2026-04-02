@@ -77,7 +77,7 @@ export default function ProductsLayout({ category }) {
 
       <div className="grid grid-cols-12 gap-8 mt-8">
         {/* Sidebar */}
-        <div className="col-span-3">
+        <div className="lg:col-span-3">
           <SidebarFilters />
         </div>
 

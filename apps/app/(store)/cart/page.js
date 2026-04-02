@@ -13,12 +13,12 @@ import { useEffect } from "react";
 
 function CartSkeleton() {
   return (
-    <main className="max-w-7xl mx-auto px-6 py-10">
+    <main className="max-w-7xl mx-auto px-4 sm:px-6 py-10">
       <div className="mb-10">
         <div className="h-8 w-40 bg-slate-100 rounded-lg animate-pulse mb-2" />
         <div className="h-4 w-24 bg-slate-100 rounded animate-pulse" />
       </div>
-      <div className="grid lg:grid-cols-[2fr_1fr] gap-10">
+      <div className="flex flex-col lg:grid lg:grid-cols-[2fr_1fr] gap-6 lg:gap-10">
         <div className="space-y-4">
           {[...Array(3)].map((_, i) => (
             <CartItemSkeleton key={i} />
@@ -35,17 +35,12 @@ export default function CartPage() {
   const router = useRouter();
   const { data: cart = [], isLoading, isError, error, refetch } = useCart();
 
-  // ── Auth guard — wait for auth check before redirecting ─────────────────────
   useEffect(() => {
-    if (!authLoading && !isAuthenticated) {
-      router.push("/auth");
-    }
+    if (!authLoading && !isAuthenticated) router.push("/auth");
   }, [authLoading, isAuthenticated, router]);
 
-  // ── Show skeleton while auth is resolving OR cart is loading ────────────────
-  if (authLoading || (!isAuthenticated && !authLoading)) {
+  if (authLoading || (!isAuthenticated && !authLoading))
     return <CartSkeleton />;
-  }
 
   if (isLoading) {
     return (
@@ -56,28 +51,30 @@ export default function CartPage() {
     );
   }
 
-  // ── Page-level error ─────────────────────────────────────────────────────────
-  if (isError) {
-    return <PageError error={error} onRetry={refetch} />;
-  }
+  if (isError) return <PageError error={error} onRetry={refetch} />;
 
-  // ── Happy path ───────────────────────────────────────────────────────────────
   return (
-    <main className="max-w-7xl mx-auto px-6 py-10">
-      <div className="mb-10">
-        <h1 className="text-3xl font-bold">Your Cart</h1>
-        <p className="text-muted-foreground">Home / Cart</p>
+    <main className="max-w-7xl mx-auto px-4 sm:px-6 py-10">
+      <div className="mb-8">
+        <h1 className="text-2xl sm:text-3xl font-bold">Your Cart</h1>
+        <p className="text-muted-foreground text-sm">Home / Cart</p>
       </div>
 
-      <div className="grid lg:grid-cols-[2fr_1fr] gap-10">
-        <div className="space-y-4">
+      {/* Stack on mobile, side-by-side on desktop */}
+      <div className="flex flex-col lg:grid lg:grid-cols-[2fr_1fr] gap-6 lg:gap-10">
+        {/* Cart items first on mobile */}
+        <div className="space-y-4 order-1">
           {cart.length === 0 ? (
             <p className="text-muted-foreground">Your cart is empty</p>
           ) : (
             cart.map((item, i) => <CartItem key={item.id || i} item={item} />)
           )}
         </div>
-        <OrderSummary cart={cart} />
+
+        {/* Order summary below items on mobile, not sticky */}
+        <div className="order-2 lg:order-2">
+          <OrderSummary cart={cart} />
+        </div>
       </div>
 
       <div className="mt-16">
