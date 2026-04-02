@@ -21,7 +21,7 @@ import { webhook } from "./controllers/order.controller.js";
 import { globalErrorHandler } from "./middlewares/error.middleware.js";
 import path from "path";
 import { fileURLToPath } from "url";
-import passport from "./config/passport.js";
+import passport, { initPassport } from "./config/passport.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -83,6 +83,7 @@ app.use(
 );
 
 // Google login
+initPassport();
 app.use(passport.initialize());
 
 //  JSON parser AFTER webhook
