@@ -1,8 +1,5 @@
 import { create } from "zustand";
 
-console.log(process.env.NEXT_PUBLIC_API_URL);
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
-
 export const useProductsStore = create((set, get) => ({
   products: [],
   page: 1,
@@ -52,8 +49,7 @@ export const useProductsStore = create((set, get) => ({
 
       const query = new URLSearchParams(params).toString();
 
-      const res = await fetch(`${API_URL}/products?${query}`);
-      console.log(`${API_URL}/products?${query}`);
+      const res = await fetch(`/api/v1/products?${query}`);
 
       if (!res.ok) throw new Error("Failed to fetch");
 
