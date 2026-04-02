@@ -22,9 +22,19 @@ export default function LoginForm({ onForgot }) {
     login(
       { email, password },
       {
-        onSuccess: () => {
+        onSuccess: async () => {
           toast.success("Welcome back!");
-          router.push("/");
+          // ← check role after login
+          const res = await fetch("/api/v1/auth/me", {
+            credentials: "include",
+          });
+          const data = await res.json();
+          const role = data?.data?.user?.role;
+          if (role === "admin") {
+            router.push("/admin/overview");
+          } else {
+            router.push("/");
+          }
         },
         onError: (err) => {
           toast.error(err?.response?.data?.message || "Login failed");
@@ -32,7 +42,6 @@ export default function LoginForm({ onForgot }) {
       },
     );
   };
-
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-4">
       <AuthInput
