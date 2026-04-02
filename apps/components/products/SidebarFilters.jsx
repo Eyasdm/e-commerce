@@ -109,18 +109,40 @@ export default function SidebarFilters() {
     </div>
   );
 
+  if (mobileOnly) {
+    return (
+      <>
+        <button
+          onClick={() => setMobileOpen(true)}
+          className="flex items-center gap-2 px-4 py-2 bg-white border rounded-xl shadow-sm text-sm font-medium"
+        >
+          <SlidersHorizontal size={16} className="text-blue-600" />
+          Filters
+        </button>
+        {/* Mobile drawer */}
+        {mobileOpen && (
+          <div className="fixed inset-0 z-50">
+            <div
+              className="absolute inset-0 bg-black/40"
+              onClick={() => setMobileOpen(false)}
+            />
+            <div className="absolute left-0 top-0 h-full w-80 max-w-[90vw] bg-white shadow-xl p-6 overflow-y-auto">
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="font-bold text-lg">Filters</h2>
+                <button onClick={() => setMobileOpen(false)}>
+                  <X size={20} />
+                </button>
+              </div>
+              <FilterContent />
+            </div>
+          </div>
+        )}
+      </>
+    );
+  }
+
   return (
     <>
-      {/* Mobile toggle button */}
-      <button
-        onClick={() => setMobileOpen(true)}
-        className="lg:hidden flex items-center gap-2 px-4 py-2 bg-white border rounded-xl shadow-sm text-sm font-medium mb-4"
-      >
-        <SlidersHorizontal size={16} className="text-blue-600" />
-        Filters
-      </button>
-
-      {/* Mobile drawer overlay */}
       {mobileOpen && (
         <div className="fixed inset-0 z-50 lg:hidden">
           <div
@@ -138,8 +160,7 @@ export default function SidebarFilters() {
           </div>
         </div>
       )}
-
-      {/* Desktop sidebar — always visible */}
+      {/* Desktop sidebar */}
       <div className="hidden lg:block bg-white rounded-2xl p-6 shadow-sm">
         <FilterContent />
       </div>

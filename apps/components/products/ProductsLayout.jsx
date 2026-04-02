@@ -75,20 +75,26 @@ export default function ProductsLayout({ category }) {
       {/* Filters */}
       <ActiveFilters />
 
-      <div className="grid grid-cols-12 gap-8 mt-8">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mt-8">
         {/* Sidebar */}
         <div className="lg:col-span-3">
           <SidebarFilters />
         </div>
 
         {/* Products */}
-        <div className="col-span-9">
+        <div className="lg:col-span-9">
           {/* Sort bar */}
-          <div className="flex justify-between items-center mb-6">
+          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 mb-6">
             <p className="text-sm text-muted-foreground">
               Showing {products.length} products
             </p>
-            <SortDropdown />
+            {/* On mobile: filters button + sort dropdown side by side */}
+            <div className="flex items-center gap-2">
+              <div className="lg:hidden">
+                <SidebarFilters mobileOnly />
+              </div>
+              <SortDropdown />
+            </div>
           </div>
 
           {/* ── Initial loading ────────────────────────────────────────────── */}
