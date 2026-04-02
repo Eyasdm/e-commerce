@@ -1,10 +1,11 @@
 "use client";
+import { Suspense } from "react";
 import { useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 
-export default function AuthCallback() {
-  const { checkAuth } = useAuth();
+function AuthCallbackInner() {
+  const { setUser, setIsAuthenticated } = useAuth();
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -17,31 +18,37 @@ export default function AuthCallback() {
         return;
       }
 
-      // Set cookie from same domain (clears old one first)
-      const res = await fetch("/api/auth/set-cookie", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ token }),
-        credentials: "include",
-      });
+      try {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/me`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          credentials: "include",
+        });
 
-      if (!res.ok) {
-        router.replace("/auth?error=cookie_failed");
-        return;
-      }
+        if (!res.ok) throw new Error("Failed to get user");
 
-      // Small delay to ensure cookie is flushed
-      await new Promise((resolve) => setTimeout(resolve, 100));
+        const data = await res.json();
+        const userData = data?.data?.user || data?.user;
 
-      // Re-hydrate auth with fresh cookie
-      const userData = await checkAuth();
+        await fetch("/api/auth/set-cookie", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ token }),
+          credentials: "include",
+        });
 
-      console.log("OAuth hydrated user:", userData?.email, userData?.role);
+        setUser(userData);
+        setIsAuthenticated(true);
 
-      if (userData?.role === "admin") {
-        router.replace("/admin/overview");
-      } else {
-        router.replace("/");
+        if (userData?.role === "admin") {
+          router.replace("/admin/overview");
+        } else {
+          router.replace("/");
+        }
+      } catch (err) {
+        console.error("Callback hydration error:", err.message);
+        router.replace("/auth?error=hydration_failed");
       }
     };
 
@@ -55,5 +62,19 @@ export default function AuthCallback() {
         <p className="text-slate-600 text-sm">Signing you in...</p>
       </div>
     </div>
+  );
+}
+
+export default function AuthCallback() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen flex items-center justify-center">
+          <div className="w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin" />
+        </div>
+      }
+    >
+      <AuthCallbackInner />
+    </Suspense>
   );
 }
