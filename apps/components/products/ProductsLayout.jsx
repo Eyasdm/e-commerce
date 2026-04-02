@@ -34,15 +34,13 @@ export default function ProductsLayout({ category }) {
     hasMore,
     loading,
     initialLoading,
-    error, // ← pull error from your store
+    error,
   } = useProductsStore();
 
-  // Fetch products when filters change
   useEffect(() => {
     fetchProducts(1, filters);
   }, [filters]);
 
-  // Infinite scroll
   useEffect(() => {
     const handleScroll = () => {
       const scrollPosition = window.innerHeight + window.scrollY;
@@ -63,33 +61,35 @@ export default function ProductsLayout({ category }) {
       : "All Products";
 
   return (
-    <div className="max-w-7xl mx-auto px-6 py-10">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10">
       {/* Header */}
       <div className="mb-8">
         <p className="text-sm text-muted-foreground">
           Shop / {searchQuery ? "Search" : title}
         </p>
-        <h1 className="text-3xl font-bold mt-2 capitalize">{title}</h1>
+        <h1 className="text-2xl sm:text-3xl font-bold mt-2 capitalize">
+          {title}
+        </h1>
       </div>
 
-      {/* Filters */}
+      {/* Active Filters */}
       <ActiveFilters />
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mt-8">
-        {/* Sidebar */}
-        <div className="lg:col-span-3">
+        {/* Desktop sidebar only */}
+        <div className="hidden lg:block lg:col-span-3">
           <SidebarFilters />
         </div>
 
         {/* Products */}
-        <div className="lg:col-span-9">
+        <div className="col-span-1 lg:col-span-9">
           {/* Sort bar */}
           <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 mb-6">
             <p className="text-sm text-muted-foreground">
               Showing {products.length} products
             </p>
-            {/* On mobile: filters button + sort dropdown side by side */}
             <div className="flex items-center gap-2">
+              {/* Mobile filter trigger */}
               <div className="lg:hidden">
                 <SidebarFilters mobileOnly />
               </div>
@@ -97,21 +97,20 @@ export default function ProductsLayout({ category }) {
             </div>
           </div>
 
-          {/* ── Initial loading ────────────────────────────────────────────── */}
+          {/* Initial loading */}
           {initialLoading ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
               {Array.from({ length: 8 }).map((_, i) => (
                 <ProductCardSkeleton key={i} />
               ))}
             </div>
-          ) : /* ── Initial fetch error ─────────────────────────────────────────── */
-          error ? (
+          ) : error ? (
+            /* Error state */
             <PageError
               error={error}
               onRetry={() => fetchProducts(1, filters)}
             />
           ) : (
-            /* ── Happy path ──────────────────────────────────────────────────── */
             <>
               {/* Empty state */}
               {products.length === 0 && !loading && (
@@ -128,7 +127,7 @@ export default function ProductsLayout({ category }) {
 
               {/* Product grid */}
               {products.length > 0 && (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                   {products.map((product, i) => (
                     <ProductCard
                       key={product.id || i}
@@ -139,9 +138,9 @@ export default function ProductsLayout({ category }) {
                 </div>
               )}
 
-              {/* Load-more skeletons (infinite scroll) */}
+              {/* Load-more skeletons */}
               {loading && (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+                <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mt-6">
                   {Array.from({ length: 3 }).map((_, i) => (
                     <ProductCardSkeleton key={i} />
                   ))}

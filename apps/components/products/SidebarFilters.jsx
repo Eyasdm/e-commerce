@@ -7,7 +7,7 @@ import { SlidersHorizontal, X } from "lucide-react";
 
 const brands = ["Anker", "Razer", "Ugreen", "Logitech"];
 
-export default function SidebarFilters() {
+export default function SidebarFilters({ mobileOnly = false }) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const router = useRouter();
   const params = useSearchParams();
@@ -30,7 +30,7 @@ export default function SidebarFilters() {
     setFilters(updatedFilters);
     reset();
     fetchProducts(1, updatedFilters);
-    setMobileOpen(false); // close drawer after selecting
+    setMobileOpen(false);
   };
 
   const clearFilters = () => {
@@ -48,7 +48,10 @@ export default function SidebarFilters() {
         <h3 className="font-semibold mb-3">By Brand</h3>
         <div className="space-y-2">
           {brands.map((brand) => (
-            <label key={brand} className="flex items-center gap-2 text-sm">
+            <label
+              key={brand}
+              className="flex items-center gap-2 text-sm cursor-pointer"
+            >
               <input
                 type="radio"
                 name="brand"
@@ -66,7 +69,7 @@ export default function SidebarFilters() {
         <h3 className="font-semibold mb-3">By Rating</h3>
         <div className="space-y-2 text-sm">
           {[4, 3, 2].map((r) => (
-            <label key={r} className="flex items-center gap-2">
+            <label key={r} className="flex items-center gap-2 cursor-pointer">
               <input
                 type="radio"
                 name="rating"
@@ -88,38 +91,40 @@ export default function SidebarFilters() {
             placeholder="Min"
             value={params.get("min") || ""}
             onChange={(e) => updateParam("min", e.target.value)}
-            className="w-full border rounded-lg px-3 py-2 text-sm"
+            className="w-full border rounded-lg px-3 py-2 text-sm outline-none focus:border-blue-400"
           />
           <input
             type="number"
             placeholder="Max"
             value={params.get("max") || ""}
             onChange={(e) => updateParam("max", e.target.value)}
-            className="w-full border rounded-lg px-3 py-2 text-sm"
+            className="w-full border rounded-lg px-3 py-2 text-sm outline-none focus:border-blue-400"
           />
         </div>
       </div>
 
+      {/* Clear */}
       <button
         onClick={clearFilters}
-        className="w-full border rounded-full py-2 text-sm hover:bg-gray-50"
+        className="w-full border rounded-full py-2 text-sm hover:bg-gray-50 transition"
       >
         Clear Filters
       </button>
     </div>
   );
 
+  // ── Mobile drawer trigger only ───────────────────────────────────────────────
   if (mobileOnly) {
     return (
       <>
         <button
           onClick={() => setMobileOpen(true)}
-          className="flex items-center gap-2 px-4 py-2 bg-white border rounded-xl shadow-sm text-sm font-medium"
+          className="flex items-center gap-2 px-4 py-2 bg-white border rounded-xl shadow-sm text-sm font-medium hover:bg-gray-50 transition"
         >
           <SlidersHorizontal size={16} className="text-blue-600" />
           Filters
         </button>
-        {/* Mobile drawer */}
+
         {mobileOpen && (
           <div className="fixed inset-0 z-50">
             <div
@@ -129,8 +134,11 @@ export default function SidebarFilters() {
             <div className="absolute left-0 top-0 h-full w-80 max-w-[90vw] bg-white shadow-xl p-6 overflow-y-auto">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="font-bold text-lg">Filters</h2>
-                <button onClick={() => setMobileOpen(false)}>
-                  <X size={20} />
+                <button
+                  onClick={() => setMobileOpen(false)}
+                  className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 transition"
+                >
+                  <X size={18} />
                 </button>
               </div>
               <FilterContent />
@@ -141,29 +149,10 @@ export default function SidebarFilters() {
     );
   }
 
+  // ── Desktop sidebar ──────────────────────────────────────────────────────────
   return (
-    <>
-      {mobileOpen && (
-        <div className="fixed inset-0 z-50 lg:hidden">
-          <div
-            className="absolute inset-0 bg-black/40"
-            onClick={() => setMobileOpen(false)}
-          />
-          <div className="absolute left-0 top-0 h-full w-80 max-w-[90vw] bg-white shadow-xl p-6 overflow-y-auto">
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="font-bold text-lg">Filters</h2>
-              <button onClick={() => setMobileOpen(false)}>
-                <X size={20} />
-              </button>
-            </div>
-            <FilterContent />
-          </div>
-        </div>
-      )}
-      {/* Desktop sidebar */}
-      <div className="hidden lg:block bg-white rounded-2xl p-6 shadow-sm">
-        <FilterContent />
-      </div>
-    </>
+    <div className="bg-white rounded-2xl p-6 shadow-sm">
+      <FilterContent />
+    </div>
   );
 }

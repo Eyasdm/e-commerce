@@ -71,7 +71,7 @@ export default function HomePage() {
 
       {/* ── DEALS BANNER ── */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 pb-16 sm:pb-24">
-        <div className="rounded-2xl bg-gradient-to-r from-blue-600 to-blue-400 text-white p-8 sm:p-14 text-center shadow-xl">
+        <div className="rounded-2xl bg-linear-to-r from-blue-600 to-blue-400 text-white p-8 sm:p-14 text-center shadow-xl">
           <h3 className="text-xl sm:text-2xl font-semibold">
             Up to 30% Off Selected Accessories
           </h3>
