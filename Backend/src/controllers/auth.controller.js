@@ -218,6 +218,14 @@ export const googleCallback = async (req, res) => {
   try {
     const { token, redirectUrl } = await handleGoogleLogin(req.user);
 
+    // Clear any existing session first
+    res.clearCookie("token", {
+      httpOnly: true,
+      secure: true,
+      sameSite: "none",
+    });
+
+    // Set new cookie for the Google user
     res.cookie("token", token, {
       httpOnly: true,
       secure: true,
