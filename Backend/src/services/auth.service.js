@@ -90,9 +90,7 @@ export const logoutUser = async (userId) => {
 // ================= Google Login =================
 export const handleGoogleLogin = async (user) => {
   const token = generateAccessToken(user._id);
-
-  // Always go through callback page to force fresh auth hydration
-  const redirectUrl = `${process.env.CLIENT_URL}/auth/callback`;
-
+  // Pass token in URL so frontend can set its own cookie
+  const redirectUrl = `${process.env.CLIENT_URL}/auth/callback?token=${token}`;
   return { token, redirectUrl };
 };

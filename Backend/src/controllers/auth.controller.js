@@ -216,23 +216,8 @@ export const refreshToken = catchAsync(async (req, res, next) => {
 
 export const googleCallback = async (req, res) => {
   try {
-    const { token, redirectUrl } = await handleGoogleLogin(req.user);
-
-    // Clear any existing session first
-    res.clearCookie("token", {
-      httpOnly: true,
-      secure: true,
-      sameSite: "none",
-    });
-
-    // Set new cookie for the Google user
-    res.cookie("token", token, {
-      httpOnly: true,
-      secure: true,
-      sameSite: "none",
-      maxAge: 7 * 24 * 60 * 60 * 1000,
-    });
-
+    console.log("GOOGLE USER:", req.user?.email, req.user?.role);
+    const { redirectUrl } = await handleGoogleLogin(req.user);
     return res.redirect(redirectUrl);
   } catch (err) {
     console.error("GOOGLE CALLBACK ERROR:", err.message);
