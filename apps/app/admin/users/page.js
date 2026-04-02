@@ -1,14 +1,12 @@
 "use client";
 import { useState } from "react";
-import { Search, Loader2 } from "lucide-react";
 import { useAllUsers } from "@/lib/hooks/admin/useAllUsers";
 import {
   useDeleteUser,
   useUpdateUserRole,
 } from "@/lib/hooks/admin/useUserMutations";
+import { Loader2, Trash2 } from "lucide-react";
 import UserTableRow from "@/components/admin/users/UserTableRow";
-
-const ROLES = ["all", "user", "admin"];
 
 export default function Users() {
   const [search, setSearch] = useState("");
@@ -26,54 +24,130 @@ export default function Users() {
     return matchRole && matchSearch;
   });
 
-  const handleRoleToggle = (id, newRole) => {
-    updateRole({ id, role: newRole });
-  };
+  const initials = (name) =>
+    name
+      ?.split(" ")
+      .map((n) => n[0])
+      .join("")
+      .toUpperCase()
+      .slice(0, 2);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 lg:space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-          <h2 className="text-xl font-bold text-slate-900">Users</h2>
+          <h2 className="text-lg lg:text-xl font-bold text-slate-900">Users</h2>
           <p className="text-sm text-slate-400">{users.length} total users</p>
         </div>
-      </div>
-
-      {/* Filters */}
-      <div className="flex items-center gap-3 flex-wrap">
-        <div className="relative">
-          <Search
-            size={14}
-            className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
-          />
+        <div className="flex gap-2 flex-wrap">
           <input
             type="text"
             placeholder="Search by name or email..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="border border-slate-200 rounded-xl pl-9 pr-4 py-2 text-sm outline-none focus:border-blue-400 transition w-64"
+            className="border border-slate-200 rounded-xl px-4 py-2 text-sm outline-none focus:border-blue-400 transition flex-1 sm:w-64 sm:flex-none"
           />
-        </div>
-        <div className="flex gap-1 bg-white border border-slate-200 rounded-xl p-1">
-          {ROLES.map((r) => (
-            <button
-              key={r}
-              onClick={() => setRoleFilter(r)}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold capitalize transition-all ${
-                roleFilter === r
-                  ? "bg-blue-600 text-white"
-                  : "text-slate-500 hover:text-slate-700"
-              }`}
-            >
-              {r}
-            </button>
-          ))}
+          <div className="flex gap-1 bg-white border border-slate-200 rounded-xl p-1">
+            {["all", "user", "admin"].map((r) => (
+              <button
+                key={r}
+                onClick={() => setRoleFilter(r)}
+                className={`px-3 py-1.5 rounded-lg text-xs font-semibold capitalize transition-all ${
+                  roleFilter === r
+                    ? "bg-blue-600 text-white"
+                    : "text-slate-500 hover:text-slate-700"
+                }`}
+              >
+                {r.charAt(0).toUpperCase() + r.slice(1)}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 
-      {/* Table */}
-      <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+      {/* Mobile cards */}
+      <div className="block lg:hidden space-y-3">
+        {isLoading ? (
+          <div className="flex justify-center py-12">
+            <Loader2 size={24} className="animate-spin text-slate-300" />
+          </div>
+        ) : filtered.length === 0 ? (
+          <p className="text-center text-slate-400 text-sm py-12">
+            No users found
+          </p>
+        ) : (
+          filtered.map((user) => {
+            const isAdmin = user.role === "admin";
+            return (
+              <div
+                key={user._id}
+                className="bg-white rounded-2xl border border-slate-100 shadow-sm p-4 flex items-center gap-4"
+              >
+                <div className="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center text-white text-xs font-bold shrink-0">
+                  {initials(user.name)}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="font-semibold text-slate-800 text-sm truncate">
+                    {user.name}
+                  </p>
+                  <p className="text-slate-400 text-xs truncate">
+                    {user.email}
+                  </p>
+                  <div className="flex items-center gap-2 mt-1">
+                    <span
+                      className={`text-xs font-semibold px-2 py-0.5 rounded-full ${isAdmin ? "bg-blue-100 text-blue-700" : "bg-slate-100 text-slate-600"}`}
+                    >
+                      {user.role}
+                    </span>
+                    <span className="text-xs text-slate-400">
+                      {new Date(user.createdAt).toLocaleDateString("en-GB", {
+                        day: "2-digit",
+                        month: "short",
+                        year: "numeric",
+                      })}
+                    </span>
+                  </div>
+                </div>
+                <div className="flex flex-col gap-2 shrink-0">
+                  <button
+                    onClick={() =>
+                      updateRole({
+                        id: user._id,
+                        role: isAdmin ? "user" : "admin",
+                      })
+                    }
+                    disabled={isUpdating}
+                    className="text-xs font-semibold px-2 py-1.5 rounded-lg border border-slate-200 text-slate-500 hover:border-blue-300 hover:text-blue-600 transition disabled:opacity-40 whitespace-nowrap"
+                  >
+                    {isUpdating ? (
+                      <Loader2 size={12} className="animate-spin" />
+                    ) : isAdmin ? (
+                      "Revoke"
+                    ) : (
+                      "Admin"
+                    )}
+                  </button>
+                  <button
+                    onClick={() => deleteUser(user._id)}
+                    disabled={isDeleting}
+                    className="w-full h-7 rounded-lg border border-slate-200 flex items-center justify-center text-slate-500 hover:text-red-500 hover:border-red-300 transition disabled:opacity-40"
+                  >
+                    {isDeleting ? (
+                      <Loader2 size={12} className="animate-spin" />
+                    ) : (
+                      <Trash2 size={13} />
+                    )}
+                  </button>
+                </div>
+              </div>
+            );
+          })
+        )}
+      </div>
+
+      {/* Desktop table */}
+      <div className="hidden lg:block bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead className="bg-slate-50 border-b border-slate-100">
@@ -115,7 +189,7 @@ export default function Users() {
                     key={user._id}
                     user={user}
                     onDelete={deleteUser}
-                    onRoleToggle={handleRoleToggle}
+                    onRoleToggle={(id, role) => updateRole({ id, role })}
                     isDeleting={isDeleting}
                     isUpdating={isUpdating}
                   />
@@ -124,7 +198,6 @@ export default function Users() {
             </tbody>
           </table>
         </div>
-
         {filtered.length > 0 && (
           <div className="px-4 py-3 border-t border-slate-100 text-xs text-slate-400">
             Showing {filtered.length} of {users.length} users

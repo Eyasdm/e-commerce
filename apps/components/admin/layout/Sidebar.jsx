@@ -3,7 +3,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useAuth } from "@/context/AdminAuthContext";
 import { useSidebar } from "@/context/SidebarContext";
-
 import {
   LayoutDashboard,
   ShoppingBag,
@@ -25,7 +24,7 @@ const navItems = [
 
 export default function Sidebar() {
   const { admin, logout } = useAuth();
-  const { isOpen, toggle } = useSidebar();
+  const { isOpen, toggle, close } = useSidebar();
   const pathname = usePathname();
 
   const initials = admin?.name
@@ -37,12 +36,13 @@ export default function Sidebar() {
 
   return (
     <aside
-      className={`fixed top-0 left-0 h-screen bg-slate-950 flex flex-col z-50 transition-all duration-300 ${isOpen ? "w-64" : "w-16"}`}
+      className={`fixed top-0 left-0 h-screen bg-slate-950 flex flex-col z-50 transition-all duration-300
+        ${isOpen ? "w-64" : "w-0 lg:w-16"} overflow-hidden`}
     >
       {/* Logo + Toggle */}
-      <div className="flex items-center justify-between px-4 py-5 border-b border-slate-800">
-        {isOpen && (
-          <div className="flex items-center gap-3 overflow-hidden">
+      <div className="flex items-center justify-between px-4 py-5 border-b border-slate-800 min-w-max">
+        {isOpen ? (
+          <div className="flex items-center gap-3">
             <img
               src="/logo-without-background.png"
               alt="TechNest"
@@ -55,8 +55,7 @@ export default function Sidebar() {
               <p className="text-slate-500 text-xs mt-0.5">Admin Dashboard</p>
             </div>
           </div>
-        )}
-        {!isOpen && (
+        ) : (
           <img
             src="/logo-without-background.png"
             alt="TechNest"
@@ -65,7 +64,7 @@ export default function Sidebar() {
         )}
         <button
           onClick={toggle}
-          className="w-7 h-7 rounded-lg bg-slate-800 flex items-center justify-center text-slate-400 hover:text-white transition shrink-0"
+          className="w-7 h-7 rounded-lg bg-slate-800 flex items-center justify-center text-slate-400 hover:text-white transition shrink-0 ml-2"
         >
           {isOpen ? <ChevronLeft size={14} /> : <ChevronRight size={14} />}
         </button>
@@ -79,10 +78,13 @@ export default function Sidebar() {
             <Link
               key={to}
               href={to}
+              onClick={() => {
+                if (window.innerWidth < 1024) close();
+              }}
               title={!isOpen ? label : undefined}
-              className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all ${
-                isOpen ? "" : "justify-center"
-              } ${isActive ? "bg-blue-600 text-white" : "text-slate-400 hover:text-white hover:bg-slate-800"}`}
+              className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all
+                ${!isOpen ? "justify-center" : ""}
+                ${isActive ? "bg-blue-600 text-white" : "text-slate-400 hover:text-white hover:bg-slate-800"}`}
             >
               <Icon size={18} className="shrink-0" />
               {isOpen && <span>{label}</span>}

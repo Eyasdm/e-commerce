@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { useState } from "react";
 import { useRevenue } from "@/lib/hooks/admin/useRevenue";
 import { useDailySales } from "@/lib/hooks/admin/useDailySales";
@@ -20,6 +20,7 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
+import { StatusBadge } from "@/components/admin/ui/StatusBadge";
 
 const RANGES = [
   { label: "Today", value: "1d" },
@@ -39,12 +40,12 @@ function StatCard({
 }) {
   const isUp = trend === "up";
   return (
-    <div className="bg-white rounded-2xl p-5 border border-slate-100 shadow-sm">
-      <div className="flex items-start justify-between mb-4">
+    <div className="bg-white rounded-2xl p-4 lg:p-5 border border-slate-100 shadow-sm">
+      <div className="flex items-start justify-between mb-3">
         <div
-          className={`w-10 h-10 rounded-xl flex items-center justify-center ${color}`}
+          className={`w-9 h-9 lg:w-10 lg:h-10 rounded-xl flex items-center justify-center ${color}`}
         >
-          <Icon size={18} className="text-white" />
+          <Icon size={16} className="text-white" />
         </div>
         {trendValue && (
           <div
@@ -55,8 +56,10 @@ function StatCard({
           </div>
         )}
       </div>
-      <p className="text-2xl font-bold text-slate-900 mb-0.5">{value}</p>
-      <p className="text-sm font-medium text-slate-700">{title}</p>
+      <p className="text-xl lg:text-2xl font-bold text-slate-900 mb-0.5">
+        {value}
+      </p>
+      <p className="text-xs lg:text-sm font-medium text-slate-700">{title}</p>
       <p className="text-xs text-slate-400 mt-0.5">{subtitle}</p>
     </div>
   );
@@ -70,19 +73,8 @@ const STATUS_STYLES = {
   cancelled: "bg-red-100 text-red-500",
 };
 
-function StatusBadge({ status }) {
-  return (
-    <span
-      className={`text-xs font-semibold px-2.5 py-1 rounded-full capitalize ${STATUS_STYLES[status] || "bg-slate-100 text-slate-600"}`}
-    >
-      {status}
-    </span>
-  );
-}
-
 export default function Overview() {
   const [range, setRange] = useState("30d");
-
   const { data: revenue } = useRevenue(range);
   const { data: dailySales } = useDailySales(range);
   const { data: allOrders } = useAllOrders();
@@ -91,21 +83,21 @@ export default function Overview() {
   const chartData = dailySales || [];
 
   return (
-    <div className="space-y-6">
-      {/* Range selector */}
-      <div className="flex items-center justify-between">
+    <div className="space-y-4 lg:space-y-6">
+      {/* Header + Range */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-          <h2 className="text-xl font-bold text-slate-900">
+          <h2 className="text-lg lg:text-xl font-bold text-slate-900">
             Dashboard Overview
           </h2>
           <p className="text-sm text-slate-400">Track your store performance</p>
         </div>
-        <div className="flex gap-1 bg-white border border-slate-200 rounded-xl p-1">
+        <div className="flex gap-1 bg-white border border-slate-200 rounded-xl p-1 w-fit overflow-x-auto">
           {RANGES.map((r) => (
             <button
               key={r.value}
               onClick={() => setRange(r.value)}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all whitespace-nowrap ${
                 range === r.value
                   ? "bg-blue-600 text-white"
                   : "text-slate-500 hover:text-slate-700"
@@ -117,8 +109,8 @@ export default function Overview() {
         </div>
       </div>
 
-      {/* Stat Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+      {/* Stat Cards — 2 cols mobile, 4 cols xl */}
+      <div className="grid grid-cols-2 xl:grid-cols-4 gap-3 lg:gap-4">
         <StatCard
           title="Total Revenue"
           value={`$${revenue?.current?.revenue?.toLocaleString() || "0"}`}
@@ -158,14 +150,14 @@ export default function Overview() {
       </div>
 
       {/* Revenue Chart */}
-      <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-6">
-        <div className="mb-6">
+      <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-4 lg:p-6">
+        <div className="mb-4">
           <h2 className="font-bold text-slate-900">Revenue Overview</h2>
           <p className="text-sm text-slate-400">
             {RANGES.find((r) => r.value === range)?.label}
           </p>
         </div>
-        <ResponsiveContainer width="100%" height={260}>
+        <ResponsiveContainer width="100%" height={220}>
           <AreaChart data={chartData}>
             <defs>
               <linearGradient id="colorRevenue" x1="0" y1="0" x2="0" y2="1">
@@ -176,12 +168,12 @@ export default function Overview() {
             <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
             <XAxis
               dataKey="_id"
-              tick={{ fontSize: 11, fill: "#94a3b8" }}
+              tick={{ fontSize: 10, fill: "#94a3b8" }}
               axisLine={false}
               tickLine={false}
             />
             <YAxis
-              tick={{ fontSize: 11, fill: "#94a3b8" }}
+              tick={{ fontSize: 10, fill: "#94a3b8" }}
               axisLine={false}
               tickLine={false}
               tickFormatter={(v) => `$${v}`}
@@ -190,7 +182,7 @@ export default function Overview() {
               contentStyle={{
                 borderRadius: "12px",
                 border: "1px solid #e2e8f0",
-                fontSize: "13px",
+                fontSize: "12px",
               }}
               formatter={(v) => [`$${v}`, "Revenue"]}
             />
@@ -207,13 +199,52 @@ export default function Overview() {
         </ResponsiveContainer>
       </div>
 
-      {/* Recent Orders */}
-      <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-6">
-        <div className="mb-5">
+      {/* Recent Orders — cards on mobile, table on desktop */}
+      <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-4 lg:p-6">
+        <div className="mb-4">
           <h2 className="font-bold text-slate-900">Recent Orders</h2>
           <p className="text-sm text-slate-400">Latest 6 orders</p>
         </div>
-        <div className="overflow-x-auto">
+
+        {/* Mobile cards */}
+        <div className="block lg:hidden space-y-3">
+          {recentOrders.length === 0 ? (
+            <p className="text-center text-slate-400 text-sm py-8">
+              No orders yet
+            </p>
+          ) : (
+            recentOrders.map((order) => (
+              <div
+                key={order._id}
+                className="flex items-center justify-between py-3 border-b border-slate-50 last:border-0"
+              >
+                <div>
+                  <p className="font-mono text-xs text-slate-600 font-semibold">
+                    #{order._id.slice(-8).toUpperCase()}
+                  </p>
+                  <p className="text-sm text-slate-700">
+                    {order.user?.name || "—"}
+                  </p>
+                  <p className="text-xs text-slate-400">
+                    {new Date(order.createdAt).toLocaleDateString("en-GB", {
+                      day: "2-digit",
+                      month: "short",
+                    })}
+                  </p>
+                </div>
+                <div className="text-right space-y-1">
+                  <p className="font-semibold text-slate-900 text-sm">
+                    ${order.totalPrice?.toFixed(2)}
+                  </p>
+                  <StatusBadge status={order.status} />
+                </div>
+              </div>
+            ))
+          )}
+        </div>
+
+        {/* Desktop table */}
+        <div className="hidden lg:block overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-slate-100">
