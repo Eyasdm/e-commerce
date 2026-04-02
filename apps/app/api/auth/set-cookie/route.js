@@ -5,6 +5,11 @@ export async function POST(req) {
   const { token } = await req.json();
 
   const cookieStore = await cookies();
+
+  // Delete old cookie first
+  cookieStore.delete("token");
+
+  // Set new one
   cookieStore.set("token", token, {
     httpOnly: true,
     secure: true,

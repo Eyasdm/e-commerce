@@ -17,16 +17,26 @@ export default function AuthCallback() {
         return;
       }
 
-      // Hit a Next.js API route to set the httpOnly cookie from same domain
-      await fetch("/api/auth/set-cookie", {
+      // Set cookie from same domain (clears old one first)
+      const res = await fetch("/api/auth/set-cookie", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ token }),
         credentials: "include",
       });
 
-      // Now re-hydrate auth context
+      if (!res.ok) {
+        router.replace("/auth?error=cookie_failed");
+        return;
+      }
+
+      // Small delay to ensure cookie is flushed
+      await new Promise((resolve) => setTimeout(resolve, 100));
+
+      // Re-hydrate auth with fresh cookie
       const userData = await checkAuth();
+
+      console.log("OAuth hydrated user:", userData?.email, userData?.role);
 
       if (userData?.role === "admin") {
         router.replace("/admin/overview");
