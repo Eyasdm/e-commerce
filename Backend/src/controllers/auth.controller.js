@@ -35,7 +35,7 @@ export const signup = catchAsync(async (req, res, next) => {
   // set cookie
   res.cookie("token", token, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
+    secure: true,
     sameSite: "none",
     maxAge: 7 * 24 * 60 * 60 * 1000,
   });
@@ -58,7 +58,7 @@ export const login = catchAsync(async (req, res, next) => {
 
   res.cookie("token", token, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
+    secure: true,
     sameSite: "none",
   });
 
@@ -76,17 +76,11 @@ export const logout = catchAsync(async (req, res, next) => {
     $unset: { refreshToken: 1 },
   });
 
-  res.clearCookie("token", {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "lax",
-  });
+  res.clearCookie("token", cookieOptions);
 
-  res.status(200).json({
-    success: true,
-    message: "Logged out successfully",
-  });
+  res.status(200).json({ success: true, message: "Logged out successfully" });
 });
+
 // ================= GET ME =================
 export const getMe = async (req, res) => {
   res.status(200).json({
