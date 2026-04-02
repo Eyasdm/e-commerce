@@ -17,7 +17,6 @@ import chatRoutes from "./routes/chat.routes.js";
 import contactRouter from "./routes/contact.route.js";
 
 import { webhook } from "./controllers/order.controller.js";
-
 import { globalErrorHandler } from "./middlewares/error.middleware.js";
 import path from "path";
 import { fileURLToPath } from "url";
@@ -28,9 +27,43 @@ const __dirname = path.dirname(__filename);
 
 const app = express();
 
-// Security
+// Security headers
 app.use(helmet({ crossOriginResourcePolicy: { policy: "cross-origin" } }));
 app.use(cookieParser());
+
+// CORS
+app.use(
+  cors({
+    origin: [
+      "http://localhost:3000",
+      "http://localhost:5173",
+      "https://e-commerce-eyasdms-projects.vercel.app",
+    ],
+    credentials: true,
+  }),
+);
+
+// Rate limiting
+app.use(
+  "/api",
+  rateLimit({
+    max: 100,
+    windowMs: 15 * 60 * 1000,
+    message: "Too many requests",
+  }),
+);
+
+// Webhook FIRST — must be before express.json()
+app.post(
+  "/api/v1/orders/webhook",
+  express.raw({ type: "application/json" }),
+  webhook,
+);
+
+// JSON parser
+app.use(express.json());
+
+// Sanitization AFTER json parser so req.body exists
 app.use((req, res, next) => {
   if (req.body) req.body = mongoSanitize.sanitize(req.body);
   next();
@@ -43,36 +76,6 @@ app.use((req, res, next) => {
   }
   next();
 });
-app.use(
-  "/api",
-  rateLimit({
-    max: 100,
-    windowMs: 15 * 60 * 1000,
-    message: "Too many requests",
-  }),
-);
-app.use(
-  cors({
-    origin: [
-      "http://localhost:3000",
-      "http://localhost:5173",
-      "https://e-commerce-eyasdms-projects.vercel.app",
-    ],
-    credentials: true,
-  }),
-);
-
-//  Webhook FIRST — before express.json()
-app.post(
-  "/api/v1/orders/webhook",
-  express.raw({ type: "application/json" }),
-  webhook,
-);
-
-app.use((req, res, next) => {
-  console.log(`${req.method} ${req.originalUrl}`);
-  next();
-});
 
 // Static files
 app.use(
@@ -82,12 +85,15 @@ app.use(
   }),
 );
 
-// Google login
+// Passport
 initPassport();
 app.use(passport.initialize());
 
-//  JSON parser AFTER webhook
-app.use(express.json());
+// Logger
+app.use((req, res, next) => {
+  console.log(`${req.method} ${req.originalUrl}`, req.body);
+  next();
+});
 
 // Routes
 app.use("/api/v1/auth", authRoutes);
@@ -99,7 +105,6 @@ app.use("/api/v1/admin", adminRoutes);
 app.use("/api/v1/bundles", bundleRoutes);
 app.use("/api/v1/chat", chatRoutes);
 app.use("/api/v1/contact", contactRouter);
-app.use(globalErrorHandler);
 
 app.get("/", (req, res) => res.send("API Running..."));
 
@@ -107,5 +112,7 @@ app.all("*splat", (req, res) => {
   console.log("UNMATCHED ROUTE:", req.method, req.originalUrl);
   res.status(404).json({ message: `Cannot ${req.method} ${req.originalUrl}` });
 });
+
+app.use(globalErrorHandler);
 
 export default app;
