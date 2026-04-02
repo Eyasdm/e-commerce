@@ -6,7 +6,7 @@ export default function ProductTableRow({
   onDelete,
   isDeleting,
 }) {
-  const imageUrl = `${process.env.NEXT_PUBLIC_API_URL}${product.image}`;
+  const imageUrl = `${process.env.NEXT_PUBLIC_BASE_API_URL}${product.image}`;
 
   return (
     <tr className="hover:bg-slate-50 transition">
