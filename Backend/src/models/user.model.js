@@ -59,6 +59,7 @@ const userSchema = new mongoose.Schema(
 // Hash password
 userSchema.pre("save", async function () {
   if (!this.isModified("password")) return;
+  if (!this.password) return; // skip if no password (Google users)
 
   this.password = await bcrypt.hash(this.password, 12);
   this.passwordConfirm = undefined;
