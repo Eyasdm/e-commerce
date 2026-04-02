@@ -10,7 +10,7 @@ import {
   getMe,
 } from "../controllers/auth.controller.js";
 import passport from "../config/passport.js";
-import { googleAuth, googleCallback } from "../controllers/auth.controller.js";
+import { googleCallback } from "../controllers/auth.controller.js";
 
 import { protect } from "../middlewares/auth.middleware.js";
 
