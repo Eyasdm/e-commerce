@@ -16,7 +16,7 @@ export default function ProductsLayout({ category }) {
 
   const filters = useMemo(
     () => ({
-      category,
+      category: category?.toLowerCase(),
       keyword: params.get("q"),
       brand: params.get("brand"),
       rating: params.get("rating"),
