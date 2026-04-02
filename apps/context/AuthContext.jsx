@@ -19,29 +19,31 @@ export function AuthProvider({ children }) {
 
   const API = process.env.NEXT_PUBLIC_API_URL;
 
-  const checkAuth = useCallback(() => {
+  // context/AuthContext.jsx
+  const checkAuth = useCallback(async () => {
     setLoading(true);
-    return fetch(`${API}/auth/me`, {
-      // 👈 return the promise
-      credentials: "include",
-    })
-      .then((res) => {
-        if (res.ok) return res.json();
-        throw new Error("Not authenticated");
-      })
-      .then((data) => {
-        const userData = data?.data?.user || data?.user || data;
-        setUser(userData);
-        setIsAuthenticated(true);
-        return userData; // 👈 return user so LoginForm can read role
-      })
-      .catch(() => {
-        setUser(null);
-        setIsAuthenticated(false);
-        return null; //  return null on failure
-      })
-      .finally(() => setLoading(false));
-  }, []);
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/me`, {
+        credentials: "include",
+      });
+      if (!res.ok) throw new Error("Not authenticated");
+      const data = await res.json();
+      const userData = data?.data?.user || data?.user || data;
+      setUser(userData);
+      setIsAuthenticated(true);
+      return userData;
+    } catch {
+      setUser(null);
+      setIsAuthenticated(false);
+      return null;
+    } finally {
+      setLoading(false);
+    }
+  }, []); // ← API URL is now read directly, no stale closure
+
+  useEffect(() => {
+    checkAuth();
+  }, [checkAuth]); // ← add checkAuth to deps
 
   useEffect(() => {
     checkAuth();
