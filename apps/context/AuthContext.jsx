@@ -6,7 +6,6 @@ import {
   useState,
   useCallback,
 } from "react";
-import toast from "react-hot-toast";
 import { useQueryClient } from "@tanstack/react-query";
 
 const AuthContext = createContext(null);
@@ -17,13 +16,10 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
   const queryClient = useQueryClient();
 
-  const API = process.env.NEXT_PUBLIC_API_URL;
-
-  // context/AuthContext.jsx
   const checkAuth = useCallback(async () => {
     setLoading(true);
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/me`, {
+      const res = await fetch("/api/v1/auth/me", {
         credentials: "include",
       });
       if (!res.ok) throw new Error("Not authenticated");
@@ -39,28 +35,21 @@ export function AuthProvider({ children }) {
     } finally {
       setLoading(false);
     }
-  }, []); // ← API URL is now read directly, no stale closure
-
-  useEffect(() => {
-    checkAuth();
-  }, [checkAuth]); // ← add checkAuth to deps
-
-  useEffect(() => {
-    checkAuth();
   }, []);
 
+  useEffect(() => {
+    checkAuth();
+  }, [checkAuth]);
+
   const clearAuth = () => {
-    fetch(`${API}/auth/logout`, {
+    fetch("/api/v1/auth/logout", {
       method: "POST",
       credentials: "include",
-    })
-      .then(() => toast.success("Logged out successfully"))
-      .catch(() => toast.error("Logout failed. Please try again."))
-      .finally(() => {
-        setUser(null);
-        setIsAuthenticated(false);
-        queryClient.clear();
-      });
+    }).finally(() => {
+      setUser(null);
+      setIsAuthenticated(false);
+      queryClient.clear();
+    });
   };
 
   return (

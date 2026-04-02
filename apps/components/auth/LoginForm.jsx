@@ -2,8 +2,7 @@
 import { useState } from "react";
 import { Mail, Lock, Eye, EyeOff, Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useAuth } from "@/context/AuthContext";
-import api from "@/lib/api";
+import { useLogin } from "@/lib/hooks/useAuth";
 import toast from "react-hot-toast";
 import AuthInput from "./AuthInput";
 import AuthDivider from "./AuthDivider";
@@ -14,32 +13,24 @@ export default function LoginForm({ onForgot }) {
   const [showPass, setShowPass] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [isPending, setIsPending] = useState(false);
-  const [error, setError] = useState(null);
 
   const router = useRouter();
-  const { checkAuth } = useAuth();
+  const { mutate: login, isPending } = useLogin();
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    setError(null);
-    setIsPending(true);
-
-    try {
-      await api.post("/auth/login", { email, password });
-      const user = await checkAuth();
-
-      // 👇 Admin goes to dashboard, everyone else stays on store
-      if (user?.role === "admin") {
-        router.push("/admin/overview");
-      } else {
-        router.push("/");
-      }
-    } catch (err) {
-      setError(err.response?.data?.message || "Invalid email or password");
-    } finally {
-      setIsPending(false);
-    }
+    login(
+      { email, password },
+      {
+        onSuccess: () => {
+          toast.success("Welcome back!");
+          router.push("/");
+        },
+        onError: (err) => {
+          toast.error(err?.response?.data?.message || "Login failed");
+        },
+      },
+    );
   };
 
   return (
@@ -85,8 +76,6 @@ export default function LoginForm({ onForgot }) {
           "Login"
         )}
       </button>
-
-      {error && <p className="text-xs text-red-500 text-center">{error}</p>}
 
       <AuthDivider />
       <GoogleButton />

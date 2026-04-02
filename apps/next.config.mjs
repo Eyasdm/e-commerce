@@ -11,8 +11,12 @@ const nextConfig = {
   async rewrites() {
     return [
       {
-        source: "/api/v1/chat",
-        destination: "https://technest-cnxo.onrender.com/api/v1/chat",
+        source: "/api/v1/:path*",
+        destination: "https://technest-cnxo.onrender.com/api/v1/:path*",
+      },
+      {
+        source: "/products/:path*",
+        destination: "https://technest-cnxo.onrender.com/products/:path*",
       },
     ];
   },
