@@ -86,3 +86,21 @@ export const logoutUser = async (userId) => {
     { new: true },
   );
 };
+
+// ================= Google Login =================
+export const handleGoogleLogin = async (user) => {
+  // Generate JWT
+  const token = generateAccessToken(user._id);
+
+  // Determine redirect URL
+  let redirectUrl = `${process.env.CLIENT_URL}/`;
+
+  if (user.role === "admin") {
+    redirectUrl = `${process.env.CLIENT_URL}/admin/overview`;
+  }
+
+  return {
+    token,
+    redirectUrl,
+  };
+};

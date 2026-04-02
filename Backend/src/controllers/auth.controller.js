@@ -10,6 +10,7 @@ import Email from "../utils/email.js";
 import catchAsync from "../utils/catchAsync.js";
 import AppError from "../utils/appError.js";
 import User from "../models/user.model.js";
+import { handleGoogleLogin } from "../services/auth.service.js";
 
 // ================= SIGNUP =================
 export const signup = catchAsync(async (req, res, next) => {
@@ -210,3 +211,23 @@ export const refreshToken = catchAsync(async (req, res, next) => {
     refreshToken: newRefreshToken,
   });
 });
+
+// =================  Google Callback =================
+
+export const googleCallback = async (req, res) => {
+  try {
+    const { token, redirectUrl } = await handleGoogleLogin(req.user);
+
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "none",
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
+
+    return res.redirect(redirectUrl);
+  } catch (err) {
+    console.error(err);
+    return res.redirect(`${process.env.CLIENT_URL}/auth?error=server_error`);
+  }
+};
