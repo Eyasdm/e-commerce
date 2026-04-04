@@ -92,7 +92,7 @@ app.use(passport.initialize());
 
 // Logger
 app.use((req, res, next) => {
-  console.log(`${req.method} ${req.originalUrl}`, req.body);
+  console.log(`${req.method} ${req.originalUrl}`);
   next();
 });
 

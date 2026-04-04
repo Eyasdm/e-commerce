@@ -56,12 +56,10 @@ export const loginUser = async (data) => {
 
   try {
     const user = await User.findOne({ email }).select("+password");
-    console.log("user found:", !!user);
 
     if (!user) throw new Error("Invalid credentials");
 
     const isMatch = await user.comparePassword(password, user.password);
-    console.log("password match:", isMatch);
 
     if (!isMatch) throw new Error("Invalid credentials");
 
@@ -70,11 +68,10 @@ export const loginUser = async (data) => {
 
     user.refreshToken = hashToken(refreshToken);
     await user.save({ validateBeforeSave: false });
-    console.log("login success");
 
     return { user, accessToken, refreshToken };
   } catch (err) {
-    console.error("LOGIN ERROR:", err.message); // 👈 this will show the real error
+    console.error("LOGIN ERROR:", err.message);
     throw err;
   }
 };

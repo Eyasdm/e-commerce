@@ -14,6 +14,5 @@ const chatLimiter = rateLimit({
 });
 
 router.post("/", chatLimiter, chatHandler);
-router.get("/list-models", listModelsHandler); // http://localhost:8000/api/v1/chat/list-models
 
 export default router;

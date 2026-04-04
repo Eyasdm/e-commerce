@@ -1,7 +1,7 @@
 "use client";
 import { useAuth } from "@/context/AuthContext";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { authApi } from "../lib/authService";
+import { authApi } from "../services/authService";
 
 export function useLogin() {
   const { checkAuth } = useAuth();

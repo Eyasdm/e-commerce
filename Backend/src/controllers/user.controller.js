@@ -34,7 +34,7 @@ export const updateMe = catchAsync(async (req, res, next) => {
 
 //  get all users
 export const getAllUsers = catchAsync(async (req, res, next) => {
-  const users = await User.find();
+  const users = await User.find().select("-password -refreshToken -__v");
 
   res.status(200).json({
     success: true,
@@ -61,11 +61,17 @@ export const deleteUser = catchAsync(async (req, res, next) => {
 export const updateUserRole = catchAsync(async (req, res, next) => {
   const { role } = req.body;
 
+  const allowed = ["user", "admin"];
+
+  if (!allowed.includes(role)) {
+    return next(new AppError("Invalid role", 400));
+  }
+
   const user = await User.findByIdAndUpdate(
     req.params.id,
     { role },
-    { new: true },
-  );
+    { new: true, runValidators: true },
+  ).select("-password -refreshToken -__v");
 
   if (!user) {
     return next(new AppError("User not found", 404));

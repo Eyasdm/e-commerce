@@ -4,7 +4,6 @@ import catchAsync from "../utils/catchAsync.js";
 
 // ================= ADD ITEM =================
 export const addItem = catchAsync(async (req, res, next) => {
-  console.log("req.body:", req.body);
   const cart = await cartService.addToCart(
     req.user._id,
     req.body.productId,

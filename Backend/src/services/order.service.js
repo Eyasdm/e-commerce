@@ -44,7 +44,6 @@ export const createOrder = async (userId) => {
 //  get user orders
 export const getUserOrders = async (userId) => {
   const orders = await Order.find({ user: userId }).sort({ createdAt: -1 });
-  console.log("orders found:", orders.length, "for user:", userId);
 
   return orders;
 };
@@ -102,9 +101,6 @@ export const createOrderFromSession = async (session) => {
     const userId = session.metadata.userId;
     const cart = await Cart.findOne({ user: userId }).populate("items.product");
 
-    console.log("creating order for user:", userId);
-    console.log("cart items:", cart?.items?.length);
-
     if (!cart || cart.items.length === 0) return;
 
     const orderItems = cart.items
@@ -122,8 +118,6 @@ export const createOrderFromSession = async (session) => {
         };
       });
 
-    console.log("orderItems built:", orderItems.length);
-
     const totalPrice = orderItems.reduce(
       (acc, item) => acc + item.price * item.quantity,
       0,
@@ -139,8 +133,6 @@ export const createOrderFromSession = async (session) => {
       stripeSessionId: session.id,
       paymentMethod: "stripe",
     });
-
-    console.log("order created:", order._id);
 
     cart.items = [];
     await cart.save();

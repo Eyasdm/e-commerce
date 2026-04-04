@@ -61,6 +61,7 @@ export const login = catchAsync(async (req, res, next) => {
     httpOnly: true,
     secure: true,
     sameSite: "none",
+    maxAge: 7 * 24 * 60 * 60 * 1000,
   });
 
   res.status(200).json({
@@ -73,15 +74,16 @@ export const login = catchAsync(async (req, res, next) => {
 
 // ================= LOGOUT =================
 export const logout = catchAsync(async (req, res, next) => {
-  await User.findByIdAndUpdate(req.user.id, {
-    $unset: { refreshToken: 1 },
-  });
+  await User.findByIdAndUpdate(req.user.id, { $unset: { refreshToken: 1 } });
 
-  res.clearCookie("token", cookieOptions);
+  res.clearCookie("token", {
+    httpOnly: true,
+    secure: true,
+    sameSite: "none",
+  });
 
   res.status(200).json({ success: true, message: "Logged out successfully" });
 });
-
 // ================= GET ME =================
 export const getMe = async (req, res) => {
   res.status(200).json({
@@ -122,7 +124,10 @@ export const forgotPassword = catchAsync(async (req, res, next) => {
   const user = await User.findOne({ email: req.body.email });
 
   if (!user) {
-    return next(new AppError("No user with that email", 404));
+    return res.status(200).json({
+      success: true,
+      message: "If that email is registered, you'll receive a reset link.",
+    });
   }
 
   const resetToken = user.createPasswordResetToken();
@@ -213,14 +218,17 @@ export const refreshToken = catchAsync(async (req, res, next) => {
 });
 
 // =================  Google Callback =================
-
 export const googleCallback = async (req, res) => {
-  try {
-    console.log("GOOGLE USER:", req.user?.email, req.user?.role);
-    const { redirectUrl } = await handleGoogleLogin(req.user);
-    return res.redirect(redirectUrl);
-  } catch (err) {
-    console.error("GOOGLE CALLBACK ERROR:", err.message);
-    return res.redirect(`${process.env.CLIENT_URL}/auth?error=server_error`);
-  }
+  const token = generateAccessToken(req.user._id);
+
+  res.cookie("token", token, {
+    httpOnly: true,
+    secure: true,
+    sameSite: "none",
+    maxAge: 7 * 24 * 60 * 60 * 1000,
+  });
+
+  const role = req.user.role;
+  const redirectTo = role === "admin" ? "/admin/overview" : "/";
+  return res.redirect(`${process.env.CLIENT_URL}${redirectTo}`);
 };
