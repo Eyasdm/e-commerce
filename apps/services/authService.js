@@ -8,8 +8,13 @@ export const authApi = {
     return data;
   },
 
-  signup: async ({ name, email, password }) => {
-    const { data } = await api.post("/auth/signup", { name, email, password });
+  signup: async ({ name, email, password, passwordConfirm }) => {
+    const { data } = await api.post("/auth/signup", {
+      name,
+      email,
+      password,
+      passwordConfirm,
+    });
     return data;
   },
 
@@ -29,7 +34,9 @@ export const authApi = {
   },
 
   resetPassword: async ({ token, password }) => {
-    const { data } = await api.patch(`/auth/reset-password/${token}`, { password });
+    const { data } = await api.patch(`/auth/reset-password/${token}`, {
+      password,
+    });
     return data;
   },
 
