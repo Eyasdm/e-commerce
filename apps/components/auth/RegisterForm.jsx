@@ -16,7 +16,7 @@ export default function RegisterForm() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [passwordConfirm, setpasswordConfirm] = useState("");
+  const [passwordConfirm, setPasswordConfirm] = useState("");
   const [formError, setFormError] = useState("");
 
   const router = useRouter();
@@ -25,7 +25,6 @@ export default function RegisterForm() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
     setFormError("");
 
     if (!name || !email || !password || !passwordConfirm) {
@@ -78,7 +77,7 @@ export default function RegisterForm() {
         type={showConfirm ? "text" : "password"}
         placeholder="Confirm password"
         value={passwordConfirm}
-        onChange={(e) => setConfirm(e.target.value)}
+        onChange={(e) => setPasswordConfirm(e.target.value)}
         rightIcon={showConfirm ? EyeOff : Eye}
         onRightClick={() => setShowConfirm(!showConfirm)}
       />
@@ -91,12 +90,10 @@ export default function RegisterForm() {
         {isPending ? "Creating account..." : "Create Account"}
       </button>
 
-      {/*  validation error */}
       {formError && (
         <p className="text-xs text-red-500 text-center">{formError}</p>
       )}
 
-      {/*  backend error */}
       {error && (
         <p className="text-xs text-red-500 text-center">Registration failed</p>
       )}
