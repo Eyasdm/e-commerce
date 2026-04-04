@@ -213,16 +213,11 @@ export const refreshToken = catchAsync(async (req, res, next) => {
 
 // =================  Google Callback =================
 export const googleCallback = async (req, res) => {
-  const token = generateAccessToken(req.user._id);
-
-  res.cookie("token", token, {
-    httpOnly: true,
-    secure: true,
-    sameSite: "none",
-    maxAge: 7 * 24 * 60 * 60 * 1000,
-  });
-
-  const role = req.user.role;
-  const redirectTo = role === "admin" ? "/admin/overview" : "/";
-  return res.redirect(`${process.env.CLIENT_URL}${redirectTo}`);
+  try {
+    const { redirectUrl } = await handleGoogleLogin(req.user);
+    return res.redirect(redirectUrl);
+  } catch (err) {
+    console.error("Google callback error:", err.message);
+    return res.redirect(`${process.env.CLIENT_URL}/auth?error=server_error`);
+  }
 };

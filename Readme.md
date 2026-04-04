@@ -60,10 +60,10 @@ TechNest is a production-grade e-commerce system built independently as a first 
 
 **Test accounts — ready to use:**
 
-| Role  | Email            | Password |
-| ----- | ---------------- | -------- |
-| Admin | admin10@test.com | test1234 |
-| User  | eyas2@test.com   | test1234 |
+| Role  | Email                 | Password |
+| ----- | --------------------- | -------- |
+| Admin | admin10@test.com      | test1234 |
+| User  | testuser@technest.com | test1234 |
 
 > Admin login redirects automatically to the dashboard.
 
