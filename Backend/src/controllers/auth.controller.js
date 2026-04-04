@@ -16,24 +16,18 @@ import { handleGoogleLogin } from "../services/auth.service.js";
 export const signup = catchAsync(async (req, res, next) => {
   const result = await signupUser(req.body);
 
-  // extract token
   const token = result.accessToken;
 
-  // sanitize user
   const user = result.user.toObject();
   delete user.password;
   delete user.refreshToken;
   delete user.__v;
 
-  // send welcome email (non-blocking — failure won't break signup)
-  try {
-    const shopURL = `${req.protocol}://${req.get("host")}/shop`;
-    await new Email(result.user, shopURL).sendWelcome();
-  } catch (err) {
-    console.error("Welcome email failed to send:", err.message);
-  }
+  // Fire and forget — respond instantly, email sends in background
+  new Email(result.user, `${req.protocol}://${req.get("host")}/shop`)
+    .sendWelcome()
+    .catch((err) => console.error("Welcome email failed:", err.message));
 
-  // set cookie
   res.cookie("token", token, {
     httpOnly: true,
     secure: true,
