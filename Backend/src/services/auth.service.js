@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
 import User from "../models/user.model.js";
 import crypto from "crypto";
+import AppError from "../utils/appError.js";
 
 // ================= HASH TOKEN =================
 export const hashToken = (token) => {
@@ -14,7 +15,7 @@ export const generateAccessToken = (userId) => {
   });
 };
 
-// ================= REFRESH TOKEN  =================
+// ================= REFRESH TOKEN =================
 export const generateRefreshToken = () => {
   return crypto.randomBytes(64).toString("hex");
 };
@@ -25,7 +26,7 @@ export const signupUser = async (data) => {
 
   const existingUser = await User.findOne({ email });
   if (existingUser) {
-    throw new Error("User already exists");
+    throw new AppError("User already exists", 400);
   }
 
   const user = await User.create({
@@ -35,46 +36,34 @@ export const signupUser = async (data) => {
     passwordConfirm,
   });
 
-  //  generate tokens
   const accessToken = generateAccessToken(user._id);
   const refreshToken = generateRefreshToken();
 
-  //  store hashed refresh token
   user.refreshToken = hashToken(refreshToken);
   await user.save({ validateBeforeSave: false });
 
-  return {
-    user,
-    accessToken,
-    refreshToken,
-  };
+  return { user, accessToken, refreshToken };
 };
 
 // ================= LOGIN =================
 export const loginUser = async (data) => {
   const { email, password } = data;
 
-  try {
-    const user = await User.findOne({ email }).select("+password");
+  const user = await User.findOne({ email }).select("+password");
 
-    if (!user) throw new Error("Invalid credentials");
-
-    const isMatch = await user.comparePassword(password, user.password);
-
-    if (!isMatch) throw new Error("Invalid credentials");
-
-    const accessToken = generateAccessToken(user._id);
-    const refreshToken = generateRefreshToken();
-
-    user.refreshToken = hashToken(refreshToken);
-    await user.save({ validateBeforeSave: false });
-
-    return { user, accessToken, refreshToken };
-  } catch (err) {
-    console.error("LOGIN ERROR:", err.message);
-    throw err;
+  if (!user || !(await user.comparePassword(password, user.password))) {
+    throw new AppError("Invalid credentials", 401);
   }
+
+  const accessToken = generateAccessToken(user._id);
+  const refreshToken = generateRefreshToken();
+
+  user.refreshToken = hashToken(refreshToken);
+  await user.save({ validateBeforeSave: false });
+
+  return { user, accessToken, refreshToken };
 };
+
 // ================= LOGOUT =================
 export const logoutUser = async (userId) => {
   return await User.findByIdAndUpdate(
@@ -87,7 +76,6 @@ export const logoutUser = async (userId) => {
 // ================= Google Login =================
 export const handleGoogleLogin = async (user) => {
   const token = generateAccessToken(user._id);
-  // Pass token in URL so frontend can set its own cookie
   const redirectUrl = `${process.env.CLIENT_URL}/auth/callback?token=${token}`;
   return { token, redirectUrl };
 };

@@ -48,7 +48,7 @@ export default class Email {
   }
 
   async sendWelcome() {
-    await this.send("welcome", "Welcome to the Natours Family!");
+    await this.send("welcome", "Welcome to the TechNest!");
   }
 
   async sendPasswordReset() {
