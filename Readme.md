@@ -1,123 +1,159 @@
-# TechNest — Full-Stack E-Commerce Platform
+# TechNest
 
-A modern, production-grade e-commerce application built from scratch as a portfolio project. TechNest features a full shopping experience for customers and a separate admin dashboard for store management.
+> A full-stack e-commerce platform for tech accessories — built from scratch, deployed, and live.
 
----
-
-## Description
-
-TechNest is a full-stack e-commerce platform for tech accessories. It includes a customer-facing storefront built with Next.js and a dedicated React admin dashboard. The backend is powered by Node.js and Express with MongoDB as the database.
-
-The project demonstrates real-world patterns including HttpOnly cookie authentication, Stripe payment integration with webhooks, optimistic UI updates with React Query, role-based access control, and a fully featured admin analytics dashboard.
+**[Live Demo](https://e-commerce-eyasdms-projects.vercel.app)** · **[GitHub](https://github.com/Eyasdm/e-commerce)**
 
 ---
 
-## Tech Stack
+## Overview
 
-### Frontend (Store)
-
-- **Next.js 15** — App Router, SSR/CSR hybrid
-- **React Query** — Data fetching, caching, and mutations
-- **Tailwind CSS** — Utility-first styling
-- **Lucide React** — Icon library
-- **Stripe.js** — Hosted checkout integration
-- **React Hot Toast** — Toast notifications
-
-### Frontend (Admin Dashboard)
-
-- **React 19 + Vite** — SPA admin dashboard
-- **React Router v7** — Client-side routing
-- **React Query** — Data fetching and cache management
-- **Recharts** — Analytics charts
-- **Tailwind CSS v3** — Styling
-
-### Backend
-
-- **Node.js + Express** — REST API
-- **MongoDB + Mongoose** — Database and ODM
-- **JWT** — Access token authentication
-- **HttpOnly Cookies** — Secure session management
-- **Stripe** — Payment processing and webhooks
-- **bcryptjs** — Password hashing
-- **Helmet, CORS, Rate Limiting** — Security middleware
+TechNest is a production-grade e-commerce system built independently as a first full-stack project. It includes a customer storefront, a complete admin dashboard, Stripe payments with webhooks, an AI chatbot, and an automated email system — all connected through a custom REST API.
 
 ---
 
 ## Features
 
-### Customer Store
+**Store**
 
-- Browse products by category with search and filtering
-- Product detail pages with specs, description, and reviews
-- Shopping cart with real-time updates and optimistic UI
-- Bundle deals with grouped pricing
-- Stripe hosted checkout with webhook order creation
-- Order history and order detail tracking
-- User account management (name, password)
-- Flash deals page with countdown timers
-- Fully responsive design
+- Product listing with search, filters, and category browsing
+- Product detail pages with specs and verified purchase reviews
+- Shopping cart with real-time updates
+- Bundle deals with countdown timers
+- Stripe hosted checkout with webhook-driven order creation
+- Order history and order tracking
 
-### Admin Dashboard
+**Admin Dashboard**
 
-- Overview page with revenue, orders, and sales charts
-- Orders management with status updates
-- Products management — create, edit, delete
-- Users management with role control
-- Analytics page with daily sales, top products, order status breakdown, and revenue growth
-- Collapsible sidebar with icon-only mode
-- Time range filtering (7 days, 30 days, all time)
-
-### Authentication
-
-- JWT access tokens stored in HttpOnly cookies
+- Analytics — revenue, daily sales, top products, order status
+- Full CRUD for products, users, and orders
 - Role-based access control (user / admin)
-- Admin login redirects to dashboard automatically
-- Secure logout with cookie clearing
+- Order status management
+
+**System**
+
+- JWT authentication via httpOnly cookies
+- AI chatbot (Gemini) integrated into the storefront
+- Automated emails — welcome, newsletter, contact
+- Google OAuth login
+- Rate limiting, input sanitization, helmet headers
 
 ---
 
-## Demo Accounts
+## Tech Stack
 
-You can use the following credentials to explore the application:
+| Layer      | Technologies                                         |
+| ---------- | ---------------------------------------------------- |
+| Frontend   | Next.js 15, Tailwind CSS, React Query, Zustand       |
+| Backend    | Node.js, Express.js, MongoDB, Mongoose               |
+| Auth       | JWT, httpOnly cookies, Google OAuth (Passport.js)    |
+| Payments   | Stripe (Checkout + Webhooks)                         |
+| AI         | Google Gemini API                                    |
+| Email      | Brevo (Nodemailer + Pug templates)                   |
+| Deployment | Vercel (frontend) · Render (backend) · MongoDB Atlas |
 
-### Admin Account
+---
 
+## Demo
+
+🔗 **Live:** [e-commerce-eyasdms-projects.vercel.app](https://e-commerce-eyasdms-projects.vercel.app)
+
+**Test accounts — ready to use:**
+
+| Role  | Email            | Password |
+| ----- | ---------------- | -------- |
+| Admin | admin10@test.com | test1234 |
+| User  | eyas2@test.com   | test1234 |
+
+> Admin login redirects automatically to the dashboard.
+
+---
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js 18+
+- MongoDB (local or Atlas)
+- Stripe account
+
+### 1. Clone
+
+```bash
+git clone https://github.com/Eyasdm/e-commerce.git
+cd e-commerce
 ```
-Email:    admin@test.com
-Password: admin1234
+
+### 2. Install dependencies
+
+```bash
+# Backend
+cd Backend && npm install
+
+# Frontend
+cd ../apps && npm install
 ```
 
-> Logs into the store, then automatically redirects to the admin dashboard at `localhost:5173`
+### 3. Set environment variables
 
-### User Account
+Create `Backend/.env`:
 
+```env
+PORT=8000
+NODE_ENV=development
+DATABASE=your_mongodb_uri
+JWT_SECRET=your_jwt_secret
+JWT_EXPIRES_IN=7d
+CLIENT_URL=http://localhost:3000
+BASE_URL=http://localhost:8000
+STRIPE_SECRET_KEY=sk_test_...
+STRIPE_WEBHOOK_SECRET=whsec_...
+GEMINI_API_KEY=your_gemini_key
+BREVO_SMTP_HOST=smtp-relay.brevo.com
+BREVO_SMTP_PORT=587
+BREVO_SMTP_USER=your_brevo_user
+BREVO_SMTP_PASS=your_brevo_pass
+EMAIL_FROM=noreply@yourdomain.com
+CONTACT_RECEIVER_EMAIL=your@email.com
+GOOGLE_CLIENT_ID=your_google_client_id
+GOOGLE_CLIENT_SECRET=your_google_client_secret
 ```
-Email:    eyas@test.com
-Password: test1234
+
+Create `apps/.env.local`:
+
+```env
+NEXT_PUBLIC_API_URL=http://localhost:8000/api/v1
 ```
 
-> Standard customer account with access to shopping, cart, and orders
+### 4. Run
+
+```bash
+# Backend (from /Backend)
+npm run dev        # http://localhost:8000
+
+# Frontend (from /apps)
+npm run dev        # http://localhost:3000
+```
+
+**Stripe webhook (local testing):**
+
+```bash
+stripe listen --forward-to localhost:8000/api/v1/orders/webhook
+```
 
 ---
 
 ## Project Structure
 
 ```
-technest/
-├── apps/
-│   ├── store/                  # Next.js customer storefront
-│   │   ├── app/                # App Router pages
-│   │   ├── components/         # UI components
-│   │   ├── context/            # AuthContext
-│   │   └── lib/                # API clients, hooks, utilities
-│   │
-│   └── admin/                  # React + Vite admin dashboard
-│       └── src/
-│           ├── api/            # Axios instance
-│           ├── components/     # Layout and UI components
-│           ├── context/        # Auth and Sidebar context
-│           ├── hooks/          # React Query hooks
-│           └── pages/          # Dashboard pages
+e-commerce/
+├── apps/                       # Next.js frontend
+│   ├── app/                    # App Router pages
+│   ├── components/             # UI components (auth, cart, admin, etc.)
+│   ├── context/                # AuthContext, AdminAuthContext
+│   ├── hooks/                  # React Query hooks
+│   ├── services/               # API call functions
+│   └── store/                  # Zustand stores
 │
 └── Backend/
     └── src/
@@ -126,164 +162,28 @@ technest/
         ├── routes/             # Express routers
         ├── services/           # Business logic
         ├── middlewares/        # Auth, error handling
-        └── utils/              # Helpers and utilities
+        └── utils/              # Email, Stripe, helpers
 ```
 
 ---
 
-## Installation
+## Security
 
-### Prerequisites
-
-- Node.js 18+
-- MongoDB (local or Atlas)
-- Stripe account (for payments)
-
-### 1. Clone the repository
-
-```bash
-git clone https://github.com/Eyasdm/e-commerce.git
-cd e-commerce
-```
-
-### 2. Install Backend dependencies
-
-```bash
-cd Backend
-npm install
-```
-
-### 3. Install Store (Next.js) dependencies
-
-```bash
-cd apps/store
-npm install
-```
-
-### 4. Install Admin Dashboard dependencies
-
-```bash
-cd apps/admin
-npm install
-```
-
----
-
-## Environment Variables
-
-### Backend — `Backend/.env`
-
-```env
-PORT=8000
-NODE_ENV=development
-
-MONGODB_URI=your_mongodb_connection_string
-
-JWT_SECRET=your_jwt_secret
-JWT_EXPIRES_IN=7d
-
-STRIPE_SECRET_KEY=sk_test_your_stripe_secret_key
-STRIPE_WEBHOOK_SECRET=whsec_your_webhook_secret
-
-BASE_URL=http://localhost:8000
-CLIENT_URL=http://localhost:3000
-```
-
-### Store — `apps/store/.env.local`
-
-```env
-NEXT_PUBLIC_API_URL=http://localhost:8000/api/v1
-```
-
----
-
-## Usage
-
-### Start the Backend
-
-```bash
-cd Backend
-npm run dev
-```
-
-> Runs on `http://localhost:8000`
-
-### Start the Store
-
-```bash
-cd apps/store
-npm run dev
-```
-
-> Runs on `http://localhost:3000`
-
-### Start the Admin Dashboard
-
-```bash
-cd apps/admin
-npm run dev
-```
-
-> Runs on `http://localhost:5173`
-
-### Stripe Webhook (local testing)
-
-```bash
-stripe listen --forward-to localhost:8000/api/v1/orders/webhook
-```
-
-> Copy the webhook secret output and add it to `STRIPE_WEBHOOK_SECRET` in your `.env`
-
-### Seed the Database
-
-```bash
-cd Backend
-node src/utils/seed.js
-```
-
----
-
-## Scripts
-
-| Location | Command         | Description                |
-| -------- | --------------- | -------------------------- |
-| Backend  | `npm run dev`   | Start backend with nodemon |
-| Store    | `npm run dev`   | Start Next.js dev server   |
-| Store    | `npm run build` | Build for production       |
-| Admin    | `npm run dev`   | Start Vite dev server      |
-| Admin    | `npm run build` | Build for production       |
-
----
-
-## Future Improvements
-
-- [ ] Email notifications for order confirmation and shipping updates
-- [ ] Product image upload via Cloudinary or S3
-- [ ] Wishlist functionality
-- [ ] Product reviews with verified purchase enforcement
-- [ ] Discount codes and promo system
-- [ ] Mobile admin dashboard responsive layout
-- [ ] Multi-currency support
-- [ ] Deployment configuration (Vercel + Railway + Nginx)
-- [ ] Unit and integration tests (Jest + Supertest)
-- [ ] Real-time order status updates via WebSockets
-
----
-
-## License
-
-This project is licensed under the [MIT License](LICENSE).
+- JWT tokens stored in `httpOnly`, `secure`, `sameSite=none` cookies
+- Passwords hashed with bcrypt (12 rounds)
+- MongoDB injection protection via `express-mongo-sanitize`
+- XSS protection on all request bodies
+- Rate limiting on all API routes and chat endpoint
+- Stripe webhook signature verification
+- Role-based route protection on all admin endpoints
 
 ---
 
 ## Author
 
 **Eyas Mohammed**
-
-- GitHub: [@Eyasdm](https://github.com/Eyasdm)
-- LinkedIn: [eyas-adam](https://www.linkedin.com/in/eyas-adam/)
-- Email: Eyasadam01@outlook.com
+[GitHub](https://github.com/Eyasdm) · [LinkedIn](https://www.linkedin.com/in/eyas-adam/)
 
 ---
 
-> TechNest is a portfolio project built to demonstrate full-stack development skills. No real transactions occur.
+> Built independently as a first full-stack project. No real transactions occur.
