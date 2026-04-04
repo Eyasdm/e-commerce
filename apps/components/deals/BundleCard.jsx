@@ -1,7 +1,7 @@
 "use client";
-import { useAddBundleToCart } from "@/lib/hooks/cart/useAddBundleToCart";
+import { useAddBundleToCart } from "@/hooks/cart/useAddBundleToCart";
 import { useAuth } from "@/context/AuthContext";
-import { useCart } from "@/lib/hooks/cart/useCart";
+import { useCart } from "@/hooks/cart/useCart";
 import { useRouter } from "next/navigation";
 import { Loader2, ShoppingCart, ChevronRight } from "lucide-react";
 import toast from "react-hot-toast";

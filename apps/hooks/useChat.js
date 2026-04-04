@@ -1,5 +1,5 @@
 import { useState, useRef, useCallback } from "react";
-import { streamChat } from "../api/chatApi";
+import { streamChat } from "../lib/api/chatApi";
 
 export function useChat() {
   const [messages, setMessages] = useState([]);

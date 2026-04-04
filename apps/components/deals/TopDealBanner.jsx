@@ -1,10 +1,10 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useSingleDeal } from "@/lib/hooks/useSingleDeal";
-import { useAddToCart } from "@/lib/hooks/cart/useAddToCart";
+import { useSingleDeal } from "@/hooks/useSingleDeal";
+import { useAddToCart } from "@/hooks/cart/useAddToCart";
 import { useAuth } from "@/context/AuthContext";
-import { useCart } from "@/lib/hooks/cart/useCart";
+import { useCart } from "@/hooks/cart/useCart";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";

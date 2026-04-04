@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Mail, ArrowLeft } from "lucide-react";
 import AuthInput from "./AuthInput";
-import { useForgotPassword } from "@/lib/hooks/useAuth";
+import { useForgotPassword } from "@/hooks/useAuth";
 
 export default function ForgotPasswordForm({ onBack }) {
   const [email, setEmail] = useState("");

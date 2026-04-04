@@ -12,7 +12,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useCart } from "@/lib/hooks/cart/useCart";
+import { useCart } from "@/hooks/cart/useCart";
 import { useAuth } from "@/context/AuthContext";
 import Logo from "./Logo";
 

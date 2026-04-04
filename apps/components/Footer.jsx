@@ -5,7 +5,7 @@ import Logo from "@/components/Logo";
 import { Github, Loader2, CheckCircle2 } from "lucide-react";
 import Link from "next/link";
 import PaymentMethods from "./PaymentMethods";
-import Linkedin from "./Linkedin";
+import Linkedin from "./ui/Linkedin";
 import api from "@/lib/api";
 
 export default function Footer() {

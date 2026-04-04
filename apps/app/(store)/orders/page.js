@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useMyOrders } from "@/lib/hooks/useMyOrders";
+import { useMyOrders } from "@/hooks/useOrders";
 import OrderCard from "@/components/orders/OrderCard";
 import { QueryError } from "@/components/ErrorStates";
 import { Package } from "lucide-react";

@@ -9,12 +9,12 @@ import {
   Pencil,
   Trash2,
 } from "lucide-react";
-import { useAllProducts } from "@/lib/hooks/admin/useAllProducts";
+import { useAllProducts } from "@/hooks/admin/useAllProducts";
 import {
   useDeleteProduct,
   useCreateProduct,
   useUpdateProduct,
-} from "@/lib/hooks/admin/useProductMutations";
+} from "@/hooks/admin/useProductMutations";
 import ProductFormModal from "@/components/admin/products/ProductFormModal";
 import ProductTableRow from "@/components/admin/products/ProductTableRow";
 

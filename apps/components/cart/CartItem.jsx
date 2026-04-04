@@ -3,8 +3,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Minus, Plus, Trash2, Loader2 } from "lucide-react";
-import { useUpdateCartItem } from "@/lib/hooks/cart/useUpdateCartItem";
-import { useRemoveCartItem } from "@/lib/hooks/cart/useRemoveCartItem";
+import { useUpdateCartItem } from "@/hooks/cart/useUpdateCartItem";
+import { useRemoveCartItem } from "@/hooks/cart/useRemoveCartItem";
 import BundleCartItem from "./BundleCartItem";
 
 export default function CartItem({ item }) {

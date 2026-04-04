@@ -1,6 +1,6 @@
 "use client";
 import { Trash2, Loader2, Package } from "lucide-react";
-import { useRemoveCartItem } from "@/lib/hooks/cart/useRemoveCartItem";
+import { useRemoveCartItem } from "@/hooks/cart/useRemoveCartItem";
 import toast from "react-hot-toast";
 
 export default function BundleCartItem({ item }) {

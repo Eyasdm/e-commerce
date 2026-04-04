@@ -1,6 +1,6 @@
 "use client";
 import ProductCard from "@/components/products/ProductCard";
-import { useFeaturedProducts } from "@/lib/hooks/useFeaturedProducts";
+import { useFeaturedProducts } from "@/hooks/useFeaturedProducts";
 
 export function Recommended() {
   const { data: products, isLoading, error } = useFeaturedProducts();

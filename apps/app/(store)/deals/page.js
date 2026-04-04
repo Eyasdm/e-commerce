@@ -2,8 +2,8 @@
 
 import { FlashDealCard } from "../../../components/deals/FlashDealCard";
 import { BundleCard } from "../../../components/deals/BundleCard";
-import { useBundles } from "@/lib/hooks/useBundles";
-import { useDealsProducts } from "@/lib/hooks/useDealsProducts";
+import { useBundles } from "@/hooks/useBundles";
+import { useDealsProducts } from "@/hooks/useDealsProducts";
 import { DealHeroBlueBanner } from "../../../components/deals/DealHeroBlueBanner";
 import TopDealBanner from "@/components/deals/TopDealBanner";
 import { QueryError } from "@/components/ErrorStates";

@@ -1,5 +1,5 @@
 "use client";
-import { useCheckout } from "@/lib/hooks/useCheckout";
+import { useCheckout } from "@/hooks/useCheckout";
 import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
 import { Loader2, Lock } from "lucide-react";

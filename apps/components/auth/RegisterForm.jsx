@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { User, Mail, Lock, Eye, EyeOff } from "lucide-react";
-import { useRegister } from "@/lib/hooks/useAuth";
+import { useRegister } from "@/hooks/useAuth";
 import { useRouter } from "next/navigation";
 
 import AuthInput from "./AuthInput";

@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { CheckCircle } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
-import { CART_KEY } from "@/lib/hooks/cart/useCart";
+import { CART_KEY } from "@/hooks/cart/useCart";
 import Link from "next/link";
 
 export default function SuccessPage() {

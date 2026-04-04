@@ -2,8 +2,8 @@
 
 import { useAuth } from "@/context/AuthContext";
 import api from "@/lib/api";
-import { useMyOrders } from "@/lib/hooks/useMyOrders";
-import { useUpdateProfile } from "@/lib/hooks/useUpdateProfile";
+import { useMyOrders } from "@/hooks/useOrders";
+import { useUpdateProfile } from "@/hooks/useUpdateProfile";
 import { QueryError } from "@/components/ErrorStates";
 import {
   Check,

@@ -1,10 +1,10 @@
 "use client";
 import { useState } from "react";
-import { useAllUsers } from "@/lib/hooks/admin/useAllUsers";
+import { useAllUsers } from "@/hooks/admin/useAllUsers";
 import {
   useDeleteUser,
   useUpdateUserRole,
-} from "@/lib/hooks/admin/useUserMutations";
+} from "@/hooks/admin/useUserMutations";
 import { Loader2, Trash2 } from "lucide-react";
 import UserTableRow from "@/components/admin/users/UserTableRow";
 

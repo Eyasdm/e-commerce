@@ -1,7 +1,7 @@
 "use client";
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { cartApi } from "@/lib/cartService";
+import { cartApi } from "@/services/cartService";
 import { CART_KEY } from "./useCart";
 import toast from "react-hot-toast";
 

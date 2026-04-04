@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Lock, Eye, EyeOff } from "lucide-react";
 import { useRouter } from "next/navigation";
 import AuthInput from "./AuthInput";
-import { useResetPassword } from "@/lib/hooks/useAuth";
+import { useResetPassword } from "@/hooks/useAuth";
 
 // Used on /reset-password/[token] page
 export default function ResetPasswordForm({ token }) {

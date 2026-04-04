@@ -1,7 +1,7 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import api from "../api";
+import api from "../lib/api";
 
 export const useSingleDeal = (id) => {
   return useQuery({

@@ -3,10 +3,10 @@
 import { useState } from "react";
 import Link from "next/link";
 import { CountdownTimer } from "@/components/deals/CountdownTimer";
-import { Stars } from "@/lib/utils";
-import { useAddToCart } from "@/lib/hooks/cart/useAddToCart";
+import { Stars } from "@/components/products/Stars";
+import { useAddToCart } from "@/hooks/cart/useAddToCart";
 import { useAuth } from "@/context/AuthContext";
-import { useCart } from "@/lib/hooks/cart/useCart";
+import { useCart } from "@/hooks/cart/useCart";
 import { useRouter } from "next/navigation";
 import { Loader2, Check, ShoppingCart } from "lucide-react";
 import toast from "react-hot-toast";

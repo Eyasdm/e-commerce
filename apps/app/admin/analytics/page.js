@@ -1,9 +1,9 @@
 "use client";
 import { useState } from "react";
-import { useDailySales } from "@/lib/hooks/admin/useDailySales";
-import { useOrdersStats } from "@/lib/hooks/admin/useOrdersStats";
-import { useTopProducts } from "@/lib/hooks/admin/useTopProducts";
-import { useRevenue } from "@/lib/hooks/admin/useRevenue";
+import { useDailySales } from "@/hooks/admin/useDailySales";
+import { useOrdersStats } from "@/hooks/admin/useOrdersStats";
+import { useTopProducts } from "@/hooks/admin/useTopProducts";
+import { useRevenue } from "@/hooks/admin/useRevenue";
 import RevenueChart from "@/components/admin/analytics/RevenueChart";
 import TopProductsChart from "@/components/admin/analytics/TopProductsChart";
 import OrderStatusChart from "@/components/admin/analytics/OrderStatusChart";

@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { Mail, Lock, Eye, EyeOff, Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useLogin } from "@/lib/hooks/useAuth";
+import { useLogin } from "@/hooks/useAuth";
 import toast from "react-hot-toast";
 import AuthInput from "./AuthInput";
 import AuthDivider from "./AuthDivider";

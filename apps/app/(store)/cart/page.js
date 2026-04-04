@@ -3,7 +3,7 @@
 import CartItem from "@/components/cart/CartItem";
 import OrderSummary from "@/components/cart/OrderSummary";
 import { Recommended } from "@/components/cart/Recommended";
-import { useCart } from "@/lib/hooks/cart/useCart";
+import { useCart } from "@/hooks/cart/useCart";
 import PageLoader from "@/components/PageLoader";
 import { PageError } from "@/components/ErrorStates";
 import { CartItemSkeleton, OrderSummarySkeleton } from "@/components/Skeletons";

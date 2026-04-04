@@ -1,8 +1,8 @@
 "use client";
 import { useState } from "react";
-import { useRevenue } from "@/lib/hooks/admin/useRevenue";
-import { useDailySales } from "@/lib/hooks/admin/useDailySales";
-import { useAllOrders } from "@/lib/hooks/admin/useAllOrders";
+import { useRevenue } from "@/hooks/admin/useRevenue";
+import { useDailySales } from "@/hooks/admin/useDailySales";
+import { useAllOrders } from "@/hooks/admin/useAllOrders";
 import {
   DollarSign,
   ShoppingBag,

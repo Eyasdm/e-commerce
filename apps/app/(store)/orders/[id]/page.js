@@ -1,7 +1,7 @@
 "use client";
 
 import { useParams, useRouter } from "next/navigation";
-import { useOrder } from "@/lib/hooks/useOrder";
+import { useOrder } from "@/hooks/useOrder";
 import { PageError } from "@/components/ErrorStates";
 import Image from "next/image";
 import Link from "next/link";

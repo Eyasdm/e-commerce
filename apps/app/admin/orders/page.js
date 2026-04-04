@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { useAllOrders } from "@/lib/hooks/admin/useAllOrders";
+import { useAllOrders } from "@/hooks/admin/useAllOrders";
 import { Loader2 } from "lucide-react";
 import { StatusBadge } from "@/components/admin/ui/StatusBadge";
 import { StatusDropdown } from "@/components/admin/ui/StatusDropdown";
