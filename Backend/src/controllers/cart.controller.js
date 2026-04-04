@@ -17,7 +17,7 @@ export const addItem = catchAsync(async (req, res, next) => {
 
 // ================= GET CART =================
 export const getCart = catchAsync(async (req, res, next) => {
-  const cart = await cartService.getCart(req.user._id);
+  let cart = await cartService.getCart(req.user._id);
 
   if (!cart) {
     cart = { items: [] };
