@@ -19,9 +19,6 @@ export function useRegister() {
 
   return useMutation({
     mutationFn: authApi.signup,
-    onSuccess: async () => {
-      await checkAuth();
-    },
   });
 }
 

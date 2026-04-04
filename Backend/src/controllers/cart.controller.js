@@ -18,9 +18,11 @@ export const addItem = catchAsync(async (req, res, next) => {
 // ================= GET CART =================
 export const getCart = catchAsync(async (req, res, next) => {
   const cart = await cartService.getCart(req.user._id);
+
   if (!cart) {
-    return next(new AppError("Cart not found", 404));
+    cart = { items: [] };
   }
+
   res.status(200).json({
     success: true,
     data: cart,

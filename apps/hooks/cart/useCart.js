@@ -47,6 +47,7 @@ export function useCart() {
     queryKey: CART_KEY,
     queryFn: async () => {
       const cart = await cartApi.getCart();
+      if (!cart || !cart.items) return [];
       return normalizeCart(cart);
     },
     enabled: !loading && isAuthenticated, // ✅ wait until check is done

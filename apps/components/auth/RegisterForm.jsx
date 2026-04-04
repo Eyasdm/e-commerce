@@ -9,6 +9,7 @@ import AuthInput from "./AuthInput";
 import AuthDivider from "./AuthDivider";
 import GoogleButton from "./GoogleButton";
 import Link from "next/link";
+import { useAuth } from "@/context/AuthContext";
 
 export default function RegisterForm() {
   const [showPass, setShowPass] = useState(false);
@@ -18,6 +19,7 @@ export default function RegisterForm() {
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
   const [formError, setFormError] = useState("");
+  const { checkAuth } = useAuth();
 
   const router = useRouter();
 
@@ -38,7 +40,8 @@ export default function RegisterForm() {
     register(
       { name, email, password, passwordConfirm },
       {
-        onSuccess: () => {
+        onSuccess: async () => {
+          await checkAuth(); // wait for auth to hydrate
           router.push("/");
         },
       },
