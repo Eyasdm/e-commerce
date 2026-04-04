@@ -16,7 +16,7 @@ export default function RegisterForm() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [confirm, setConfirm] = useState("");
+  const [passwordConfirm, setpasswordConfirm] = useState("");
   const [formError, setFormError] = useState("");
 
   const router = useRouter();
@@ -28,16 +28,16 @@ export default function RegisterForm() {
 
     setFormError("");
 
-    if (!name || !email || !password || !confirm) {
+    if (!name || !email || !password || !passwordConfirm) {
       return setFormError("All fields are required");
     }
 
-    if (password !== confirm) {
+    if (password !== passwordConfirm) {
       return setFormError("Passwords do not match");
     }
 
     register(
-      { name, email, password },
+      { name, email, password, passwordConfirm },
       {
         onSuccess: () => {
           router.push("/");
@@ -77,7 +77,7 @@ export default function RegisterForm() {
         icon={Lock}
         type={showConfirm ? "text" : "password"}
         placeholder="Confirm password"
-        value={confirm}
+        value={passwordConfirm}
         onChange={(e) => setConfirm(e.target.value)}
         rightIcon={showConfirm ? EyeOff : Eye}
         onRightClick={() => setShowConfirm(!showConfirm)}
