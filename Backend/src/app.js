@@ -110,7 +110,7 @@ app.use("/api/v1/newsletter", newsletterRouter);
 
 app.get("/", (req, res) => res.send("API Running..."));
 
-app.all("*", (req, res) => {
+app.all("*splat", (req, res) => {
   console.log("UNMATCHED ROUTE:", req.method, req.originalUrl);
   res.status(404).json({ message: `Cannot ${req.method} ${req.originalUrl}` });
 });
