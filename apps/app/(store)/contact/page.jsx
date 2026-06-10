@@ -92,7 +92,7 @@ export default function ContactPage() {
               </a>
 
               <a
-                href="https://www.linkedin.com/in/eyas-adam/"
+                href="https://www.linkedin.com/in/eyas-mohammed/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-3 p-3 rounded-xl hover:bg-slate-50 transition group"
@@ -103,7 +103,7 @@ export default function ContactPage() {
                 <div>
                   <p className="text-xs text-slate-400">LinkedIn</p>
                   <p className="text-sm font-semibold text-slate-800 group-hover:text-blue-700 transition">
-                    linkedin.com/in/eyas-adam
+                    linkedin.com/in/eyas-mohammed
                   </p>
                 </div>
                 <ExternalLink

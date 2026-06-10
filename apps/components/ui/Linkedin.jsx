@@ -3,7 +3,7 @@ import Link from "next/link";
 function Linkedin() {
   return (
     <Link
-      href="https://www.linkedin.com/in/eyas-adam/"
+      href="https://www.linkedin.com/in/eyas-mohammed/"
       target="_blank"
       rel="noreferrer"
       className="hover:text-white transition"

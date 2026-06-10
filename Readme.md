@@ -44,7 +44,7 @@ TechNest is a production-grade e-commerce system built independently as a first 
 
 | Layer      | Technologies                                         |
 | ---------- | ---------------------------------------------------- |
-| Frontend   | Next.js 15, Tailwind CSS, React Query, Zustand       |
+| Frontend   | Next.js 16, React 19, Tailwind CSS, React Query, Zustand |
 | Backend    | Node.js, Express.js, MongoDB, Mongoose               |
 | Auth       | JWT, httpOnly cookies, Google OAuth (Passport.js)    |
 | Payments   | Stripe (Checkout + Webhooks)                         |
@@ -182,7 +182,7 @@ e-commerce/
 ## Author
 
 **Eyas Mohammed**
-[GitHub](https://github.com/Eyasdm) · [LinkedIn](https://www.linkedin.com/in/eyas-adam/)
+[GitHub](https://github.com/Eyasdm) · [LinkedIn](https://www.linkedin.com/in/eyas-mohammed/)
 
 ---
 

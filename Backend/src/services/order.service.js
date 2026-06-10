@@ -103,6 +103,9 @@ export const createOrderFromSession = async (session) => {
 
     if (!cart || cart.items.length === 0) return;
 
+    const existing = await Order.findOne({ stripeSessionId: session.id });
+    if (existing) return;
+
     const orderItems = cart.items
       .filter((item) => item.bundle || item.product)
       .map((item) => {
