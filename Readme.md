@@ -60,6 +60,8 @@ TechNest is a production-grade e-commerce system built independently as a first 
 
 **Test accounts — ready to use:**
 
+Demo-only accounts, isolated from any real payment flow — safe to share publicly.
+
 | Role  | Email                 | Password |
 | ----- | --------------------- | -------- |
 | Admin | admin10@test.com      | test1234 |
